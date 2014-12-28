@@ -1,3 +1,3 @@
-----------\\ Tag & Frag //----------
-Projekt z przedmiotu Programowanie Zespo≥owe
+Tag & Frag
+Projekt z przedmiotu Programowanie Zespo≈Çowe
 WMiI, UMK 2014/15

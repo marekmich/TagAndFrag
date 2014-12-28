@@ -2,7 +2,7 @@
 
 *Autor: Mateusz Wrzos* <br />
 *W ramach projektu Tag & Frag na przedmiot Programowanie Zespołowe* <br />
-*UMK rok 2014/15* <br />
+*WMiI, UMK rok 2014/15* <br />
 *Zespół nr 14.* <br />
 
 ##0. Wstęp

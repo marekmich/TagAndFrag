@@ -12,7 +12,7 @@ google-play-services_lib
 ```
 pobraną za pomocą Android SDK Manager'a.
 
-Kolejną niezbędną rzeczą jest klucz do Google Maps API wygenerowany za pomocą Google APIs Console.
+Kolejną niezbędną rzeczą jest klucz do Google Maps API wygenerowany za pomocą [Google APIs Console](https://code.google.com/apis/console).
 Następnie dodajemy go do pliku *AndroidManifest.xml* w znaczniku `<application>` w ten sposób:
 ```xml
 <meta-data

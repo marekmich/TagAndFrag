@@ -15,9 +15,9 @@ pobraną za pomocą Android SDK Manager'a.
 Kolejną niezbędną rzeczą jest klucz do Google Maps API wygenerowany za pomocą Google APIs Console.
 Następnie dodajemy go do pliku AndroidManifest.xml w znaczniku <application> w ten sposób:
 ```xml
-	<meta-data
-		android:name="com.google.android.maps.v2.API_KEY"
-		android:value="WYGENEROWANY_KLUCZ"/>
+<meta-data
+	android:name="com.google.android.maps.v2.API_KEY"
+	android:value="WYGENEROWANY_KLUCZ"/>
 ```
 Pamiętaj że klucz jest przypisany do projektu (identyfikowany przez podany package podczas generowania).
 

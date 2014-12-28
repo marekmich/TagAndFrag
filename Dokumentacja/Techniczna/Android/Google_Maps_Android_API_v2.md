@@ -13,7 +13,7 @@ google-play-services_lib
 pobraną za pomocą Android SDK Manager'a.
 
 Kolejną niezbędną rzeczą jest klucz do Google Maps API wygenerowany za pomocą Google APIs Console.
-Następnie dodajemy go do pliku *AndroidManifest.xml* w znaczniku *<application>* w ten sposób:
+Następnie dodajemy go do pliku *AndroidManifest.xml* w znaczniku `<application>` w ten sposób:
 ```xml
 <meta-data
 	android:name="com.google.android.maps.v2.API_KEY"
@@ -21,7 +21,7 @@ Następnie dodajemy go do pliku *AndroidManifest.xml* w znaczniku *<application>
 ```
 Pamiętaj że klucz jest przypisany do projektu (identyfikowany przez podany package podczas generowania).
 
-Następnie, dodajemy uprawnienia do pliku AndroidManifest.xml w znaczniku *<manifest>*:
+Następnie, dodajemy uprawnienia do pliku AndroidManifest.xml w znaczniku `<manifest>`:
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

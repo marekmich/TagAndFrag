@@ -41,7 +41,7 @@ Aby jednoznacznie zidentyfikować naszą usługę Bluetooth konieczne będzie po
 ```java
 private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 ```
-Teraz, musimy zainicjalizować gniado i się połączyć:
+Teraz, musimy zainicjalizować gniazdo i się połączyć:
 ```java
 BluetoothSocket bluetoothSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
                 bluetoothSocket.connect();

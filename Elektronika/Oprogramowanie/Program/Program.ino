@@ -78,7 +78,7 @@ void loop()
 {
   if(digitalRead(bluetoothConfigurationPINInput)==HIGH)    //fragment aktywny kiedy blokada fizyczna wlaczona
   {
-    if(cmpCommand(command, "LDS"))  //pobranie nowego sygnalu broni
+    if(cmpCommand(command, "CWC"))  //pobranie nowego sygnalu broni
     {
       char cmd[5];
       delay(1000);

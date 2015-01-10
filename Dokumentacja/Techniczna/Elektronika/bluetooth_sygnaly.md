@@ -95,8 +95,8 @@ W odró¿nieniu od sygna³ów odbieranych, sygna³y wysy³ane przez elektronikê nie ko
 
 ### Trafienie przez innego gracza
 
-Sygna³ sk³ada siê z jednego elementu o d³ugoœci szeœciu znaków.
-`SHTkod`
+Sygna³ sk³ada siê z jednego elementu o d³ugoœci szeœciu znaków.  
+`SHTkod`  
 
 Pierwsze trzy znaki informuj¹ o tym, ¿e nadawca sygna³u zosta³ trafiony
 Pozosta³e trzy znaki informuj¹ o kodzie broni, która trafi³a nadawcê sygna³u

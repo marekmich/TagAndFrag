@@ -102,7 +102,7 @@ void loop()
       Serial1.readBytes(name,(num[0]-48)*10+(num[1]-48)+2);
       setName(name, (num[0]-48)*10+(num[1]-48));
     }
-    else if(cmpCommand(command, "LDB"))  //odblokowanie broni po smierci
+    else if(cmpCommand(command, "WLF"))  //odblokowanie broni po smierci
     {
       incapacitatedLock=0;
       digitalWrite(isAlivePIN, HIGH);
@@ -110,12 +110,12 @@ void loop()
   }
   else
   {
-    if(cmpCommand(command, "LDA"))        //zablokowanie broni w wypadku smierci
+    if(cmpCommand(command, "WLN"))        //zablokowanie broni w wypadku smierci
     {
       incapacitatedLock=1;
       digitalWrite(isAlivePIN, LOW);
     }
-    else if(cmpCommand(command, "LDB"))    //odblokowanie broni po smierci
+    else if(cmpCommand(command, "WLF"))    //odblokowanie broni po smierci
     {
       incapacitatedLock=0;
       digitalWrite(isAlivePIN, HIGH);
@@ -123,23 +123,19 @@ void loop()
     
     if (irrecv.decode(&results))          //odbieranie strzalow
     {
-      Serial.print(results.decode_type);
-      Serial.print(" ");
-      Serial.print(results.bits,DEC);
-      Serial.print(" ");
-      Serial.print(results.value,DEC);
-      Serial.print("\r\n");
       if(results.value>=0&&results.value<=255)
       {
-        
-        Serial1.write("SHT", 3);
+        char hitcode[6];
+        hitcode[0]='S';
+        hitcode[1]='H';
+        hitcode[2]='T';
         int i = results.value;
-        command[2]=48+i%10;
+        hitcode[5]=48+i%10;
         i=i/10;
-        command[1]=48+i%10;
+        hitcode[4]=48+i%10;
         i=i/10;
-        command[0]=48+i;
-        digitalWrite(isAlivePIN, LOW);
+        hitcode[3]=48+i;
+        Serial1.write(hitcode, 6);
       }
       irrecv.resume(); // Receive the next value
     }
@@ -147,7 +143,6 @@ void loop()
     if(digitalRead(triggerPIN)==HIGH && incapacitatedLock == 0 && triggerLock == 0)  //strzelanie (w trakcie strzalu zakladana jest blokada na spust => po kazdym strzale trzeba puscic spust)
     {
       triggerLock=1;
-      Serial.println("BANG!");
       irsend.sendRC6(weaponSignalCode, 8);
       irrecv.enableIRIn(); // Start the receiver
     }

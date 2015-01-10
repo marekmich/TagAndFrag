@@ -10,15 +10,15 @@ Zespó³ nr 14.
 Sygna³y odbierane
 -----------------
 
-**Uwaga**
+**Uwaga**  
 Wszystkie elementy sygna³u wys³anego powinny koñczyæ znakiem CRLF (\r\n)
 
 ### Ustawianie nowego kodu broni
 
-Sygna³ sk³ada siê z dwóch elementów.
-Pierwszym elementem sygna³u jest polecenie uruchamiaj¹ce procedurê zmiany kodu broni:
-`CWC\r\n`
-Drugim elementem jest nowy kod broni. Musi to byæ liczba w przedziale 0-255, dodatkowo wa¿ne jest by liczba by³a zawsze wysy³ana w postaci trzech cyfr.
-`kod\r\n` 
+Sygna³ sk³ada siê z dwóch elementów.  
+Pierwszym elementem sygna³u jest polecenie uruchamiaj¹ce procedurê zmiany kodu broni:  
+`CWC\r\n`  
+Drugim elementem jest nowy kod broni. Musi to byæ liczba w przedziale 0-255, dodatkowo wa¿ne jest by liczba by³a zawsze wysy³ana w postaci trzech cyfr.  
+`kod\r\n`  
 
 

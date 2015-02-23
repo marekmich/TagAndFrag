@@ -1,9 +1,9 @@
 #include <IRremote.h>
 
 int triggerPIN = 12;  //Pin odpowiedzialny za spust
-int irReceiverPIN = 6;  //Pin na ktory trafiaja dane z odbiornika IR
-int bluetoothConfigurationPINOutput = 11;  //Blokada edycji ustawien modulu bluetooth oraz ustawien broni (przelacznik)
-int bluetoothConfigurationPINInput = 8;   //jw.
+int bluetoothConfigurationPINOutput = 8;  //Blokada edycji ustawien modulu bluetooth oraz ustawien broni (przelacznik)
+int bluetoothConfigurationPINInput = 7;   //jw.
+int irReceiverPIN = 4;  //Pin na ktory trafiaja dane z odbiornika IR
 int isAlivePIN = 2;
 
 int incapacitatedLock = 0;    //Blokada (martwy/brak amunicji)

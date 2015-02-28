@@ -90,13 +90,13 @@ Sygna³y nadawane
 ----------------
 
 **Uwaga**  
-W odró¿nieniu od sygna³ów odbieranych, sygna³y wysy³ane przez elektronikê nie koñcz¹ siê znakiem CRLF (\r\n)  
+Wszystkie elementy sygna³u wysy³anego przez elektronikê powinny koñczyæ znakiem CRLF (\r\n)  
 
 
 ### Trafienie przez innego gracza
 
 Sygna³ sk³ada siê z jednego elementu o d³ugoœci szeœciu znaków.  
-`SHTkod`  
+`SHTkod\r\n`  
 
 Pierwsze trzy znaki informuj¹ o tym, ¿e nadawca sygna³u zosta³ trafiony
-Pozosta³e trzy znaki informuj¹ o kodzie broni, która trafi³a nadawcê sygna³u
+Kolejne trzy znaki informuj¹ o kodzie broni, która trafi³a nadawcê sygna³u

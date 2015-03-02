@@ -1,6 +1,8 @@
 package com.example.restclient;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,9 +11,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TagAndFragRestClient implements RestClient<Player> {
 
@@ -24,9 +30,15 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	}
 
 	@Override
-	public Collection<Player> GET() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Player> GET() throws IOException, JSONException {
+		HttpGet httpGet = new HttpGet(URL);
+		HttpResponse response = httpClient.execute(httpGet);
+		
+		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		String jsonGet = inputReader.readLine();
+
+		JSONArray array = new JSONArray(jsonGet);
+		return fromJsonArrayToCollection(array);
 	}
 
 	@Override
@@ -49,6 +61,22 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	public void PUT(Player object) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private Collection<Player> fromJsonArrayToCollection(JSONArray array) throws JSONException {
+		Collection<Player> players = new ArrayList<Player>();
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject jsonObject  = array.getJSONObject(i);
+			
+			String name 			= jsonObject.optString("name");
+			Integer healthPoints 	= Integer.valueOf(jsonObject.optString("health"));
+			Integer ammunition 		= Integer.valueOf(jsonObject.optString("ammunition"));
+			Integer localization 	= Integer.valueOf(jsonObject.optString("localization"));
+			
+			Player player = new Player(name, healthPoints, ammunition, localization);
+			players.add(player);
+		}
+		return players;
 	}
 
 }

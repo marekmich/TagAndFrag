@@ -1,6 +1,10 @@
 package com.example.serwertest;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.json.JSONException;
 
 import com.example.restclient.Player;
 import com.example.restclient.RestClient;
@@ -8,6 +12,7 @@ import com.example.restclient.TagAndFragRestClient;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +51,26 @@ public class MainActivity extends Activity {
 	private class ThreadedRestClient extends Thread {
 		
 		public void run() {
+//			RestClient<Player> restClient = new TagAndFragRestClient();
+//			Player matt = new Player("Matt", 100, 100, 100);
+//			try {
+//				restClient.POST(matt);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+		
+			Collection<Player> players = new ArrayList<Player>();
 			RestClient<Player> restClient = new TagAndFragRestClient();
-			Player matt = new Player("Matt", 100, 100, 100);
 			try {
-				restClient.POST(matt);
+				players = restClient.GET();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			for (Player player : players) {
+				Log.i("GET", "Gracz " + player.getName() + " ma " + player.getAmmunition() + " amunicji");
 			}
 		}
 	}

@@ -1,16 +1,24 @@
 package com.pz.tagandfrag;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pz.tagandfrag.restclient.*;
+
+
 public class MainActivity extends Activity {
+	
+	private Game game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 	}
 
 	@Override

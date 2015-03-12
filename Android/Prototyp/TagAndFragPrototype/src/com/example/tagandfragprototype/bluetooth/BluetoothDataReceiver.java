@@ -57,6 +57,10 @@ public class BluetoothDataReceiver {
 		return null;
 	}
 
+	public boolean hasNextLine() {
+		return inputScanner.hasNextLine();
+	}
+	
 	/**
 	 * Inicjalizacja strumienia przychodzacego i skanera.
 	 * @param bluetoothSocket
@@ -69,5 +73,4 @@ public class BluetoothDataReceiver {
 		}
 		inputScanner = new Scanner(inputStream);
 	}
-
 }

@@ -1,7 +1,14 @@
 package com.example.tagandfragprototype;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tagandfragprototype.bluetooth.BluetoothService;
 
@@ -25,7 +33,8 @@ public class StartingActivity extends Activity {
 	public static BluetoothService bluetoothService;
 	private static final int REQUEST_ENABLE_BT = 0;
 	public final static String EXTRA_MESSAGE = "com.example.tagandfragprototype.MSG";
-	private static String MAC = "30:14:08:28:05:74";
+	private static String MAC = null; //"30:14:08:28:05:74";
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +65,18 @@ public class StartingActivity extends Activity {
 	}
 	
 	public void onChooseDeviceButtonClicked(View view) {
-		deviceTextView.setVisibility(TextView.VISIBLE);
-		connectButton.setVisibility(Button.VISIBLE);
+		if (nickEditText.length() > 0) {
+			new DeviceChooser(this).buildWindow().show();
+		} else {
+			Toast.makeText(this, "Wpisz swój nick", Toast.LENGTH_LONG).show();;
+		}
 		
-		deviceTextView.append("Twoje urzadzenie: TU BEDZIE NAZWA");
-		deviceTextView.append("MAC: TU BEDZIE MAC");
 	}
 	
 	public void onConnectButtonClicked(View view) {
 		ConnectProgressBarTask task = new ConnectProgressBarTask(this, nickEditText.getText().toString());
 		task.execute();
+		connectButton.setEnabled(false);
 	}
 	
 	private void initializeViewComponents() {
@@ -124,6 +135,53 @@ public class StartingActivity extends Activity {
 			bluetoothService.connectWithDeviceByMacAddress(MAC);
 			return null;
 		}
+	}
+	
+	private class DeviceChooser extends AlertDialog {
+		private Context context;
+		public DeviceChooser(Context context) {
+			super(context);
+			this.context = context;
+		}
+
+		public AlertDialog buildWindow() {
+			final Set<BluetoothDevice> devices = bluetoothService.getBluetoothAdapter().getBondedDevices();
+			final ArrayList<String> devicesList = new ArrayList<String>(devices.size());
+			
+			for (BluetoothDevice device : devices) {
+				devicesList.add(device.getName());
+			}
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder	.setTitle("Tytul")
+					.setSingleChoiceItems(toListString(devicesList), 0, null)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Integer position = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+							deviceTextView.setVisibility(TextView.VISIBLE);
+							connectButton.setVisibility(Button.VISIBLE);
+							
+							for (BluetoothDevice device : devices) {
+								if (devicesList.get(position).equals(device.getName())) {
+									MAC = device.getAddress();
+								}
+							}
+							deviceTextView.setText("");
+							deviceTextView.append("Twoje urzadzenie: " + devicesList.get(position) + "\n");
+							deviceTextView.append("MAC: " + MAC + "\n");
+						}
+					})
+					.setNegativeButton("Cancel", null);
+				
+			return builder.create();
+		}
 		
+		private String[] toListString(ArrayList<String> list) {
+			String[] listString = new String[list.size()];
+			listString = list.toArray(listString);
+			return listString;
+		}
 	}
 }

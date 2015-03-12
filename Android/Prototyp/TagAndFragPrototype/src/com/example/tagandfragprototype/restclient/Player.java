@@ -33,6 +33,12 @@ public class Player {
 	public Integer getLocalization() {
 		return localization;
 	}
+	
+	public void reduceHealth(int value) {
+		if (this.healthPoints > 0) {
+			this.healthPoints = this.healthPoints - value;
+		}
+	}
 
 	@Override
 	public String toString() {

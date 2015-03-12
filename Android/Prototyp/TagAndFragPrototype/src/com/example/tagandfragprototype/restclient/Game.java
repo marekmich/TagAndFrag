@@ -1,8 +1,8 @@
 package com.example.tagandfragprototype.restclient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.io.IOException;
 
 import org.json.JSONException;
 

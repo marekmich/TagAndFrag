@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical" >
+    
+    <EditText
+        android:id="@+id/nickEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_text_nick" />
+    
+    <Button 
+        android:id="@+id/choose_device_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_device_text" 
+        android:onClick="onChooseDeviceButtonClicked" />
+    
+    <TextView
+        android:id="@+id/device_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+    
+    <Button
+        android:id="@+id/connect_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:text="@string/connect_button_text" 
+        android:onClick="onConnectButtonClicked" />
+    
+    <ProgressBar 
+        android:id="@+id/connect_progress_bar" 
+        android:layout_width="70dp"
+        android:layout_height="70dp" 
+        android:layout_gravity="center" />
+</LinearLayout>

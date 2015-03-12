@@ -40,7 +40,66 @@ public class BluetoothDataSender
 	{
 		sendMessage("WLF\r\n");
 	}
+	/**
+	 * Zmiana kodu broni
+	 * Uwaga: obsluzyc odpowiedz zgodnie z dokumentacja
+	 * @param message
+	 * */
+	public void changeWeaponCode(int newCode)
+	{
+		// TODO Sprawdzanie dlugosci newCode?
+		String correctNewCode = Integer.toString(newCode);
+		switch(correctNewCode.length()) {
+			case 1:
+				correctNewCode = "00" + correctNewCode;
+				break;
+			case 2:
+				correctNewCode = "0" + correctNewCode;
+				break;
+			default:
+				break;
+		}
+		sendMessage("CWC\r\n");
+		sendMessage(correctNewCode + "\r\n");
+	}
 	
+	/**
+	 * Zmiana pinu w module bluetooth broni
+	 * Uwaga: obsluzyc odpowiedz zgodnie z dokumentacja
+	 * @param message
+	 * */
+	public void changePIN(int newPin)
+	{
+		// TODO Sprawdzanie dlugosci newPin?
+		String corretNewPIN = Integer.toString(newPin);
+		switch(corretNewPIN.length()) {
+			case 1:
+				corretNewPIN = "000" + corretNewPIN;
+				break;
+			case 2:
+				corretNewPIN = "00" + corretNewPIN;
+				break;
+			case 3:
+				corretNewPIN = "0" + corretNewPIN;
+				break;
+			default:
+				break;
+		}
+		sendMessage("PIN\r\n");
+		sendMessage(corretNewPIN + "\r\n");
+	}
+	/**
+	 * Zmiana nazwy broni
+	 * Uwaga: obsluzyc odpowiedz zgodnie z dokumentacja
+	 * @param message
+	 * */
+	public void changeWeaponName(String newWeaponName)
+	{
+		// TODO Sprawdzanie dlugosci newWeaponName?
+		String correctNewWeaponName = Integer.toString(newWeaponName.length()) + newWeaponName;
+		sendMessage("NME\r\n");
+		sendMessage(correctNewWeaponName);		
+	}
 	/**
 	 * Wysla wiadomosc przez Bluetooth Socket
 	 * @param message

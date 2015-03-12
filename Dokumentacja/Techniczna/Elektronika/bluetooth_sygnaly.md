@@ -54,7 +54,7 @@ Poprawnoœæ nowego pinu powinna byæ weryfikowana po stronie nadawcy.
 
 Sygna³ sk³ada siê z dwóch elementów.  
 Pierwszym elementem sygna³u jest polecenie uruchamiaj¹ce procedurê zmiany nazwy.  
-`PIN\r\n`  
+`NME\r\n`  
 Drugim elementem nowa nazwa dla modu³u bluetooth.  
 `DLname\r\n`  
 

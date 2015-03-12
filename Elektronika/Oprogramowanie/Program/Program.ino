@@ -70,6 +70,8 @@ void setup()
   digitalWrite(bluetoothConfigurationPINOutput, HIGH);
   digitalWrite(isAlivePIN, HIGH);
   
+  
+  
   //inne ustawienia
   irrecv.enableIRIn(); //wlaczenie receivera
 }
@@ -125,7 +127,9 @@ void loop()
     {
       if(results.value>=0&&results.value<=255)
       {
-        char hitcode[6];
+        char hitcode[8];
+        hitcode[6]='\r';
+        hitcode[7]='\n';
         hitcode[0]='S';
         hitcode[1]='H';
         hitcode[2]='T';
@@ -139,7 +143,6 @@ void loop()
       }
       irrecv.resume(); // Receive the next value
     }
-    
     if(digitalRead(triggerPIN)==HIGH && incapacitatedLock == 0 && triggerLock == 0)  //strzelanie (w trakcie strzalu zakladana jest blokada na spust => po kazdym strzale trzeba puscic spust)
     {
       triggerLock=1;

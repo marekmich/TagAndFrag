@@ -11,6 +11,7 @@
  * Also influenced by http://zovirl.com/2008/11/12/building-a-universal-remote-with-an-arduino/
  *
  * JVC and Panasonic protocol added by Kristian Lauszus (Thanks to zenwheel and other people at the original blog post)
+ * Whynter A/C ARC-110WD added by Francesco Meschia
  */
 
 #ifndef IRremoteint_h
@@ -94,10 +95,18 @@
 // Pulse parms are *50-100 for the Mark and *50+100 for the space
 // First MARK is the one after the long gap
 // pulse parameters in usec
+#define WHYNTER_HDR_MARK	2850
+#define WHYNTER_HDR_SPACE	2850
+#define WHYNTER_BIT_MARK	750
+#define WHYNTER_ONE_MARK	750
+#define WHYNTER_ONE_SPACE	2150
+#define WHYNTER_ZERO_MARK	750
+#define WHYNTER_ZERO_SPACE	750
+
 #define NEC_HDR_MARK	9000
 #define NEC_HDR_SPACE	4500
 #define NEC_BIT_MARK	560
-#define NEC_ONE_SPACE	1600
+#define NEC_ONE_SPACE	1690
 #define NEC_ZERO_SPACE	560
 #define NEC_RPT_SPACE	2250
 
@@ -181,6 +190,20 @@
 #define SHARP_BITS 15
 #define DISH_BITS 16
 
+// AIWA RC T501
+// Lirc file http://lirc.sourceforge.net/remotes/aiwa/RC-T501 
+#define AIWA_RC_T501_HZ 38
+#define AIWA_RC_T501_BITS 15
+#define AIWA_RC_T501_PRE_BITS 26
+#define AIWA_RC_T501_POST_BITS 1
+#define AIWA_RC_T501_SUM_BITS AIWA_RC_T501_PRE_BITS+AIWA_RC_T501_BITS+AIWA_RC_T501_POST_BITS
+#define AIWA_RC_T501_HDR_MARK 8800
+#define AIWA_RC_T501_HDR_SPACE 4500
+#define AIWA_RC_T501_BIT_MARK 500
+#define AIWA_RC_T501_ONE_SPACE 600
+#define AIWA_RC_T501_ZERO_SPACE 1700
+
+
 #define TOLERANCE 25  // percent tolerance in measurements
 #define LTOL (1.0 - TOLERANCE/100.) 
 #define UTOL (1.0 + TOLERANCE/100.) 
@@ -227,6 +250,8 @@ extern volatile irparams_t irparams;
 #define JVC_BITS 16
 #define LG_BITS 28
 #define SAMSUNG_BITS 32
+#define WHYNTER_BITS 32
+
 
 
 
@@ -373,7 +398,7 @@ extern volatile irparams_t irparams;
 #if defined(CORE_OC4A_PIN)
 #define TIMER_PWM_PIN        CORE_OC4A_PIN  /* Teensy */
 #elif defined(__AVR_ATmega32U4__)
-#define TIMER_PWM_PIN        11  /* Leonardo */
+#define TIMER_PWM_PIN        13  /* Leonardo */
 #else
 #error "Please add OC4A pin number here\n"
 #endif
@@ -442,8 +467,8 @@ extern volatile irparams_t irparams;
 // defines for special carrier modulator timer
 #elif defined(IR_USE_TIMER_CMT)
 #define TIMER_RESET ({			\
-    uint8_t tmp = CMT_MSC;		\
-    CMT_CMD2 = 30;			\
+	uint8_t tmp = CMT_MSC;		\
+	CMT_CMD2 = 30;			\
 })
 #define TIMER_ENABLE_PWM     CORE_PIN5_CONFIG = PORT_PCR_MUX(2)|PORT_PCR_DSE|PORT_PCR_SRE
 #define TIMER_DISABLE_PWM    CORE_PIN5_CONFIG = PORT_PCR_MUX(1)|PORT_PCR_DSE|PORT_PCR_SRE
@@ -460,29 +485,29 @@ extern volatile irparams_t irparams;
 #define CMT_PPS_VAL 2
 #endif
 #define TIMER_CONFIG_KHZ(val) ({ 	\
-    SIM_SCGC4 |= SIM_SCGC4_CMT;	\
-    SIM_SOPT2 |= SIM_SOPT2_PTD7PAD;	\
-    CMT_PPS = CMT_PPS_VAL;		\
-    CMT_CGH1 = 2667 / val;		\
-    CMT_CGL1 = 5333 / val;		\
-    CMT_CMD1 = 0;			\
-    CMT_CMD2 = 30;			\
-    CMT_CMD3 = 0;			\
-    CMT_CMD4 = 0;			\
-    CMT_OC = 0x60;			\
-    CMT_MSC = 0x01;			\
+	SIM_SCGC4 |= SIM_SCGC4_CMT;	\
+	SIM_SOPT2 |= SIM_SOPT2_PTD7PAD;	\
+	CMT_PPS = CMT_PPS_VAL;		\
+	CMT_CGH1 = 2667 / val;		\
+	CMT_CGL1 = 5333 / val;		\
+	CMT_CMD1 = 0;			\
+	CMT_CMD2 = 30;			\
+	CMT_CMD3 = 0;			\
+	CMT_CMD4 = 0;			\
+	CMT_OC = 0x60;			\
+	CMT_MSC = 0x01;			\
 })
 #define TIMER_CONFIG_NORMAL() ({	\
-    SIM_SCGC4 |= SIM_SCGC4_CMT;	\
-    CMT_PPS = CMT_PPS_VAL;		\
-    CMT_CGH1 = 1;			\
-    CMT_CGL1 = 1;			\
-    CMT_CMD1 = 0;			\
-    CMT_CMD2 = 30;			\
-    CMT_CMD3 = 0;			\
-    CMT_CMD4 = 19;			\
-    CMT_OC = 0;			\
-    CMT_MSC = 0x03;			\
+	SIM_SCGC4 |= SIM_SCGC4_CMT;	\
+	CMT_PPS = CMT_PPS_VAL;		\
+	CMT_CGH1 = 1;			\
+	CMT_CGL1 = 1;			\
+	CMT_CMD1 = 0;			\
+	CMT_CMD2 = 30;			\
+	CMT_CMD3 = 0;			\
+	CMT_CMD4 = 19;			\
+	CMT_OC = 0;			\
+	CMT_MSC = 0x03;			\
 })
 #define TIMER_PWM_PIN        5
 

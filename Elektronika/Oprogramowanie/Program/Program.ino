@@ -1,3 +1,4 @@
+#define RC6
 #include <IRremote.h>
 
 int triggerPIN = 12;  //Pin odpowiedzialny za spust
@@ -16,7 +17,7 @@ IRsend irsend;
 IRrecv irrecv(irReceiverPIN);
 decode_results results;
 
-boolean cmpCommand(char *cmdA, char *cmdB)  //funckja porownojaca komendy
+boolean cmpCommand(char *cmdA, char *cmdB)  //funkcja porownojaca komendy
 {
   for(int i=0; i<3; i++)
   {
@@ -78,6 +79,12 @@ void setup()
 
 void loop() 
 {
+  //
+  if(Serial1.available() > 0)
+  {
+    Serial1.readBytes(command, 5);
+    Serial.println(command);
+  }
   if(digitalRead(bluetoothConfigurationPINInput)==HIGH)    //fragment aktywny kiedy blokada fizyczna wlaczona
   {
     if(cmpCommand(command, "CWC"))  //pobranie nowego sygnalu broni

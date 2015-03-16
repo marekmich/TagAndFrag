@@ -15,6 +15,7 @@
  *
  * JVC and Panasonic protocol added by Kristian Lauszus (Thanks to zenwheel and other people at the original blog post)
  * LG added by Darryl Smith (based on the JVC protocol)
+ * Whynter A/C ARC-110WD added by Francesco Meschia
  */
 
 #include "IRremote.h"
@@ -73,6 +74,7 @@ int MATCH_SPACE(int measured_ticks, int desired_us) {return MATCH(measured_ticks
 // Debugging versions are in IRremote.cpp
 #endif
 
+#ifdef NEC
 void IRsend::sendNEC(unsigned long data, int nbits)
 {
   enableIROut(38);
@@ -92,7 +94,32 @@ void IRsend::sendNEC(unsigned long data, int nbits)
   mark(NEC_BIT_MARK);
   space(0);
 }
+#endif
 
+#ifdef WHYNTER
+void IRsend::sendWhynter(unsigned long data, int nbits) {
+	enableIROut(38);
+	mark(WHYNTER_ZERO_MARK);
+	space(WHYNTER_ZERO_SPACE);
+	mark(WHYNTER_HDR_MARK);
+	space(WHYNTER_HDR_SPACE);
+    for (int i = 0; i < nbits; i++) {
+      if (data & TOPBIT) {
+        mark(WHYNTER_ONE_MARK);
+        space(WHYNTER_ONE_SPACE);
+      } 
+      else {
+        mark(WHYNTER_ZERO_MARK);
+        space(WHYNTER_ZERO_SPACE);
+      }
+      data <<= 1;
+    }
+	mark(WHYNTER_ZERO_MARK);
+	space(WHYNTER_ZERO_SPACE);
+}
+#endif
+
+#ifdef SONY
 void IRsend::sendSony(unsigned long data, int nbits) {
   enableIROut(40);
   mark(SONY_HDR_MARK);
@@ -110,6 +137,7 @@ void IRsend::sendSony(unsigned long data, int nbits) {
     data <<= 1;
   }
 }
+#endif
 
 void IRsend::sendRaw(unsigned int buf[], int len, int hz)
 {
@@ -178,6 +206,8 @@ void IRsend::sendRC6(unsigned long data, int nbits)
   }
   space(0); // Turn off at end
 }
+
+#ifdef PANASONIC
 void IRsend::sendPanasonic(unsigned int address, unsigned long data) {
     enableIROut(35);
     mark(PANASONIC_HDR_MARK);
@@ -205,6 +235,9 @@ void IRsend::sendPanasonic(unsigned int address, unsigned long data) {
     mark(PANASONIC_BIT_MARK);
     space(0);
 }
+#endif
+
+#ifdef JVC
 void IRsend::sendJVC(unsigned long data, int nbits, int repeat)
 {
     enableIROut(38);
@@ -227,7 +260,9 @@ void IRsend::sendJVC(unsigned long data, int nbits, int repeat)
     mark(JVC_BIT_MARK);
     space(0);
 }
+#endif
 
+#ifdef SAMSUNG
 void IRsend::sendSAMSUNG(unsigned long data, int nbits)
 {
   enableIROut(38);
@@ -247,6 +282,7 @@ void IRsend::sendSAMSUNG(unsigned long data, int nbits)
   mark(SAMSUNG_BIT_MARK);
   space(0);
 }
+#endif
 
 void IRsend::mark(int time) {
   // Sends an IR mark for the specified number of microseconds.
@@ -418,48 +454,70 @@ int IRrecv::decode(decode_results *results) {
   if (irparams.rcvstate != STATE_STOP) {
     return ERR;
   }
+#ifdef NEC
 #ifdef DEBUG
   Serial.println("Attempting NEC decode");
 #endif
   if (decodeNEC(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef SONY
 #ifdef DEBUG
   Serial.println("Attempting Sony decode");
 #endif
   if (decodeSony(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef SANYO
 #ifdef DEBUG
   Serial.println("Attempting Sanyo decode");
 #endif
   if (decodeSanyo(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef MITSUBISHI
 #ifdef DEBUG
   Serial.println("Attempting Mitsubishi decode");
 #endif
   if (decodeMitsubishi(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef RC5
 #ifdef DEBUG
   Serial.println("Attempting RC5 decode");
 #endif  
   if (decodeRC5(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef RC6
 #ifdef DEBUG
   Serial.println("Attempting RC6 decode");
 #endif 
   if (decodeRC6(results)) {
     return DECODED;
   }
+#endif
+
+#ifdef PANASONIC
 #ifdef DEBUG
     Serial.println("Attempting Panasonic decode");
 #endif 
     if (decodePanasonic(results)) {
         return DECODED;
     }
+#endif
+
+#ifdef JVC
 #ifdef DEBUG
     Serial.println("Attempting LG decode");
 #endif 
@@ -472,12 +530,31 @@ int IRrecv::decode(decode_results *results) {
     if (decodeJVC(results)) {
         return DECODED;
     }
+#endif
+
+#ifdef SAMSUNG
 #ifdef DEBUG
   Serial.println("Attempting SAMSUNG decode");
 #endif
   if (decodeSAMSUNG(results)) {
     return DECODED;
   }
+#ifdef DEBUG
+  Serial.println("Attempting Whynter decode");
+#endif
+  if (decodeWhynter(results)) {
+    return DECODED;
+  }
+// Aiwa RC-T501
+#ifdef AIWA_RC_T501
+#ifdef DEBUG
+  Serial.println("Attempting Aiwa RC-T501 decode");
+#endif 
+  if (decodeAiwaRCT501(results)) {
+    return DECODED;
+  }
+#endif
+
   // decodeHash returns a hash on any input.
   // Thus, it needs to be last in the list.
   // If you add any decodes, add them before this.
@@ -489,6 +566,7 @@ int IRrecv::decode(decode_results *results) {
   return ERR;
 }
 
+#ifdef NEC
 // NECs have a repeat only 4 items long
 long IRrecv::decodeNEC(decode_results *results) {
   long data = 0;
@@ -537,7 +615,9 @@ long IRrecv::decodeNEC(decode_results *results) {
   results->decode_type = NEC;
   return DECODED;
 }
+#endif
 
+#ifdef SONY
 long IRrecv::decodeSony(decode_results *results) {
   long data = 0;
   if (irparams.rawlen < 2 * SONY_BITS + 2) {
@@ -551,7 +631,11 @@ long IRrecv::decodeSony(decode_results *results) {
     // Serial.print("IR Gap found: ");
     results->bits = 0;
     results->value = REPEAT;
+#ifdef SANYO
     results->decode_type = SANYO;
+#else
+    results->decode_type = UNKNOWN;
+#endif
     return DECODED;
   }
   offset++;
@@ -589,7 +673,68 @@ long IRrecv::decodeSony(decode_results *results) {
   results->decode_type = SONY;
   return DECODED;
 }
+#endif
 
+long IRrecv::decodeWhynter(decode_results *results) {
+  long data = 0;
+  
+  if (irparams.rawlen < 2 * WHYNTER_BITS + 6) {
+     return ERR;
+  }
+  
+  int offset = 1; // skip initial space
+
+  // sequence begins with a bit mark and a zero space
+  if (!MATCH_MARK(results->rawbuf[offset], WHYNTER_BIT_MARK)) {
+    return ERR;
+  }
+  offset++;
+  if (!MATCH_SPACE(results->rawbuf[offset], WHYNTER_ZERO_SPACE)) {
+    return ERR;
+  }
+  offset++;
+
+  // header mark and space
+  if (!MATCH_MARK(results->rawbuf[offset], WHYNTER_HDR_MARK)) {
+    return ERR;
+  }
+  offset++;
+  if (!MATCH_SPACE(results->rawbuf[offset], WHYNTER_HDR_SPACE)) {
+    return ERR;
+  }
+  offset++;
+
+  // data bits
+  for (int i = 0; i < WHYNTER_BITS; i++) {
+    if (!MATCH_MARK(results->rawbuf[offset], WHYNTER_BIT_MARK)) {
+      return ERR;
+    }
+    offset++;
+    if (MATCH_SPACE(results->rawbuf[offset], WHYNTER_ONE_SPACE)) {
+      data = (data << 1) | 1;
+    } 
+    else if (MATCH_SPACE(results->rawbuf[offset],WHYNTER_ZERO_SPACE)) {
+      data <<= 1;
+    } 
+    else {
+      return ERR;
+    }
+    offset++;
+  }
+  
+  // trailing mark
+  if (!MATCH_MARK(results->rawbuf[offset], WHYNTER_BIT_MARK)) {
+    return ERR;
+  }
+  // Success
+  results->bits = WHYNTER_BITS;
+  results->value = data;
+  results->decode_type = WHYNTER;
+  return DECODED;
+}
+
+
+#ifdef SANYO
 // I think this is a Sanyo decoder - serial = SA 8650B
 // Looks like Sony except for timings, 48 chars of data and time/space different
 long IRrecv::decodeSanyo(decode_results *results) {
@@ -653,7 +798,9 @@ long IRrecv::decodeSanyo(decode_results *results) {
   results->decode_type = SANYO;
   return DECODED;
 }
+#endif
 
+#ifdef MITSUBISHI
 // Looks like Sony except for timings, 48 chars of data and time/space different
 long IRrecv::decodeMitsubishi(decode_results *results) {
   // Serial.print("?!? decoding Mitsubishi:");Serial.print(irparams.rawlen); Serial.print(" want "); Serial.println( 2 * MITSUBISHI_BITS + 2);
@@ -717,7 +864,7 @@ long IRrecv::decodeMitsubishi(decode_results *results) {
   results->decode_type = MITSUBISHI;
   return DECODED;
 }
-
+#endif
 
 // Gets one undecoded level at a time from the raw buffer.
 // The RC5/6 decoding is easier if the data is broken into time intervals.
@@ -764,6 +911,7 @@ int IRrecv::getRClevel(decode_results *results, int *offset, int *used, int t1) 
 #endif
   return val;   
 }
+#endif
 
 long IRrecv::decodeRC5(decode_results *results) {
   if (irparams.rawlen < MIN_RC5_SAMPLES + 2) {
@@ -850,6 +998,8 @@ long IRrecv::decodeRC6(decode_results *results) {
   results->decode_type = RC6;
   return DECODED;
 }
+
+#ifdef PANASONIC
 long IRrecv::decodePanasonic(decode_results *results) {
     unsigned long long data = 0;
     int offset = 1;
@@ -883,7 +1033,9 @@ long IRrecv::decodePanasonic(decode_results *results) {
     results->bits = PANASONIC_BITS;
     return DECODED;
 }
+#endif
 
+#ifdef LG
 long IRrecv::decodeLG(decode_results *results) {
     long data = 0;
     int offset = 1; // Skip first space
@@ -929,6 +1081,9 @@ long IRrecv::decodeLG(decode_results *results) {
 }
 
 
+#endif
+
+#ifdef JVC
 long IRrecv::decodeJVC(decode_results *results) {
     long data = 0;
     int offset = 1; // Skip first space
@@ -980,7 +1135,9 @@ long IRrecv::decodeJVC(decode_results *results) {
     results->decode_type = JVC;
     return DECODED;
 }
+#endif
 
+#ifdef SAMSUNG
 // SAMSUNGs have a repeat only 4 items long
 long IRrecv::decodeSAMSUNG(decode_results *results) {
   long data = 0;
@@ -1029,6 +1186,69 @@ long IRrecv::decodeSAMSUNG(decode_results *results) {
   results->decode_type = SAMSUNG;
   return DECODED;
 }
+#endif
+
+/**
+ * Aiwa system
+ * Remote control RC-T501
+ * Lirc file http://lirc.sourceforge.net/remotes/aiwa/RC-T501 
+ *
+ */
+ #ifdef AIWA_RC_T501
+long IRrecv::decodeAiwaRCT501(decode_results *results) {
+  int data = 0;
+  int offset = 1; // skip first garbage read
+
+  // Check SIZE
+  if(irparams.rawlen < 2 * (AIWA_RC_T501_SUM_BITS) + 4) {
+    return ERR;
+  }
+  
+  // Check HDR
+  if(!MATCH_MARK(results->rawbuf[offset], AIWA_RC_T501_HDR_MARK)) {
+    return ERR;
+  }
+  offset++;
+
+  // Check HDR space
+  if(!MATCH_SPACE(results->rawbuf[offset], AIWA_RC_T501_HDR_SPACE)) {
+    return ERR;
+  }
+  offset++;
+
+  offset += 26; // skip pre-data - optional
+  while(offset < irparams.rawlen - 4) {
+    if(MATCH_MARK(results->rawbuf[offset], AIWA_RC_T501_BIT_MARK)) {
+      offset++;
+    } 
+    else {
+      return ERR;
+    }
+    
+    // ONE & ZERO
+    if(MATCH_SPACE(results->rawbuf[offset], AIWA_RC_T501_ONE_SPACE)) {
+      data = (data << 1) | 1;
+    } 
+    else if(MATCH_SPACE(results->rawbuf[offset], AIWA_RC_T501_ZERO_SPACE)) {
+      data <<= 1;
+    } 
+    else {
+      // End of one & zero detected
+      break;
+    }
+    offset++;
+  }
+  
+  results->bits = (offset - 1) / 2;
+  if(results->bits < 42) {
+    return ERR;
+  }
+  results->value = data;
+  results->decode_type = AIWA_RC_T501;
+  return DECODED;
+}
+
+#endif
 
 /* -----------------------------------------------------------------------
  * hashdecode - decode an arbitrary IR code.
@@ -1106,7 +1326,9 @@ i.e. use 0x1C10 instead of 0x0000000000001C10 which is listed in the
 linked LIRC file.
 */
 
-void IRsend::sendSharpRaw(unsigned long data, int nbits) {
+#ifdef IRsendSHARP
+void IRsend::sendSharp(unsigned long data, int nbits) {
+  unsigned long invertdata = data ^ SHARP_TOGGLE_MASK;
   enableIROut(38);
 
   // Sending codes in bursts of 3 (normal, inverted, normal) makes transmission
@@ -1136,7 +1358,11 @@ void IRsend::sendSharp(unsigned int address, unsigned int command) {
   sendSharpRaw((address << 10) | (command << 2) | 2, 15);
 }
 
-void IRsend::sendDISH(unsigned long data, int nbits) {
+#endif
+
+#ifdef IRsendDISH
+void IRsend::sendDISH(unsigned long data, int nbits)
+{
   enableIROut(56);
   mark(DISH_HDR_MARK);
   space(DISH_HDR_SPACE);
@@ -1152,3 +1378,56 @@ void IRsend::sendDISH(unsigned long data, int nbits) {
     data <<= 1;
   }
 }
+#endif
+/**
+ * Aiwa system
+ * Remote control RC-T501
+ * Lirc file http://lirc.sourceforge.net/remotes/aiwa/RC-T501 
+ *
+ */
+
+ #ifdef AIWA_RC_T501
+void IRsend::sendAiwaRCT501(int code) {
+  // PRE-DATA, 26 bits, 0x227EEC0
+  long int pre = 0x227EEC0;
+  int i;
+  
+  enableIROut(AIWA_RC_T501_HZ);
+  
+  // HDR mark + HDR space
+  mark(AIWA_RC_T501_HDR_MARK);
+  space(AIWA_RC_T501_HDR_SPACE);
+
+  // Skip leading zero's
+  pre <<= 6;
+  // Send pre-data
+  for(i=0; i < 26; i++) {
+    mark(AIWA_RC_T501_BIT_MARK);
+    if(pre & TOPBIT) {
+      space(AIWA_RC_T501_ONE_SPACE);
+    } else {
+      space(AIWA_RC_T501_ZERO_SPACE);
+    }
+    pre <<= 1;
+  }
+
+  // Skip firts code bit
+  code <<= 1;
+  // Send code
+  for(i=0; i < 15; i++) {
+    mark(AIWA_RC_T501_BIT_MARK);
+    if(code & TOPBIT) {
+      space(AIWA_RC_T501_ONE_SPACE);
+    } else {
+      space(AIWA_RC_T501_ZERO_SPACE);
+    }
+    code <<= 1;
+  }
+  // POST-DATA, 1 bit, 0x0
+  mark(AIWA_RC_T501_BIT_MARK);
+  space(AIWA_RC_T501_ZERO_SPACE);
+
+  mark(AIWA_RC_T501_BIT_MARK);
+  space(0);
+}
+#endif

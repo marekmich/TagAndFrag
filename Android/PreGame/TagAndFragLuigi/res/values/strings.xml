@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TagAndFragLuigi</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="nick_text">Podaj nick</string>
+    <string name="preferences_name_default">Wpisz swój nick</string>
+	<string name="preferences_name">name</string>
+	<string name="preferences_id">id</string>
+	<string name="preference_file">com.example.tagandfrag.preference_file</string>
+	<string name="nick_button">Potwierdź swój nick</string>
+	<string name="weapon_button">Wybierz broń</string>
+
+</resources>

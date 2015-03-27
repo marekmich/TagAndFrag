@@ -81,16 +81,18 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		}
 
 	@Override
-	public String POST(Player object) throws IOException {
+	public Integer POST(Player object) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(URL);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
 		nameValuePair.add(new BasicNameValuePair("player_name", object.getName()));
-		nameValuePair.add(new BasicNameValuePair("team", object.getTeam().toString()));
+		nameValuePair.add(new BasicNameValuePair("id", object.getId().toString()));
 		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 		HttpResponse response = httpClient.execute(httpPost);
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		return inputReader.readLine();
+		String line;
+		line = inputReader.readLine();
+		return Integer.valueOf(line);
 	}
 
 	@Override
@@ -132,7 +134,8 @@ public class TagAndFragRestClient implements RestClient<Player> {
 			Integer team 	= Integer.valueOf(jsonObject.optString("team"));
 			Integer id 	= Integer.valueOf(jsonObject.optString("id"));
 			
-			Player player = new Player(name, healthPoints, ammunition, localization, team, id);
+			Player player = new Player(name, healthPoints, ammunition, localization, team);
+			player.setId(id);
 			
 			players.add(player);
 			

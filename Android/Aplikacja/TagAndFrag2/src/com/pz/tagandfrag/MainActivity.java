@@ -1,6 +1,7 @@
 package com.pz.tagandfrag;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.json.JSONException;
 
@@ -55,23 +56,41 @@ public class MainActivity extends Activity {
 			try {
 			
 				game = new Game(10);
+				//game.check("marek", 0);
+			Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
+			Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
+			Log.i ("checkkkkkkk",game.check("gracz", game.getByName("gracz").getId()).toString());
+			//Player player = new Player("GraczJakis",99,33,"12345",1);
 			
-			Player player = new Player("GraczJakis",99,33,"12345",1,0);
-			Player player2 = new Player("GraczJakis2",66,22,"14345",1,0);
-			Player player3 = new Player("GraczJakis3",100,100,"15",2,0);
+			//Player player2 = new Player("GraczJakis2",66,22,"14345",1);
+			//Player player3 = new Player("GraczJakis3",100,100,"15",2);
 			
-			game.resetGame();
+			//game.resetGame();
+			Integer id, id2, id3;
+			//id = game.check(player.getName(), player.getId());
+			//id=1;
+			//Log.i("check1", id.toString());
+			//id2 = game.check(player.getName(), 3333);
+			//id2=1;
+			//Log.i("check2", id2.toString());
+			//id3 = game.check(player.getName(), id);
+			id3=1;
+			Log.i("check3", id3.toString());
 			
-			game.addPlayer(player);
-			game.addPlayer(player2);
-			game.addPlayer(player3);
+			ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
 			
-			game.shotPlayer(player, "GraczJakis2");
-			game.shotPlayer(player, "GraczJakis2");
-			game.shotPlayer(player2, "GraczJakis");
-			game.shotPlayer(player3, "GraczJakis");
+			for(Player p: pl){
+				Log.i("getttttt",p.toString());
+			}
+			//game.addPlayer(player2);
+			//game.addPlayer(player3);
 			
-			Log.i("get", game.getByName("GraczJakis").toString());
+			//game.shotPlayer(player, "GraczJakis2");
+			//game.shotPlayer(player, "GraczJakis2");
+			//game.shotPlayer(player2, "GraczJakis");
+			//game.shotPlayer(player3, "GraczJakis");
+			
+			//Log.i("get", game.getByName("GraczJakis").toString());
 			
 			
 			} catch (IOException e) {

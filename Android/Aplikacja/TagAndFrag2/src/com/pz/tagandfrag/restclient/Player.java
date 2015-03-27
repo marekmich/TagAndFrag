@@ -10,15 +10,14 @@ public class Player {
 		super();
 	}
 
-	public Player(String name, Integer healthPoints, Integer ammunition,
-			String localization, Integer team, Integer id) {
+	public Player(String name, Integer healthPoints, Integer ammunition, String localization, Integer team) {
 		super();
 		this.name = name;
-		this.id = id;
 		this.healthPoints = healthPoints;
 		this.ammunition = ammunition;
 		this.localization = localization;
 		this.team = team;
+		this.id = 0;
 	}
 
 	public void reduceHealth(int value) {
@@ -81,6 +80,6 @@ public class Player {
 	public String toString() {
 		return "Player [name=" + name + ", healthPoints=" + healthPoints
 				+ ", ammunition=" + ammunition + ", localization="
-				+ localization + "]";
+				+ localization + ",team " + team + ", id " + id + "]";
 	}
 }

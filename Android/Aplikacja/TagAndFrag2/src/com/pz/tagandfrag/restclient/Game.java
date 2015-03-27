@@ -29,15 +29,14 @@ public class Game {
 		this.subHp = value;
 	}
 	
-	public boolean addPlayer(Player object) throws IOException, JSONException{
-		update();
-		for (Player player : players) {
-			if(player.getName().equals(object.getName())) return false;
-		}
-		players.add(object);
-		object.setId(Integer.valueOf(restClient.POST(object)));
+	public Integer addPlayer(Player object) throws IOException, JSONException{
+		
+		Integer post;
+		if((post = restClient.POST(object))==0) return 0;
+
 		restClient.PUT(object);
-		return true;
+		players.add(object);
+		return post;
 	}
 	
 	public void updatePlayer(Player object) throws IOException
@@ -69,6 +68,14 @@ public class Game {
 		update();
 		return restClient.GET(name);
 	}
+
+	public Integer check(String name, Integer id) throws IOException, JSONException
+	{
+		Player object = new Player(name, 100, 100, "0#0", 0);
+		object.setId(id);
+		return restClient.POST(object);
+				
+	}
 	
 	public Collection<Player> getAll() throws IOException, JSONException
 	{
@@ -83,7 +90,6 @@ public class Game {
 	void setSubHp(Integer valueHp) {
 		this.subHp = valueHp;
 	}
-	
 	
 	
 }

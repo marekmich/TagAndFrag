@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 public class TagAndFragRestClient implements RestClient<Player> {
@@ -50,6 +52,34 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		return fromJsonArrayToCollection(array);
 	}
 
+	@Override
+	public Map<Integer,Integer> GET_T() throws IOException ,JSONException{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		List<NameValuePair> param = new ArrayList<NameValuePair>(1);
+		param.add(new BasicNameValuePair("parameter", "LIST"));
+		
+		HttpGet httpGet = new HttpGet(URL+"?"+URLEncodedUtils.format(param, "utf-8"));
+
+		HttpResponse response = httpClient.execute(httpGet);
+		
+		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		String jsonGet = inputReader.readLine();;
+				JSONObject jsonObject  = new JSONObject(jsonGet);
+		
+		Iterator<String> nameItr = jsonObject.keys();
+		
+		Map<Integer, Integer> list = new HashMap<Integer, Integer>();
+		
+		while(nameItr.hasNext()) {
+		    String name = nameItr.next();
+		    list.put(Integer.valueOf(name), 
+		    		 Integer.valueOf(jsonObject.getString(name)));
+		    		}
+		
+		return list;  
+	}
+	
 	@Override
 	public Player GET(String parameter) throws IOException, JSONException {
 		
@@ -127,6 +157,8 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		Collection<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject jsonObject  = array.getJSONObject(i);
+			
+		
 			String name 			= jsonObject.optString("name");
 			Integer healthPoints 	= Integer.valueOf(jsonObject.optString("health"));
 			Integer ammunition 		= Integer.valueOf(jsonObject.optString("ammunition"));

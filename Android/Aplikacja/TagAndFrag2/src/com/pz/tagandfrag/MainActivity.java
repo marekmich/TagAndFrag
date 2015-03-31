@@ -57,16 +57,16 @@ public class MainActivity extends Activity {
 			
 				game = new Game(10);
 				//game.check("marek", 0);
-			Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
-			Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
-			Log.i ("checkkkkkkk",game.check("gracz", game.getByName("gracz").getId()).toString());
+			//Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
+			//Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
+			//Log.i ("checkkkkkkk",game.check("gracz", game.getByName("gracz").getId()).toString());
 			//Player player = new Player("GraczJakis",99,33,"12345",1);
 			
 			//Player player2 = new Player("GraczJakis2",66,22,"14345",1);
 			//Player player3 = new Player("GraczJakis3",100,100,"15",2);
 			
 			//game.resetGame();
-			Integer id, id2, id3;
+			//Integer id, id2, id3;
 			//id = game.check(player.getName(), player.getId());
 			//id=1;
 			//Log.i("check1", id.toString());
@@ -74,14 +74,16 @@ public class MainActivity extends Activity {
 			//id2=1;
 			//Log.i("check2", id2.toString());
 			//id3 = game.check(player.getName(), id);
-			id3=1;
-			Log.i("check3", id3.toString());
+			//id3=1;
+			//Log.i("check3", id3.toString());
 			
 			ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
 			
 			for(Player p: pl){
 				Log.i("getttttt",p.toString());
 			}
+			
+			Log.i("list",game.list().toString());
 			//game.addPlayer(player2);
 			//game.addPlayer(player3);
 			

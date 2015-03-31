@@ -1,7 +1,6 @@
 package com.pz.tagandfrag.restclient;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.io.IOException;
 
 import org.json.JSONException;
@@ -75,6 +74,12 @@ public class Game {
 		return restClient.GET(name);
 	}
 
+	public Map<Integer,Integer> list() throws IOException, JSONException
+	{
+		//zwraca mapê zawieraj¹ca wszystkie dru¿yny jako klucze oraz liczbe czlonkow kazdej z nich
+		return restClient.GET_T();
+	}
+	
 	public Integer check(String name, Integer id) throws IOException, JSONException
 	{
 		

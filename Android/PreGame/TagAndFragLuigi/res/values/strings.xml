@@ -11,5 +11,12 @@
 	<string name="preference_file">com.example.tagandfrag.preference_file</string>
 	<string name="nick_button">Potwierdź swój nick</string>
 	<string name="weapon_button">Wybierz broń</string>
+	<string name="team_button">Potwierdź wybór drużyny</string>
+	<string name="nick_too_short">Nick jest za krótki</string>
+	<string name="nick_incorrect">Ten nick nie jest Twój!</string>
+	<string name="start_game">Rozpocznij grę</string>
+	<string name="show_id">Pokaż id gracza</string>
+	<string name="change_id">Zmień id gracza</string>
+	<string name="show_information">Informacje</string>
 
 </resources>

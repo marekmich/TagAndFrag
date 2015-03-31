@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Pokaz id gracza -->
+    <item android:id="@+id/show_id"
+          android:icon="@drawable/ic_action_labels"
+          android:title="@string/show_id"
+          android:showAsAction="ifRoom"/>
+    <!-- Zmien id gracza -->
+    <item android:id="@+id/change_id"
+          android:icon="@drawable/ic_action_labels"
+          android:title="@string/change_id"
+          android:showAsAction="ifRoom"/>
+    <!-- Info o apce -->
+    <item android:id="@+id/information"
+          android:icon="@drawable/ic_action_labels"
+          android:title="@string/show_information"
+          android:showAsAction="ifRoom"/>
+</menu>

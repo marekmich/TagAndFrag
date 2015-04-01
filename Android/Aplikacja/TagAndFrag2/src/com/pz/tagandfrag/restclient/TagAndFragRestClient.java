@@ -21,7 +21,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 public class TagAndFragRestClient implements RestClient<Player> {
@@ -47,13 +46,13 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();
-
+		System.out.println(jsonGet);
 		JSONArray array = new JSONArray(jsonGet);
 		return fromJsonArrayToCollection(array);
 	}
 
 	@Override
-	public Map<Integer,Integer> GET_T() throws IOException ,JSONException{
+	public Collection<Team> GET_T() throws IOException ,JSONException{
 		HttpClient httpClient = new DefaultHttpClient();
 		
 		List<NameValuePair> param = new ArrayList<NameValuePair>(1);
@@ -68,16 +67,16 @@ public class TagAndFragRestClient implements RestClient<Player> {
 				JSONObject jsonObject  = new JSONObject(jsonGet);
 		
 		Iterator<String> nameItr = jsonObject.keys();
+		Collection<Team> teams = new ArrayList<Team>();
 		
-		Map<Integer, Integer> list = new HashMap<Integer, Integer>();
 		
 		while(nameItr.hasNext()) {
-		    String name = nameItr.next();
-		    list.put(Integer.valueOf(name), 
-		    		 Integer.valueOf(jsonObject.getString(name)));
-		    		}
+		    String id = nameItr.next();
+		    String size = jsonObject.getString(id);
+		    teams.add(new Team(Integer.valueOf(id), Integer.valueOf(size)));
+		    }
 		
-		return list;  
+		return teams;  
 	}
 	
 	@Override
@@ -139,7 +138,26 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		httpClient.execute(put);
 	}
-
+	
+	@Override
+	public Integer PUT(Player object, Integer team) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPut put = new HttpPut(URL);
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+		nameValuePairs.add(new BasicNameValuePair("player_name", object.getName()));
+		nameValuePairs.add(new BasicNameValuePair("hp", object.getHealthPoints().toString()));
+		nameValuePairs.add(new BasicNameValuePair("ammo", object.getAmmunition().toString()));
+		nameValuePairs.add(new BasicNameValuePair("loc", object.getLocalization().toString()));
+		nameValuePairs.add(new BasicNameValuePair("team", team.toString()));
+		nameValuePairs.add(new BasicNameValuePair("id", object.getId().toString()));
+		put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		HttpResponse response = httpClient.execute(put);
+		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		String gunId = inputReader.readLine();
+		return Integer.valueOf(gunId);
+	}
+	
+	@Override
 	public void PUT(Player object) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPut put = new HttpPut(URL);
@@ -149,6 +167,21 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		nameValuePairs.add(new BasicNameValuePair("ammo", object.getAmmunition().toString()));
 		nameValuePairs.add(new BasicNameValuePair("loc", object.getLocalization().toString()));
 		nameValuePairs.add(new BasicNameValuePair("id", object.getId().toString()));
+		put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		httpClient.execute(put);
+	}
+	
+	@Override
+	public void PUT_R(Player object, Integer ready) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPut put = new HttpPut(URL);
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+		nameValuePairs.add(new BasicNameValuePair("player_name", object.getName()));
+		nameValuePairs.add(new BasicNameValuePair("hp", object.getHealthPoints().toString()));
+		nameValuePairs.add(new BasicNameValuePair("ammo", object.getAmmunition().toString()));
+		nameValuePairs.add(new BasicNameValuePair("loc", object.getLocalization().toString()));
+		nameValuePairs.add(new BasicNameValuePair("id", object.getId().toString()));
+		nameValuePairs.add(new BasicNameValuePair("ready", ready.toString()));
 		put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		httpClient.execute(put);
 	}

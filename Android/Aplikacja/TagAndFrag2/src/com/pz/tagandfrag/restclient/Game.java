@@ -74,9 +74,9 @@ public class Game {
 		return restClient.GET(name);
 	}
 
-	public Map<Integer,Integer> list() throws IOException, JSONException
+	public Collection<Team> list() throws IOException, JSONException
 	{
-		//zwraca mapê zawieraj¹ca wszystkie dru¿yny jako klucze oraz liczbe czlonkow kazdej z nich
+		//Zwraca kolekcjê obiektów typu Team
 		return restClient.GET_T();
 	}
 	

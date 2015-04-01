@@ -18,5 +18,9 @@
 	<string name="show_id">Pokaż id gracza</string>
 	<string name="change_id">Zmień id gracza</string>
 	<string name="show_information">Informacje</string>
-
+	<string name="help">Pomoc</string>
+	<string name="your_id">Twoje id to </string>
+	<string name="OK">OK</string>
+	<string name="your_id_positive_button">Potwierdź zmianę id</string>
+	<string name="your_id_negative_button">Odrzuć zmianę id</string>
 </resources>

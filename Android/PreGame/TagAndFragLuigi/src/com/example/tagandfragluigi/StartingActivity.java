@@ -2,15 +2,23 @@ package com.example.tagandfragluigi;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,12 +32,15 @@ import android.widget.Toast;
 
 import com.example.tagandfragluigi.restclient.Game;
 import com.example.tagandfragluigi.restclient.Player;
+import com.example.tagandfragluigi.restclient.Team;
 
 public class StartingActivity extends Activity {
-
+	
 	String nick;
 	int id;
 	int stage;
+	
+	int weaponCode;
 	
 	Game game;
 	Player player;
@@ -111,7 +122,7 @@ public class StartingActivity extends Activity {
 	{
 		// TODO poprawiæ komentarz?
 		game = new Game();
-		player = new Player();
+		player = new Player(nick, id);
 	}
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
@@ -120,6 +131,7 @@ public class StartingActivity extends Activity {
 	 * */
 	private void initializeViewComponents() {
 		setNewNickOnNickEditText();
+
 	}
 	/**
 	 * Blokuje przyciski, które ju¿ nie powinny byæ u¿ywane
@@ -176,11 +188,14 @@ public class StartingActivity extends Activity {
 	/**
 	 * Dodaje dru¿yny pobrane z serwera na listê rozwijaln¹
 	 */
-	public void addItemOnChooseTeamSpinner() {
+	public void addItemOnChooseTeamSpinner(ArrayList<Team> teamList) {
 		Spinner spinner = (Spinner) findViewById(R.id.choose_team_spinner);
 		
-		// TODO obrobiæ listê by pasowa³a do za³o¿eñ
 		List<String> list = new ArrayList<String>();
+		for( Team team : teamList) {
+			list.add(team.toString());
+		}
+		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -198,6 +213,7 @@ public class StartingActivity extends Activity {
 		if(nickEditText.getText().toString().length() >= 4)
 		{
 			nick = nickEditText.getText().toString();
+			player.setName(nick);
 			//Uruchomienie zadania w tle, które przesy³a dane do serwera (równie¿ weryfikuje odpowiedŸ serwera)
 			NickCheckProgressBarTask task = new NickCheckProgressBarTask(this);
 			task.execute();
@@ -241,18 +257,22 @@ public class StartingActivity extends Activity {
 		task.execute();
 	}
 	
+	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
         switch (item.getItemId()) {
 	        case R.id.show_id:
-	            // TODO pokazywanie id
+	        	ShowIDDialog dialog = new ShowIDDialog();
+	        	dialog.show(this.getFragmentManager(), "show-id");
 	            return true;
 	        case R.id.change_id:
 	        	// TODO zmiana id
 	            return true;
 	        case R.id.information:
 	        	// TODO pokazanie inforamcji o aplikacji (wersja i te sprawy)
+	        case R.id.help:
+	        	// TODO pokazanie helpa
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -271,7 +291,7 @@ public class StartingActivity extends Activity {
 	{
 		int newId = 0;
 		try {
-			newId = game.check(nick, id);
+			newId = game.check(player);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
@@ -281,12 +301,14 @@ public class StartingActivity extends Activity {
 		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i podany nick znajdujê siê w bazie)
 		if(newId == id && id > 0)
 		{
+			
 			return true;
 		}
 		//NICK jest poprawny (sytuacja kiedy gracz nie gra³ wczeœniej i podany nick nie jest zajêty)
 		else if(newId > 0 && id == 0)
 		{
 			id = newId;
+			player.setId(id);
 			return true;
 		}
 		//NICK nie jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i poda³ inny nick, który jest zajêty przez kogoœ innego)
@@ -301,6 +323,37 @@ public class StartingActivity extends Activity {
 		}
 		//Sytuacjê pozosta³e (nigdy nie powinno dojœæ do tego momentu)
 		return false;
+	}
+	public ArrayList<Team> downloadTeamListFromServer() {
+		// TODO komentarz
+		ArrayList<Team> array = new ArrayList<Team>();
+		try {
+			array = new ArrayList<Team>(game.list());
+		} catch (IOException e) {
+			Log.d("IO", e.toString());
+		} catch (JSONException e) {
+			Log.d("JSON", e.toString());
+		}
+		Collections.sort(array);
+		return array;
+	}
+	
+	public int sendTeamToServerAndGetWeaponCode() {
+		
+		Spinner spinner = (Spinner) findViewById(R.id.choose_team_spinner);
+		String team = spinner.getSelectedItem().toString();
+		String[] splitedTeam = team.split(". ");
+		Integer teamNumber = Integer.valueOf(splitedTeam[0]);
+		player.setTeam(teamNumber);
+		int weaponCode = 0;
+		try {
+			weaponCode = game.team(player);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.i("CODE", String.valueOf(weaponCode));
+		return weaponCode;
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */
@@ -323,6 +376,7 @@ public class StartingActivity extends Activity {
 		protected void onPostExecute(Void result) {
 			if(isSuccessful) {
 				//Kiedy nick jest w³aœciwy dane s¹ zapisywane do preferencji, progress bar jest chowany i przechodzi siê do kolejnego etapu
+				// TODO rozwi¹zaæ problem
 				saveDataToPreferences();
 				nextStage();
 			}
@@ -370,16 +424,17 @@ public class StartingActivity extends Activity {
 	 * oraz ods³ania elementy zwi¹zane z wyborem dru¿yny
 	 * */
 	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
+		ArrayList<Team> array;
 		@Override
 		protected void onPostExecute(Void result) {
+			addItemOnChooseTeamSpinner(array);
 			findViewById(R.id.choose_weapon_progress_bar).setVisibility(ProgressBar.INVISIBLE);
 			nextStage();
 		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			// TODO Pobranie z serwera listy dru¿yn, a nastêpnie wrzucenie ich do spinnera
-			//addItemOnChooseTeamSpinner();
+			array = downloadTeamListFromServer();
 			return null;
 		}
 	}
@@ -401,7 +456,7 @@ public class StartingActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			// TODO Wys³anie do serwera wybranej dru¿yny
+			sendTeamToServerAndGetWeaponCode();
 			return null;
 		}
 	}
@@ -477,4 +532,49 @@ public class StartingActivity extends Activity {
 			return listString;
 		}
 	}*/
+	/*
+	 * 
+	 * */
+	private class ShowIDDialog extends DialogFragment {
+		
+		public ShowIDDialog() {
+			super();
+		}
+
+		// TODO komentarz
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			
+			// Przekazywanie aktywnosci jako parametr nie bylo konieczne
+			// Jezeli wywolamy getActivity() w kontekscie fragmentu, zwroci on
+			// aktywnosc ktora go hostuje, czyli StartingActivity
+			// (powinno zadzialac rowniez podanie StartingActivity.this)
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.dialog_change_id, null);
+			builder.setView(view);
+			
+			// Wystarczy ze z zainicjalizowanego widoku pobierzemy nasz edit text. 
+			final EditText yourIdEditText = (EditText) view.findViewById(R.id.your_id_edit_text);
+			yourIdEditText.setText(String.valueOf(id));
+			
+			builder.setPositiveButton(R.string.your_id_positive_button, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						id = Integer.valueOf(yourIdEditText.getText().toString());
+					}
+				});
+			
+			builder.setNegativeButton(R.string.your_id_negative_button, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ShowIDDialog.this.getDialog().cancel();	
+					}
+				});
+			
+			// Moze jakis lepszy tytu³? I nie zahardkodowany.
+			builder.setTitle("Czy chcesz zmieniæ ID?");
+			return builder.create();
+		}
+	}
 }

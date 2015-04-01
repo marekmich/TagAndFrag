@@ -10,6 +10,16 @@ public class Player {
 		super();
 	}
 
+	public Player(String name, Integer id) {
+		super();
+		this.name = name;
+		this.healthPoints = 100;
+		this.ammunition = 100;
+		this.localization = "";
+		this.team = 0;
+		this.id = id;
+	}
+
 	public Player(String name, Integer healthPoints, Integer ammunition, String localization, Integer team) {
 		super();
 		this.name = name;
@@ -52,11 +62,11 @@ public class Player {
 	}
 	
 	
-	void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	void setId(Integer id) {
+	public  void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -72,7 +82,7 @@ public class Player {
 		this.localization = localization;
 	}
 
-	void setTeam(Integer team) {
+	public void setTeam(Integer team) {
 		this.team = team;
 	}
 

@@ -80,13 +80,23 @@ public class Game {
 		return restClient.GET_T();
 	}
 	
-	public Integer check(String name, Integer id) throws IOException, JSONException
+	public Integer check(Player object) throws IOException, JSONException
 	{
 		
-		Player object = new Player(name, 100, 100, "0#0", 0); //utworzenie obiektu gracza o podanej nazwie name
-		object.setId(id); //przypisanie podanego id w obiekcie
+		//Player object = new Player(name, 100, 100, "0#0", 0); //utworzenie obiektu gracza o podanej nazwie name
+		//object.setId(id); //przypisanie podanego id w obiekcie
 		return restClient.POST(object); //metoda dodaje gracza do bazy (o ile nie istnial gracz o podanej nazwie) i zwraca
 										//jego id lub 0 jesli gracz istnial ale mial inne id
+	}
+	
+	public void ready(Player object, Integer ready) throws IOException
+	{
+		restClient.PUT_R(object, ready);
+	}
+
+	public Integer team(Player object) throws IOException
+	{
+		return restClient.PUT_T(object);
 	}
 	
 	public Collection<Player> getAll() throws IOException, JSONException

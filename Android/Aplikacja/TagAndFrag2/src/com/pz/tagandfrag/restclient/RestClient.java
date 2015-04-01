@@ -13,7 +13,7 @@ public interface RestClient<Type> {
 	public void 				DELETE() throws IOException;
 	public Integer 				POST(Type object) throws IOException;
 	public void 				PUT(Type object, String attacker) throws IOException;
-	public Integer 				PUT(Type object, Integer team) throws IOException;
+	public Integer 				PUT_T(Type object) throws IOException;
 	public void 				PUT(Type object) throws IOException;
 	public void 				PUT_R(Type object, Integer ready) throws IOException;
 }

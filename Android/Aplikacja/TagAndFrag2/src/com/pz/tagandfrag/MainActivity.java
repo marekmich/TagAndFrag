@@ -79,11 +79,13 @@ public class MainActivity extends Activity {
 			
 			ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
 			
-			for(Player p: pl){
-				Log.i("getttttt",p.toString());
-			}
 			
-			Log.i("list",game.list().toString());
+				Log.i("getttttt",pl.toString());
+			
+			
+		ArrayList<Team> list = new ArrayList<Team>(game.list());
+		//	game.list();
+			Log.i("list",list.toString());
 			//game.addPlayer(player2);
 			//game.addPlayer(player3);
 			

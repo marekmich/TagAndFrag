@@ -46,7 +46,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();
-		System.out.println(jsonGet);
+		
 		JSONArray array = new JSONArray(jsonGet);
 		return fromJsonArrayToCollection(array);
 	}
@@ -65,7 +65,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();;
 				JSONObject jsonObject  = new JSONObject(jsonGet);
-		
+				
 		Iterator<String> nameItr = jsonObject.keys();
 		Collection<Team> teams = new ArrayList<Team>();
 		
@@ -140,7 +140,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	}
 	
 	@Override
-	public Integer PUT(Player object, Integer team) throws IOException {
+	public Integer PUT_T(Player object) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPut put = new HttpPut(URL);
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -148,7 +148,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		nameValuePairs.add(new BasicNameValuePair("hp", object.getHealthPoints().toString()));
 		nameValuePairs.add(new BasicNameValuePair("ammo", object.getAmmunition().toString()));
 		nameValuePairs.add(new BasicNameValuePair("loc", object.getLocalization().toString()));
-		nameValuePairs.add(new BasicNameValuePair("team", team.toString()));
+		nameValuePairs.add(new BasicNameValuePair("team", object.getTeam().toString()));
 		nameValuePairs.add(new BasicNameValuePair("id", object.getId().toString()));
 		put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		HttpResponse response = httpClient.execute(put);

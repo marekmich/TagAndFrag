@@ -30,4 +30,9 @@ public class Team {
 		this.size = size;
 	}
 
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", size=" + size + "]";
+	}
+
 }

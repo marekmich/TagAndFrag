@@ -70,7 +70,7 @@ public class Game {
 	public Player getByName(String name) throws IOException, JSONException
 	{
 		//zwraca obiekt typu Player gracza, ktorego nazwa podana jest jako parametr
-		update();
+		//update();
 		return restClient.GET(name);
 	}
 

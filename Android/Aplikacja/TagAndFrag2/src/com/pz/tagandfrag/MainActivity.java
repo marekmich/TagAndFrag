@@ -1,11 +1,16 @@
 package com.pz.tagandfrag;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +53,11 @@ public class MainActivity extends Activity {
 	public void onClickButton(View view) {
 		new ThreadedClick().start();
 	}
+	
+	public void onClickButton1(View view) {
+		new ThreadedClick1().start();
+	}
+	
 	private class ThreadedClick extends Thread {
 		
 		public void run() {
@@ -56,7 +66,21 @@ public class MainActivity extends Activity {
 			try {
 			
 				game = new Game(10);
-				//game.check("marek", 0);
+				Test t = new Test(game);
+			      
+			     t.script1();
+				
+				//Player player2= game.getByName("zdenek"); player2.setHealthPoints(100);
+				//Player player3= game.getByName("mateo"); player3.setHealthPoints(100);
+				
+			//game.shotPlayer(player2, player3.getName());
+				
+				
+				//File plik = new File("NOTICE.txt");
+				//Scanner s = new Scanner(plik);
+				//System.out.println(s.nextLine());
+				//FileInputStream fstream = new FileInputStream("test.txt");
+				///game.check("marek", 0);
 			//Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
 			//Log.i ("checkkkkkkk",game.check("gracz", 111222).toString());
 			//Log.i ("checkkkkkkk",game.check("gracz", game.getByName("gracz").getId()).toString());
@@ -77,15 +101,15 @@ public class MainActivity extends Activity {
 			//id3=1;
 			//Log.i("check3", id3.toString());
 			
-			ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
+			//ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
+			game.getAll();
+			
+				//Log.i("getttttt",pl.toString());
 			
 			
-				Log.i("getttttt",pl.toString());
-			
-			
-		ArrayList<Team> list = new ArrayList<Team>(game.list());
+		//*ArrayList<Team> list = new ArrayList<Team>(game.list());
 		//	game.list();
-			Log.i("list",list.toString());
+		//*	Log.i("list",list.toString());
 			//game.addPlayer(player2);
 			//game.addPlayer(player3);
 			
@@ -97,9 +121,28 @@ public class MainActivity extends Activity {
 			//Log.i("get", game.getByName("GraczJakis").toString());
 			
 			
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (JSONException e) {
+			}// catch (JSONException e) {
+				//e.printStackTrace();
+			//}
+		}
+	}
+private class ThreadedClick1 extends Thread {
+		
+		public void run() {
+
+			
+			try {
+			
+				game = new Game(10);
+				Test t = new Test(game);
+			      
+			     t.script2();
+				
+game.getAll();
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

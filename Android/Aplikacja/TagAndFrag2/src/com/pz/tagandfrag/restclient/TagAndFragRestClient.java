@@ -46,7 +46,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();
-		
+		System.out.println(jsonGet);
 		JSONArray array = new JSONArray(jsonGet);
 		return fromJsonArrayToCollection(array);
 	}
@@ -65,7 +65,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();;
 				JSONObject jsonObject  = new JSONObject(jsonGet);
-				
+			//	System.out.println(jsonGet);
 		Iterator<String> nameItr = jsonObject.keys();
 		Collection<Team> teams = new ArrayList<Team>();
 		

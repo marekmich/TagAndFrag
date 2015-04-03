@@ -52,27 +52,27 @@ public class Player {
 	}
 	
 	
-	void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	void setHealthPoints(Integer healthPoints) {
+	public void setHealthPoints(Integer healthPoints) {
 		this.healthPoints = healthPoints;
 	}
 
-	void setAmmunition(Integer ammunition) {
+	public void setAmmunition(Integer ammunition) {
 		this.ammunition = ammunition;
 	}
 
-	void setLocalization(String localization) {
+	public void setLocalization(String localization) {
 		this.localization = localization;
 	}
 
-	void setTeam(Integer team) {
+	public void setTeam(Integer team) {
 		this.team = team;
 	}
 

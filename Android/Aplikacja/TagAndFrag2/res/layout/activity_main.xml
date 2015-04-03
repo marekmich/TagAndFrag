@@ -17,4 +17,14 @@
         android:text="Button" 
         android:onClick="onClickButton" />
 
+    <Button
+        android:id="@+id/Button01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="33dp"
+        android:onClick="onClickButton1"
+        android:text="Button" />
+
 </RelativeLayout>

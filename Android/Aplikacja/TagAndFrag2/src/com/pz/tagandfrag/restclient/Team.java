@@ -1,6 +1,6 @@
 package com.pz.tagandfrag.restclient;
 
-public class Team {
+public class Team implements Comparable<Team> {
 	
 	private Integer id;
 	private Integer size;
@@ -14,25 +14,32 @@ public class Team {
 		this.size=size;
 	}
 
-	public Integer getId() {
+	Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Integer getSize() {
+	Integer getSize() {
 		return size;
 	}
 
-	public void setSize(Integer size) {
+	void setSize(Integer size) {
 		this.size = size;
 	}
 
 	@Override
 	public String toString() {
-		return "Team [id=" + id + ", size=" + size + "]";
+		return String.format("%d. dru¿yna - %d", id, size);
+	}
+
+	@Override
+	public int compareTo(Team another) {
+		if(this.id < another.getId()) return -1;
+		else if(this.id == another.getId()) return 0;
+		return 1;
 	}
 
 }

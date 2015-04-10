@@ -7,7 +7,7 @@ import org.json.JSONException;
 
 public interface RestClient<Type> {
 	
-	public Collection<Type> 	GET() throws IOException, JSONException;
+	public Collection<Type> 	GET(Integer teamId) throws IOException, JSONException;
 	public Collection<Team>	 	GET_T() throws IOException, JSONException;
 	public Player        	 	GET(String parameter) throws IOException, JSONException;
 	public void 				DELETE() throws IOException;

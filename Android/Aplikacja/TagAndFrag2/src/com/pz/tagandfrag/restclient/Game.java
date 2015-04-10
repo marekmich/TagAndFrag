@@ -64,13 +64,13 @@ public class Game {
 	public void update() throws IOException, JSONException
 	{
 		//uaktualnienie parametrow graczy z listy danymi z serwera
-		players = restClient.GET();
+		players = restClient.GET(0);
 	}
 	
 	public Player getByName(String name) throws IOException, JSONException
 	{
 		//zwraca obiekt typu Player gracza, ktorego nazwa podana jest jako parametr
-		//update();
+		update();
 		return restClient.GET(name);
 	}
 
@@ -106,6 +106,12 @@ public class Game {
 		return players;
 	}
 
+	public Collection<Player> getByTeam(Integer teamId) throws IOException, JSONException
+	{
+		//zwraca liste graczy z danej druzyny
+		return restClient.GET(teamId);
+	}
+	
 	Integer getSubHp() {
 		//pobranie wartosci o jaka sa zmneijszane pkt zycia podczas trafienia przez innego gracza
 		return subHp;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.json.JSONException;
 
 
+
 public class Game {
 
 	private Collection<Player> players;
@@ -64,7 +65,7 @@ public class Game {
 	public void update() throws IOException, JSONException
 	{
 		//uaktualnienie parametrow graczy z listy danymi z serwera
-		players = restClient.GET();
+		players = restClient.GET(0);
 	}
 	
 	public Player getByName(String name) throws IOException, JSONException
@@ -104,6 +105,12 @@ public class Game {
 		//aktualizuje i zwraca liste graczy
 		update();
 		return players;
+	}
+	
+	public Collection<Player> getByTeam(Integer teamId) throws IOException, JSONException
+	{
+		//zwraca liste graczy z danej druzyny
+		return restClient.GET(teamId);
 	}
 
 	Integer getSubHp() {

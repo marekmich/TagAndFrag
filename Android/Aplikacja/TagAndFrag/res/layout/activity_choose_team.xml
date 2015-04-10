@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pz.tagandfrag.ChooseTeamActivity" >
+
+    <ProgressBar
+        android:id="@+id/progress_bar_stage"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:clickable="false"
+        android:longClickable="false"
+        android:max="@integer/max"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:progress="@integer/second" />
+
+    <Button
+        android:id="@+id/button_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/team_button" 
+        android:onClick="onChooseTeamButtonClicked" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_team"
+        android:layout_below="@+id/progress_bar_stage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:checkedButton="@integer/first"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_team"
+        android:layout_alignTop="@+id/button_team"
+        android:layout_toRightOf="@+id/button_team"
+        android:visibility="invisible" />
+
+</RelativeLayout>

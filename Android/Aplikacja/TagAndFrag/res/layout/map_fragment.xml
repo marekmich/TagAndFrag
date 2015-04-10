@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.google.android.gms.maps.MapView>
+
+    <CheckBox
+        android:id="@+id/showPlayersCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="onShowPlayersClick"
+        android:text="@string/mark_players_on_map" />
+
+    <CheckBox
+        android:id="@+id/showLinesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/showPlayersCheckBox"
+        android:layout_alignStart="@+id/showPlayersCheckBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/showPlayersCheckBox"
+        android:text="@string/show_lines_to_players" />
+
+</RelativeLayout>

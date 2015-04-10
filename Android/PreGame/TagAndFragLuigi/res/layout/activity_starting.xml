@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <TextView
+        android:id="@+id/nick_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/nick_text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/nick_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_text"
+        android:layout_below="@+id/nick_text"
+        android:ems="10"
+        android:hint="@string/preferences_name_default"
+        android:inputType="text"
+        android:maxLength="10" />
+
+    <Button
+        android:id="@+id/nick_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_edit_text"
+        android:layout_below="@+id/nick_edit_text"
+        android:onClick="onNickConfirmButtonClicked"
+        android:text="@string/nick_button" />
+
+    <ProgressBar
+        android:id="@+id/nick_confirm_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/nick_confirm_button"
+        android:layout_alignRight="@+id/nick_text"
+        android:layout_alignTop="@+id/nick_confirm_button"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/choose_weapon_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_text"
+        android:layout_below="@+id/nick_confirm_button"
+        android:layout_marginTop="15dp"
+        android:onClick="onChooseWeaponButtonClicked"
+        android:text="@string/weapon_button"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/choose_weapon_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_weapon_button"
+        android:layout_alignRight="@+id/nick_confirm_progress_bar"
+        android:layout_alignTop="@+id/choose_weapon_button"
+        android:visibility="invisible" />
+
+    <Spinner
+        android:id="@+id/choose_team_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_text"
+        android:layout_below="@+id/choose_weapon_button"
+        android:layout_marginTop="15dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/choose_team_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_text"
+        android:layout_below="@+id/choose_team_spinner"
+        android:onClick="onChooseTeamButtonClicked"
+        android:text="@string/team_button"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/choose_team_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_team_button"
+        android:layout_alignRight="@+id/nick_text"
+        android:layout_alignTop="@+id/choose_team_button"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/start_game_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nick_text"
+        android:layout_below="@+id/choose_team_button"
+        android:layout_marginTop="15dp"
+        android:text="@string/start_game"
+        android:onClick="onStartGameButtonClicked"
+        android:visibility="invisible" />
+
+	<ProgressBar
+	    android:id="@+id/start_game_progress_bar"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/start_game_button"
+        android:layout_alignRight="@+id/nick_text"
+        android:layout_alignTop="@+id/start_game_button"
+        android:visibility="invisible" />
+
+
+
+</RelativeLayout>

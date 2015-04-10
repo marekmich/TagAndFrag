@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pz.tagandfrag.LoginActivity" >
+
+    <EditText
+        android:id="@+id/edit_text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="@string/nick_text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/password_text"
+        android:inputType="numberPassword" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_text_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/person" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/edit_text_login"
+        android:layout_below="@+id/edit_text_password"
+        android:layout_marginTop="16dp"
+        android:onClick="onNickConfirmButtonClicked"
+        android:text="@string/nick_button" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_login"
+        android:layout_alignRight="@+id/edit_text_login"
+        android:layout_alignTop="@+id/button_login"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_stage"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:clickable="false"
+        android:longClickable="false"
+        android:max="@integer/max"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:progress="@integer/first" />
+
+</RelativeLayout>

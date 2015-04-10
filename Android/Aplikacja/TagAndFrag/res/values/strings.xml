@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="choose_weapon">Wybierz broń</string>
+    <string name="preferences_name_default">Wpisz swój nick</string>
+    <string name="preferences_name">name</string>
+    <string name="preferences_id">id</string>
+    <string name="preferences_mac">MAC</string>
+    <string name="preferences_team">team</string>
+    <string name="preference_file">com.example.tagandfrag.preference_file</string>
+    <string name="nick_text">Podaj nick</string>
+    <string name="nick_button">Zaloguj</string>
+    <string name="nick_length_wrong">Niewłaściwa długość nick</string>
+    <string name="password_length_wrong">Niewłaściwa długość hasła</string>
+    <string name="nick_correct">Sukces</string>
+    <string name="nick_incorrect">Ten nick nie jest Twój!</string>
+    <string name="password_text">Podaj hasło (id) lub zostaw puste</string>
     <string name="app_name">Tag and Frag</string>
     <string name="action_settings">Settings</string>
-
+    <string name="weapon_button">Zatwierdź wybór broni</string>
+    <string name="team_button">Potwierdź wybór drużyny</string>
+    <string name="start_game">Rozpocznij grę</string>
+    <string name="show_id">Pokaż id gracza</string>
+    <string name="change_id">Zmień id gracza</string>
+    <string name="show_information">Informacje</string>
+    <string name="help">Pomoc</string>
+    <string name="your_id">Twoje id to </string>
+    <string name="OK">OK</string>
+    <string name="your_id_positive_button">Potwierdź zmianę id</string>
+    <string name="your_id_negative_button">Odrzuć zmianę id</string>
+    <string name="title_activity_login">Logowanie</string>
+    <string name="title_activity_choose_team">Wybieranie drużyny</string>
+	<string name="mark_players_on_map">Gracze</string>
+	<string name="show_lines_to_players">Linie</string>
+	<string name="title_game_activity">Rozgrywka</string>
 </resources>

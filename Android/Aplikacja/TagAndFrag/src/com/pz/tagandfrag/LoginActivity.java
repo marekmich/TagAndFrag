@@ -257,19 +257,8 @@ public class LoginActivity extends Activity {
 	 * */
 	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
 		
-		////////// Do testów ////////////////////////
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			try {
-				players = game.getAll();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			/////////////////////////////////////////
 			downloadTeamListFromServer();
 			return null;
 		}

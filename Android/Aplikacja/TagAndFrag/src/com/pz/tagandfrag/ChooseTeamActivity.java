@@ -8,12 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 import com.pz.tagandfrag.restclient.Game;
 import com.pz.tagandfrag.restclient.Player;
@@ -28,7 +26,7 @@ public class ChooseTeamActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_team);
-		
+		prepareActivity();
 		initializeViewComponents();
 	}
 	
@@ -68,7 +66,8 @@ public class ChooseTeamActivity extends Activity {
 	public int sendTeamToServerAndGetWeaponCode() {
 			
 		RadioGroup radioGroupTeam = (RadioGroup) findViewById(R.id.radiogroup);
-		Integer teamNumber = radioGroupTeam.getId();
+		Integer teamNumber = radioGroupTeam.getCheckedRadioButtonId();
+		
 		player.setTeam(teamNumber);
 		int weaponCode = 0;
 		try {
@@ -77,9 +76,10 @@ public class ChooseTeamActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.i("CODE", String.valueOf(weaponCode));
 		return weaponCode;
 	}
+	
+	
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected void onPostExecute(Void result) {
@@ -97,7 +97,7 @@ public class ChooseTeamActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			//sendTeamToServerAndGetWeaponCode();
+			sendTeamToServerAndGetWeaponCode();
 			return null;
 		}
 	}

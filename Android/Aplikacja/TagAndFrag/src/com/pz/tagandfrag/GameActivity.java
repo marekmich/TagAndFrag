@@ -9,6 +9,8 @@ public class GameActivity extends FragmentActivity {
 
 	public static FragmentManager FRAGMENT_MANAGER;
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);

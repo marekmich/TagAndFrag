@@ -29,11 +29,10 @@ public class LoginActivity extends Activity {
 
 	public static PreferencesManager preferences;
 	
-	Game game;
-	Player player;
-	
+	//Przerzuciæ do klasy przechowuj¹cej
+	public static Game game;
+	public static Player player;
 	public static Collection<Team> teamList;
-	/* Pole zawierajace wszystkich graczy, do testów */
 	public static Collection<Player> players;
 	
 	/* Bluetooth */
@@ -63,6 +62,8 @@ public class LoginActivity extends Activity {
 		preferences.loadLoginDataFromPreferences();
 		game = new Game();
 		player = new Player(preferences.getNick(), preferences.getId());
+		teamList = new ArrayList<Team>();
+		players = new ArrayList<Player>();
 		
 		
 		// BUUUUGGG

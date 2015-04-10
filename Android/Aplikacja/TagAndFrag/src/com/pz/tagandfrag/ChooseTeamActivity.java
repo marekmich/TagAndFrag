@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.pz.tagandfrag.restclient.Game;
-import com.pz.tagandfrag.restclient.Player;
 import com.pz.tagandfrag.restclient.Team;
 
 public class ChooseTeamActivity extends Activity {
@@ -28,58 +26,83 @@ public class ChooseTeamActivity extends Activity {
 		prepareActivity();
 		initializeViewComponents();
 	}
-	
+	/////////////////////////////////
+	/* Ustawienia aplikacji */
+	/**
+	 * Przygotowujê dane z których bêdzie korzystaæ aplikacja
+	 * */
 	public void prepareActivity() {
 		
-		LoginActivity.preferences.loadAllDataFromPreferences();
+		//Przygotowanie klas pomocniczych
+		TagAndFragContainer.preferences.loadTeamDataFromPreferences();
 	}
+	/////////////////////////////////
+	/* Zmiany w wygl¹dzie */
+	/**
+	 * Zmienia wygl¹d na podstawie pobranych ustawieñ z pamiêci
+	 * */
 	public void initializeViewComponents() {
 		addRadioButtons();
 	}
+	/**
+	 * Tworzy listê dostêpnych dru¿yn na bazie
+	 * */
     public void addRadioButtons() {
-
-
+    	//Dodaæ przycisk odœwie¿ania
     	RadioGroup radioGroupTeam = (RadioGroup) findViewById(R.id.radiogroup);
-        List<Team> teamList = new ArrayList<Team>(LoginActivity.teamList);
-        
+    	radioGroupTeam.removeAllViews();
+    	
+        List<Team> teamList = new ArrayList<Team>(TagAndFragContainer.teamList);
+        //Wrzucenie wszystkich teamów na listê wybieraln¹
         for (Team team : teamList) {
             RadioButton radioButtonTeam = new RadioButton(this);
             radioButtonTeam.setId(team.getId());
             radioButtonTeam.setText(team.toString());
             radioGroupTeam.addView(radioButtonTeam);
         }
-        
     }
-    
+	/////////////////////////////////
+	/* Listenery */
 	/**
 	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za wys³anie do serwera informacji o wybranej dru¿ynie
 	 * poprzez uruchomienia zadania z klasy {@link TeamConnectProgressBarTask}
 	 */
 	public void onChooseTeamButtonClicked(View view) {
 		
+		//Pobranie, który team zosta³ wybrany
 		RadioGroup radioGroupTeam = (RadioGroup) findViewById(R.id.radiogroup);
 		Integer teamNumber = radioGroupTeam.getCheckedRadioButtonId();
-		
-		LoginActivity.player.setTeam(teamNumber);
+		//Zapisanie zespo³u do klas pomocniczych i pamiêci
+		TagAndFragContainer.player.setTeam(teamNumber);
+		TagAndFragContainer.preferences.setTeam(teamNumber);
+		TagAndFragContainer.preferences.saveTeamDataFromPreferences();
+		//Rozpoczêcie nowej gry
 		StartGameProgressBarTask task = new StartGameProgressBarTask();
 		task.execute();
 	}
-	// TODO Zrobic 
+	/////////////////////////////////
+	/* £¹cznoœæ - REST Client */
+	/**
+	 * Wys³anie do serwera numeru wybranej dru¿yny, odebranie kodu broni
+	 * */
 	private int sendTeamToServerAndGetWeaponCode() {
-		LoginActivity.player.setTeam(LoginActivity.player.getTeam());
+		TagAndFragContainer.player.setTeam(TagAndFragContainer.player.getTeam());
 		int weaponCode = 0;
 		try {
-			weaponCode = LoginActivity.game.team(LoginActivity.player);
+			weaponCode = TagAndFragContainer.game.team(TagAndFragContainer.player);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return weaponCode;
 	}
+	/**
+	 * Wys³anie do serwera numeru wybranej dru¿yny, odebranie listy graczy z danej dru¿yny
+	 * */
 	private void getMyTeamFromServer()
 	{
 		try {
-			LoginActivity.players = LoginActivity.game.getByTeam(LoginActivity.player.getTeam());
+			TagAndFragContainer.players = TagAndFragContainer.game.getByTeam(TagAndFragContainer.player.getTeam());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,14 +111,19 @@ public class ChooseTeamActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	/////////////////////////////////
+	/* Prywatne klasy */
+	/**
+	 * Klasa wykonuje zadanie rozpoczêcia nowej gry, 
+	 * najpierw pobiera nowy kod strza³u, utawia na broni nowy kod strza³u
+	 * a nastêpnie pobiera listê wszystkich graczy z dru¿yny danego gracza
+	 * */
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected void onPostExecute(Void result) {
-			// TODO przejœcie do GameActivity poprzez Intent
-			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.INVISIBLE);
-			
 			Intent intent = new Intent(ChooseTeamActivity.this, GameActivity.class);
 			startActivity(intent);
+			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.INVISIBLE);
 		}
 
 		@Override

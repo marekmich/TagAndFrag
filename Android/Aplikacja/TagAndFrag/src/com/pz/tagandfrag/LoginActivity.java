@@ -2,7 +2,6 @@ package com.pz.tagandfrag;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import org.json.JSONException;
@@ -27,14 +26,6 @@ import com.pz.tagandfrag.restclient.Team;
 
 public class LoginActivity extends Activity {
 
-	public static PreferencesManager preferences;
-	
-	//Przerzuciæ do klasy przechowuj¹cej
-	public static Game game;
-	public static Player player;
-	public static Collection<Team> teamList;
-	public static Collection<Player> players;
-	
 	/* Bluetooth */
 	private static final int REQUEST_ENABLE_BT = 0;
 	public static BluetoothService bluetoothService;
@@ -46,27 +37,28 @@ public class LoginActivity extends Activity {
 		prepareActivity();
 		initializeViewComponents();
 	}
-	
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
 	/**
 	 * Przygotowujê dane z których bêdzie korzystaæ aplikacja
 	 * */
 	private void prepareActivity() {
-		teamList = new ArrayList<Team>();
+		
+		//Przygotowanie bluetootha
 		bluetoothService = new BluetoothService();
 		requestEnableBluetooth();
 		
+		//Przygotowanie klas pomocniczych
+		TagAndFragContainer.preferences = new PreferencesManager(getApplicationContext());
+		TagAndFragContainer.preferences.loadLoginDataFromPreferences();
 		
-		preferences = new PreferencesManager(getApplicationContext());
-		preferences.loadLoginDataFromPreferences();
-		game = new Game();
-		player = new Player(preferences.getNick(), preferences.getId());
-		teamList = new ArrayList<Team>();
-		players = new ArrayList<Player>();
+		TagAndFragContainer.game = new Game();
+		TagAndFragContainer.player = new Player(TagAndFragContainer.preferences.getNick(), TagAndFragContainer.preferences.getId());
+		TagAndFragContainer.teamList = new ArrayList<Team>();
+		TagAndFragContainer.players = new ArrayList<Player>();
 		
-		
-		// BUUUUGGG
+		//Pobranie listy dru¿yn
+		//BuG?
 		DownloadTeamListTask task = new DownloadTeamListTask();
 		task.execute();
 	}
@@ -79,7 +71,6 @@ public class LoginActivity extends Activity {
 	private void initializeViewComponents() {
 		setNewNickOnNickEditText();
 		setPasswordOnPasswordEditText();
-
 	}
 	/**
 	 * Ustawia nick lub podpowiedŸ (zale¿y od tego czy w preferencjach aplikacji jest przechowywany nick) w polu do którego wpisuje siê nick
@@ -87,45 +78,49 @@ public class LoginActivity extends Activity {
 	private void setNewNickOnNickEditText() {
 		EditText nickEditText = (EditText) findViewById(R.id.edit_text_login);
 		//Sprawdza czy nick pobrany z preferencji jest ró¿ny od hinta
-		if(!preferences.getNick().equals(getResources().getString(R.string.preferences_name_default)))
+		if(!TagAndFragContainer.preferences.getNick().equals(getResources().getString(R.string.preferences_name_default)))
 		{
-			nickEditText.setText(preferences.getNick());
+			nickEditText.setText(TagAndFragContainer.preferences.getNick());
 		}
 	}
+	/** 
+	 * Ustawia has³o w polu do którego wpisuje siê has³o lub zostawia puste*/
 	private void setPasswordOnPasswordEditText() {
 		EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
 		//Sprawdza czy id pobrane z preferencji jest ró¿ne od zera
-		if(preferences.getId() != 0)
+		if(TagAndFragContainer.preferences.getId() != 0)
 		{
-			passwordEditText.setText(String.valueOf(preferences.getId()));
-		}
-		else {
-			
+			passwordEditText.setText(String.valueOf(TagAndFragContainer.preferences.getId()));
 		}
 	}
 	
 	/////////////////////////////////
-	/* Listenery */		
+	/* Listenery */
+	/**
+	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za zalogowanie siê do serwera, wykonuje zadanie
+	 * poprzez uruchomienia zadania w tle z klasy {@link NickCheckProgressBarTask}
+	 */
 	public void onNickConfirmButtonClicked(View view) {
 		EditText nickEditText = (EditText) findViewById(R.id.edit_text_login);
 		EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
 		
-		//Sprawdzenie czy nick jest odpowiednio d³ugi
+		//Sprawdzenie czy nick jest odpowiednio d³ugi oraz czy has³o ma w³aœciw¹ d³ugoœæ
 		if(nickEditText.getText().toString().length() >= 4 && 
-				((preferences.getId() !=0 && passwordEditText.getText().toString().length() == 7) 
-						|| preferences.getId()==0 ))
+				((TagAndFragContainer.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 7) 
+						|| TagAndFragContainer.preferences.getId()==0 ))
 		{
 			String nick = nickEditText.getText().toString();
-			int password;
-			player.setName(nick);
-			preferences.setNick(nick);
+			int password = 0;
+			//Zapisanie do klasy pomocniczej oraz pamiêci nicku gracza
+			TagAndFragContainer.player.setName(nick);
+			TagAndFragContainer.preferences.setNick(nick);
+			//Sprawdzenie czy pole z has³em jest niepuste
 			if(!TextUtils.isEmpty(passwordEditText.getText()))
 			{
 				password = Integer.valueOf(passwordEditText.getText().toString());
-				player.setId(password);
-				preferences.setId(password);
+				TagAndFragContainer.player.setId(password);
+				TagAndFragContainer.preferences.setId(password);
 			}
-			
 			//Uruchomienie zadania w tle, które przesy³a dane do serwera (równie¿ weryfikuje odpowiedŸ serwera)
 			NickCheckProgressBarTask task = new NickCheckProgressBarTask(this);
 			task.execute();
@@ -145,28 +140,40 @@ public class LoginActivity extends Activity {
 	
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
+	/**
+	 * Wymusza w³¹czenia bluetootha
+	 * */
 	private void requestEnableBluetooth() {
 		if (!bluetoothService.getBluetoothAdapter().isEnabled()) {
 			Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
 		}
 	}
-	
+	/**
+	 * Wybieranie broni - urz¹dzenia z listy
+	 * @param activity 
+	 * */
+	private void chooseWeapon(Activity activity) {
+		new ChooseWeaponDialog().show(getFragmentManager(), "DEV");
+	}
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
-	public Boolean sendNickToServer()
+	/**
+	 * Wysy³a nick i has³o do serwera w celu weryfikacji
+	 * */
+	private Boolean sendNickToServer()
 	{
-		int id = preferences.getId();
+		int id = TagAndFragContainer.preferences.getId();
 		
 		int newId = 0;
 		try {
-			newId = game.check(player);
+			newId = TagAndFragContainer.game.check(TagAndFragContainer.player);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		Log.d("ID", String.valueOf(newId));
+		
 		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i podany nick znajdujê siê w bazie)
 		if(newId == id && id > 0)
 		{
@@ -177,8 +184,8 @@ public class LoginActivity extends Activity {
 		else if(newId > 0 && id == 0)
 		{
 			id = newId;
-			player.setId(id);
-			preferences.setId(id);
+			TagAndFragContainer.player.setId(id);
+			TagAndFragContainer.preferences.setId(id);
 			return true;
 		}
 		//NICK nie jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i poda³ inny nick, który jest zajêty przez kogoœ innego)
@@ -194,21 +201,27 @@ public class LoginActivity extends Activity {
 		//Sytuacjê pozosta³e (nigdy nie powinno dojœæ do tego momentu)
 		return false;
 	}
-	public void downloadTeamListFromServer() {
-		// TODO komentarz
+	/**
+	 * Pobiera z serwera listê
+	 */
+	private void downloadTeamListFromServer() {
 		ArrayList<Team> array = new ArrayList<Team>();
 		try {
-			array = new ArrayList<Team>(game.list());
+			array = new ArrayList<Team>(TagAndFragContainer.game.list());
 		} catch (IOException e) {
 			Log.d("IO", e.toString());
 		} catch (JSONException e) {
 			Log.d("JSON", e.toString());
 		}
 		Collections.sort(array);
-		teamList = array;
+		TagAndFragContainer.teamList = array;
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */
+	/**
+	 * Klasa wykonuj¹ca zadanie weryfikacji nicku i has³a na serwerze
+	 * nastêpnie wywo³uje okienko wyboru broni, by potem przejœæ do {@link ChooseTeamActivity}
+	 * */
 	private class NickCheckProgressBarTask extends AsyncTask<Void, Void, Void> {
 		
 		Boolean isSuccessful;
@@ -222,16 +235,9 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(Void result) {
 			if(isSuccessful) {
 				//Kiedy nick jest w³aœciwy dane s¹ zapisywane do preferencji, progress bar jest chowany i przechodzi siê do kolejnego etapu
-				preferences.saveLoginDataToPreferences();
-				preferences.loadMACDataFromPreferences();
-
-				if (preferences.getMAC() == null) {
-					new ChooseWeaponDialog().show(getFragmentManager(), "DEV");
-				} else {
-					Intent intent = new Intent(activity, ChooseTeamActivity.class);
-			        startActivity(intent);
-					Toast.makeText(activity, R.string.nick_correct, Toast.LENGTH_LONG).show();
-				}
+				TagAndFragContainer.preferences.saveLoginDataToPreferences();
+				TagAndFragContainer.preferences.loadMACDataFromPreferences();
+				chooseWeapon(activity);
 			}
 			else {
 				//Kiedy nick jest niew³aœciwy (tzn. kiedy serever.gracz.id != android.gracz.id, czyli nick jest zajêty)
@@ -257,7 +263,6 @@ public class LoginActivity extends Activity {
 	 * oraz ods³ania elementy zwi¹zane z wyborem dru¿yny
 	 * */
 	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
-		
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			downloadTeamListFromServer();

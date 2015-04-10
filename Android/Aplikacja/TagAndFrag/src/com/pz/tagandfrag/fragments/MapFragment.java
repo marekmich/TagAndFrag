@@ -3,16 +3,6 @@ package com.pz.tagandfrag.fragments;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,9 +30,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.pz.tagandfrag.GameActivity;
-import com.pz.tagandfrag.LoginActivity;
 import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.TagAndFragContainer;
 import com.pz.tagandfrag.restclient.Player;
 
 public class MapFragment extends Fragment 
@@ -139,7 +128,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	}
 
 	private void addAllMarkersToMap() {
-		for (Player player : LoginActivity.players) {
+		for (Player player : TagAndFragContainer.players) {
 			LatLng location = getPlayerLocation(player);
 			if (location != null) {
 				MarkerOptions options = new MarkerOptions().title(player.getName())
@@ -161,7 +150,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		LatLng myLocation = new LatLng(	Double.valueOf(map.getMyLocation().getLatitude()), 
 										Double.valueOf(map.getMyLocation().getLongitude())
 										);
-		for (Player player : LoginActivity.players) {
+		for (Player player : TagAndFragContainer.players) {
 			LatLng mockLocation = getPlayerLocation(player);
 			if (mockLocation != null) {
 				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(mockLocation).width(5);

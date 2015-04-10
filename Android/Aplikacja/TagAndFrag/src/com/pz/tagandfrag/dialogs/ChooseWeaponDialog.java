@@ -10,13 +10,13 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.pz.tagandfrag.ChooseTeamActivity;
 import com.pz.tagandfrag.LoginActivity;
 import com.pz.tagandfrag.R;
-
+import com.pz.tagandfrag.TagAndFragContainer;
+//TODO OKOMENTOWAÆ
 public class ChooseWeaponDialog extends DialogFragment {
 
 	private Set<BluetoothDevice> devices;
@@ -55,7 +55,6 @@ public class ChooseWeaponDialog extends DialogFragment {
 				return device.getAddress();
 			}
 		}
-		
 		return null;
 	}
 	
@@ -64,14 +63,21 @@ public class ChooseWeaponDialog extends DialogFragment {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				ArrayList<String> list = convertDevicesSetToArrayList(devices);
+				try
+				{
+					ArrayList<String> list = convertDevicesSetToArrayList(devices);
 
-				LoginActivity.preferences.setMAC(findMacByName(list.get(which)));
-				LoginActivity.preferences.saveMACDataFromPreferences();
-				
-				Intent intent = new Intent(getActivity(), ChooseTeamActivity.class);
-		        startActivity(intent);
-				Toast.makeText(getActivity(), R.string.nick_correct, Toast.LENGTH_LONG).show();
+					TagAndFragContainer.preferences.setMAC(findMacByName(list.get(which)));
+					TagAndFragContainer.preferences.saveMACDataFromPreferences();
+					
+					Intent intent = new Intent(getActivity(), ChooseTeamActivity.class);
+			        startActivity(intent);
+					Toast.makeText(getActivity(), R.string.nick_correct, Toast.LENGTH_LONG).show();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		};
 	}

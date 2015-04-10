@@ -1,6 +1,5 @@
 package com.pz.tagandfrag;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -69,7 +68,7 @@ public class PreferencesManager
 		SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file), Context.MODE_PRIVATE);
 		//Pobranie teamu gracza
 		int defaultTeam = 0;
-		team = preferences.getInt(context.getResources().getString(R.string.preferences_mac), defaultTeam);
+		team = preferences.getInt(context.getResources().getString(R.string.preferences_team), defaultTeam);
 	}
 	
 	/**

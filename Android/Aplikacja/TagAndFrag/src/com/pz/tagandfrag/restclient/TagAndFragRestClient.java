@@ -5,23 +5,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 public class TagAndFragRestClient implements RestClient<Player> {
 
@@ -33,8 +33,9 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	
 	}
 
+
 	@Override
-	public Collection<Player> GET() throws IOException, JSONException {
+	public Collection<Player> GET(Integer teamId) throws IOException, JSONException {
 		HttpClient httpClient = new DefaultHttpClient();
 		
 		List<NameValuePair> param = new ArrayList<NameValuePair>(1);
@@ -46,9 +47,9 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();
-		
+		System.out.println(jsonGet);
 		JSONArray array = new JSONArray(jsonGet);
-		return fromJsonArrayToCollection(array);
+		return fromJsonArrayToCollection(array, teamId);
 	}
 
 	@Override
@@ -65,7 +66,6 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();;
 				JSONObject jsonObject  = new JSONObject(jsonGet);
-				
 		Iterator<String> nameItr = jsonObject.keys();
 		Collection<Team> teams = new ArrayList<Team>();
 		
@@ -95,7 +95,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		JSONArray array = new JSONArray(jsonGet);
 		
-		ArrayList<Player> list = new ArrayList<Player>(fromJsonArrayToCollection(array));
+		ArrayList<Player> list = new ArrayList<Player>(fromJsonArrayToCollection(array, 0));
 		
 		
 		return list.get(0);
@@ -186,23 +186,26 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		httpClient.execute(put);
 	}
 	
-	private Collection<Player> fromJsonArrayToCollection(JSONArray array) throws JSONException {
+	private Collection<Player> fromJsonArrayToCollection(JSONArray array, Integer teamId) throws JSONException {
 		Collection<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject jsonObject  = array.getJSONObject(i);
 			
-		
+			Integer team 	= Integer.valueOf(jsonObject.optString("team"));
+			
+			if((team==teamId) || (teamId==0))
+			{
 			String name 			= jsonObject.optString("name");
 			Integer healthPoints 	= Integer.valueOf(jsonObject.optString("health"));
 			Integer ammunition 		= Integer.valueOf(jsonObject.optString("ammunition"));
 			String localization 	= jsonObject.optString("localization");
-			Integer team 	= Integer.valueOf(jsonObject.optString("team"));
 			Integer id 	= Integer.valueOf(jsonObject.optString("id"));
 			
 			Player player = new Player(name, healthPoints, ammunition, localization, team);
 			player.setId(id);
 			
 			players.add(player);
+			}
 			
 		}
 		return players;

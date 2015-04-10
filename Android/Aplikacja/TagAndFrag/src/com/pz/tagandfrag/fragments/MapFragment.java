@@ -3,6 +3,16 @@ package com.pz.tagandfrag.fragments;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +40,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.pz.tagandfrag.GameActivity;
+import com.pz.tagandfrag.LoginActivity;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.restclient.Player;
 
@@ -105,6 +117,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 					showLinesCheckBox.setEnabled(false);
 				}
 			}
+			
 		});
 	}
 	
@@ -126,17 +139,14 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	}
 
 	private void addAllMarkersToMap() {
-		for (Player player : mockPlayers) {
-			String location = player.getLocalization();
-			if (location.contains("#")) {
-				String lat = location.split("#")[0];
-				String lng = location.split("#")[1];
-				LatLng latLng = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
+		for (Player player : LoginActivity.players) {
+			LatLng location = getPlayerLocation(player);
+			if (location != null) {
 				MarkerOptions options = new MarkerOptions().title(player.getName())
-										.position(latLng)
-										.icon(BitmapDescriptorFactory.fromResource(R.drawable.player));
+						.position(location)
+						.icon(BitmapDescriptorFactory.fromResource(R.drawable.player));
 				Marker marker = map.addMarker(options);
-				markers.add(marker);
+				markers.add(marker);		
 			}
 		}
 	}
@@ -151,16 +161,12 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		LatLng myLocation = new LatLng(	Double.valueOf(map.getMyLocation().getLatitude()), 
 										Double.valueOf(map.getMyLocation().getLongitude())
 										);
-		for (Player mockPlayer : mockPlayers) {
-				String mockLocation = mockPlayer.getLocalization();
-				if (mockLocation.contains("#")) {
-				String lat = mockLocation.split("#")[0];
-				String lng = mockLocation.split("#")[1];
-				LatLng mockLatLng = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
-				
-				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(mockLatLng).width(5);
+		for (Player player : LoginActivity.players) {
+			LatLng mockLocation = getPlayerLocation(player);
+			if (mockLocation != null) {
+				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(mockLocation).width(5);
 				Polyline line = map.addPolyline(lineOptions);
-				lines.add(line);
+				lines.add(line);					
 			}
 		}
 	}
@@ -263,6 +269,16 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	public void onConnectionSuspended(int cause) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private LatLng getPlayerLocation(Player player) {
+		String location = player.getLocalization();
+		if (location.contains("#")) {
+			String lat = location.split("#")[0];
+			String lng = location.split("#")[1];
+			return new LatLng(Double.valueOf(lat), Double.valueOf(lng));
+		}
+		return null;
 	}
 	
 }

@@ -33,7 +33,9 @@ public class LoginActivity extends Activity {
 	Player player;
 	
 	public static Collection<Team> teamList;
-
+	/* Pole zawierajace wszystkich graczy, do testów */
+	public static Collection<Player> players;
+	
 	/* Bluetooth */
 	private static final int REQUEST_ENABLE_BT = 0;
 	public static BluetoothService bluetoothService;
@@ -254,8 +256,20 @@ public class LoginActivity extends Activity {
 	 * oraz ods³ania elementy zwi¹zane z wyborem dru¿yny
 	 * */
 	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
+		
+		////////// Do testów ////////////////////////
 		@Override
 		protected Void doInBackground(Void... arg0) {
+			try {
+				players = game.getAll();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/////////////////////////////////////////
 			downloadTeamListFromServer();
 			return null;
 		}

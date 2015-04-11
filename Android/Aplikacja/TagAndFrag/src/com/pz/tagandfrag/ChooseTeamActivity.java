@@ -55,21 +55,26 @@ public class ChooseTeamActivity extends Activity {
     	
         List<Team> teamList = new ArrayList<Team>(TagAndFragContainer.teamList);
         
-        //Jeœli
+        //Jeœli apka siê po³o¿y³a lub gracz wyszed³ z gry
+        //To na górze jest pokazywana ostatnio wybrana dru¿yna
         if(TagAndFragContainer.preferences.getTeam() > 0) {
         	RadioButton radioButtonTeam = new RadioButton(this);
             radioButtonTeam.setId(TagAndFragContainer.preferences.getTeam());
             radioButtonTeam.setText(String.format("%d. dru¿yna (w trakcie gry)", 
             		TagAndFragContainer.preferences.getTeam()));
+            radioButtonTeam.setChecked(true);
             radioGroupTeam.addView(radioButtonTeam);
         }
         
         //Wrzucenie wszystkich teamów na listê wybieraln¹
         for (Team team : teamList) {
-            RadioButton radioButtonTeam = new RadioButton(this);
-            radioButtonTeam.setId(team.getId());
-            radioButtonTeam.setText(team.toString());
-            radioGroupTeam.addView(radioButtonTeam);
+        	if(TagAndFragContainer.preferences.getTeam() != team.getId())
+        	{
+	            RadioButton radioButtonTeam = new RadioButton(this);
+	            radioButtonTeam.setId(team.getId());
+	            radioButtonTeam.setText(team.toString());
+	            radioGroupTeam.addView(radioButtonTeam);
+        	}
         }
     }
 	/////////////////////////////////
@@ -105,19 +110,6 @@ public class ChooseTeamActivity extends Activity {
 		}
 		return weaponCode;
 	}
-	/**
-	 * Wys³anie do serwera numeru wybranej dru¿yny, odebranie listy graczy z danej dru¿yny
-	 * */
-	private void getMyTeamFromServer()
-	{
-		try {
-			TagAndFragContainer.players = TagAndFragContainer.game.getByTeam(TagAndFragContainer.player.getTeam());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 	/////////////////////////////////
 	/* Prywatne klasy */
 	/**
@@ -142,7 +134,6 @@ public class ChooseTeamActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
 			sendTeamToServerAndGetWeaponCode();
-			getMyTeamFromServer();
 			return null;
 		}
 	}

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pz.tagandfrag.LoginActivity" >
+    tools:context="com.pz.tagandfrag.activity.LoginActivity" >
 
     <EditText
         android:id="@+id/edit_text_login"

@@ -1,4 +1,7 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.activity;
+
+import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.managers.DataManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,12 +20,12 @@ public class AfterGameActivity extends Activity {
 	/* Ustawienia aplikacji */
 	private void resetGame() {
 		//Reset kodu broni
-		TagAndFragContainer.player.setHealthPoints(100);
-		TagAndFragContainer.player.setTeam(0);
-		TagAndFragContainer.players.clear();
-		TagAndFragContainer.teamList.clear();
-		TagAndFragContainer.preferences.setTeam(0);
-		TagAndFragContainer.preferences.saveAllDataToPreferences();
+		DataManager.player.setHealthPoints(100);
+		DataManager.player.setTeam(0);
+		DataManager.players.clear();
+		DataManager.teamList.clear();
+		DataManager.preferences.setTeam(0);
+		DataManager.preferences.saveAllDataToPreferences();
 	}
 	
 	/////////////////////////////////

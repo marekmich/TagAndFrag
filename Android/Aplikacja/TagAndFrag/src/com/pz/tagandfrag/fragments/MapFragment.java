@@ -35,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.pz.tagandfrag.R;
-import com.pz.tagandfrag.TagAndFragContainer;
+import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.restclient.Player;
 
 /**
@@ -137,7 +137,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	}
 
 	private void addAllMarkersToMap() {
-		for (Player player : TagAndFragContainer.players) {
+		for (Player player : DataManager.players) {
 			LatLng location = getPlayerLocation(player);
 			if (location != null) {
 				MarkerOptions options = new MarkerOptions().title(player.getName())
@@ -159,7 +159,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		LatLng myLocation = new LatLng(	Double.valueOf(map.getMyLocation().getLatitude()), 
 										Double.valueOf(map.getMyLocation().getLongitude())
 										);
-		for (Player player : TagAndFragContainer.players) {
+		for (Player player : DataManager.players) {
 			LatLng mockLocation = getPlayerLocation(player);
 			if (mockLocation != null) {
 				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(mockLocation).width(5);
@@ -291,11 +291,11 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		@Override
 		protected Void doInBackground(Void... params) {
 			String location = newLocation.latitude + "#" + newLocation.longitude; 
-			TagAndFragContainer.player.setLocalization(location);
+			DataManager.player.setLocalization(location);
 			try {
 				// Aktualizacja (przeniesc do Handlera)
-				TagAndFragContainer.players = TagAndFragContainer.game.getByTeam(TagAndFragContainer.player.getTeam());
-				TagAndFragContainer.game.updatePlayer(TagAndFragContainer.player);
+				DataManager.players = DataManager.game.getByTeam(DataManager.player.getTeam());
+				DataManager.game.updatePlayer(DataManager.player);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (JSONException e) {

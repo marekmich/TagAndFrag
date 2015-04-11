@@ -1,4 +1,4 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.restclient.Team;
 
 
@@ -37,7 +39,7 @@ public class ChooseTeamActivity extends Activity {
 	public void prepareActivity() {
 		
 		//Przygotowanie klas pomocniczych
-		TagAndFragContainer.preferences.loadTeamDataFromPreferences();
+		DataManager.preferences.loadTeamDataFromPreferences();
 		
 		//Pobranie listy dru¿yn
 		//BuG?
@@ -60,22 +62,22 @@ public class ChooseTeamActivity extends Activity {
     	RadioGroup radioGroupTeam = (RadioGroup) findViewById(R.id.radiogroup);
     	radioGroupTeam.removeAllViews();
     	
-        List<Team> teamList = new ArrayList<Team>(TagAndFragContainer.teamList);
+        List<Team> teamList = new ArrayList<Team>(DataManager.teamList);
         
         //Jeœli apka siê po³o¿y³a lub gracz wyszed³ z gry
         //To na górze jest pokazywana ostatnio wybrana dru¿yna
-        if(TagAndFragContainer.preferences.getTeam() > 0) {
+        if(DataManager.preferences.getTeam() > 0) {
         	RadioButton radioButtonTeam = new RadioButton(this);
-            radioButtonTeam.setId(TagAndFragContainer.preferences.getTeam());
+            radioButtonTeam.setId(DataManager.preferences.getTeam());
             radioButtonTeam.setText(String.format("%d. dru¿yna (w trakcie gry)", 
-            		TagAndFragContainer.preferences.getTeam()));
+            		DataManager.preferences.getTeam()));
             radioButtonTeam.setChecked(true);
             radioGroupTeam.addView(radioButtonTeam);
         }
         
         //Wrzucenie wszystkich teamów na listê wybieraln¹
         for (Team team : teamList) {
-        	if(TagAndFragContainer.preferences.getTeam() != team.getId())
+        	if(DataManager.preferences.getTeam() != team.getId())
         	{
 	            RadioButton radioButtonTeam = new RadioButton(this);
 	            radioButtonTeam.setId(team.getId());
@@ -96,9 +98,9 @@ public class ChooseTeamActivity extends Activity {
 		RadioGroup radioGroupTeam = (RadioGroup) findViewById(R.id.radiogroup);
 		Integer teamNumber = radioGroupTeam.getCheckedRadioButtonId();
 		//Zapisanie zespo³u do klas pomocniczych i pamiêci
-		TagAndFragContainer.player.setTeam(teamNumber);
-		TagAndFragContainer.preferences.setTeam(teamNumber);
-		TagAndFragContainer.preferences.saveTeamDataFromPreferences();
+		DataManager.player.setTeam(teamNumber);
+		DataManager.preferences.setTeam(teamNumber);
+		DataManager.preferences.saveTeamDataFromPreferences();
 		//Rozpoczêcie nowej gry
 		StartGameProgressBarTask task = new StartGameProgressBarTask();
 		task.execute();
@@ -111,7 +113,7 @@ public class ChooseTeamActivity extends Activity {
 	private int sendTeamToServerAndGetWeaponCode() {
 		int weaponCode = 0;
 		try {
-			weaponCode = TagAndFragContainer.game.team(TagAndFragContainer.player);
+			weaponCode = DataManager.game.team(DataManager.player);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,14 +125,14 @@ public class ChooseTeamActivity extends Activity {
 	private void downloadTeamListFromServer() {
 		ArrayList<Team> array = new ArrayList<Team>();
 		try {
-			array = new ArrayList<Team>(TagAndFragContainer.game.list());
+			array = new ArrayList<Team>(DataManager.game.list());
 		} catch (IOException e) {
 			Log.d("IO", e.toString());
 		} catch (JSONException e) {
 			Log.d("JSON", e.toString());
 		}
 		Collections.sort(array);
-		TagAndFragContainer.teamList = array;
+		DataManager.teamList = array;
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */

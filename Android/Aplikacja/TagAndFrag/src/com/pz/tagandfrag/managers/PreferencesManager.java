@@ -1,4 +1,6 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.managers;
+
+import com.pz.tagandfrag.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;

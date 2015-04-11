@@ -1,4 +1,4 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.activity;
 
 import com.pz.tagandfrag.fragments.MapFragment;
 import com.pz.tagandfrag.fragments.TeamFragment;

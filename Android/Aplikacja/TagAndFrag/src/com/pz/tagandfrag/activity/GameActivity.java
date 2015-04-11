@@ -1,4 +1,6 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.activity;
+
+import com.pz.tagandfrag.R;
 
 import android.app.FragmentManager;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.pz.tagandfrag;
+package com.pz.tagandfrag.managers;
 
 import java.util.Collection;
 
@@ -6,7 +6,7 @@ import com.pz.tagandfrag.restclient.Game;
 import com.pz.tagandfrag.restclient.Player;
 import com.pz.tagandfrag.restclient.Team;
 
-public class TagAndFragContainer {
+public class DataManager {
 	public static Game game;
 	public static Player player;
 	public static Collection<Team> teamList;

@@ -12,10 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.pz.tagandfrag.ChooseTeamActivity;
-import com.pz.tagandfrag.LoginActivity;
 import com.pz.tagandfrag.R;
-import com.pz.tagandfrag.TagAndFragContainer;
+import com.pz.tagandfrag.activity.ChooseTeamActivity;
+import com.pz.tagandfrag.activity.LoginActivity;
+import com.pz.tagandfrag.managers.DataManager;
 //TODO OKOMENTOWAÆ
 public class ChooseWeaponDialog extends DialogFragment {
 
@@ -67,8 +67,8 @@ public class ChooseWeaponDialog extends DialogFragment {
 				{
 					ArrayList<String> list = convertDevicesSetToArrayList(devices);
 
-					TagAndFragContainer.preferences.setMAC(findMacByName(list.get(which)));
-					TagAndFragContainer.preferences.saveMACDataFromPreferences();
+					DataManager.preferences.setMAC(findMacByName(list.get(which)));
+					DataManager.preferences.saveMACDataFromPreferences();
 					
 					Intent intent = new Intent(getActivity(), ChooseTeamActivity.class);
 			        startActivity(intent);

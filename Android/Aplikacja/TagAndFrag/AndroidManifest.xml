@@ -21,19 +21,17 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
-        
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-                        
         <meta-data
-		    android:name="com.google.android.maps.v2.API_KEY"
-		    android:value="AIzaSyCXbOiuAv3s-ivNrkLMGrqtnZXahjrW0LQ" />
-        
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCXbOiuAv3s-ivNrkLMGrqtnZXahjrW0LQ" />
+
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,9 +42,13 @@
             android:name=".ChooseTeamActivity"
             android:label="@string/title_activity_choose_team" >
         </activity>
-        <activity 
-            android:name=".GameActivity" 
+        <activity
+            android:name=".GameActivity"
             android:label="@string/title_game_activity" >
+        </activity>
+        <activity
+            android:name=".AfterGameActivity"
+            android:label="@string/title_activity_after_game" >
         </activity>
     </application>
 

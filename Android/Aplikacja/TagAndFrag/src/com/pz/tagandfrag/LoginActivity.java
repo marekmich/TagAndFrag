@@ -24,6 +24,10 @@ import com.pz.tagandfrag.restclient.Game;
 import com.pz.tagandfrag.restclient.Player;
 import com.pz.tagandfrag.restclient.Team;
 
+/**
+ * Klasa odpowiedzialna za wyœwietlanie i obs³ugê ekranu logowania
+ * @author £ukasz ¯urawski
+ */
 public class LoginActivity extends Activity {
 
 	/* Bluetooth */

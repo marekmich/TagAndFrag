@@ -7,7 +7,6 @@ import com.pz.tagandfrag.restclient.Player;
 import com.pz.tagandfrag.restclient.Team;
 
 public class TagAndFragContainer {
-
 	public static Game game;
 	public static Player player;
 	public static Collection<Team> teamList;

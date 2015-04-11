@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 
 import com.pz.tagandfrag.restclient.Team;
 
+
 public class ChooseTeamActivity extends Activity {
 	
 	@Override
@@ -53,6 +54,16 @@ public class ChooseTeamActivity extends Activity {
     	radioGroupTeam.removeAllViews();
     	
         List<Team> teamList = new ArrayList<Team>(TagAndFragContainer.teamList);
+        
+        //Jeœli
+        if(TagAndFragContainer.preferences.getTeam() > 0) {
+        	RadioButton radioButtonTeam = new RadioButton(this);
+            radioButtonTeam.setId(TagAndFragContainer.preferences.getTeam());
+            radioButtonTeam.setText(String.format("%d. dru¿yna (w trakcie gry)", 
+            		TagAndFragContainer.preferences.getTeam()));
+            radioGroupTeam.addView(radioButtonTeam);
+        }
+        
         //Wrzucenie wszystkich teamów na listê wybieraln¹
         for (Team team : teamList) {
             RadioButton radioButtonTeam = new RadioButton(this);
@@ -86,12 +97,10 @@ public class ChooseTeamActivity extends Activity {
 	 * Wys³anie do serwera numeru wybranej dru¿yny, odebranie kodu broni
 	 * */
 	private int sendTeamToServerAndGetWeaponCode() {
-		TagAndFragContainer.player.setTeam(TagAndFragContainer.player.getTeam());
 		int weaponCode = 0;
 		try {
 			weaponCode = TagAndFragContainer.game.team(TagAndFragContainer.player);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return weaponCode;
@@ -104,10 +113,8 @@ public class ChooseTeamActivity extends Activity {
 		try {
 			TagAndFragContainer.players = TagAndFragContainer.game.getByTeam(TagAndFragContainer.player.getTeam());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

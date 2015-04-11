@@ -159,6 +159,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		for (Marker marker : markers) {
 			marker.remove();
 		}
+		markers.clear();
 	}
 	
 	private void addAllLinesToMap() {
@@ -179,14 +180,15 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		for (Polyline line : lines) { 
 			line.remove();
 		}
+		lines.clear();
 	}
 	
 	private void redrawMapObjects() {
+		removeAllLinesFromMap();
+		removeAllMarkersFromMap();
 		if (showPlayersCheckBox.isChecked()) {
-			removeAllMarkersFromMap();
 			addAllMarkersToMap();
 			if (showLinesCheckBox.isChecked()) {
-				removeAllLinesFromMap();
 				addAllLinesToMap();
 			}
 		}

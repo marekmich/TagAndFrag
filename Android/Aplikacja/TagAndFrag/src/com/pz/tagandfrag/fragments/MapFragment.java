@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.json.JSONException;
+
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -291,8 +293,12 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			String location = newLocation.latitude + "#" + newLocation.longitude; 
 			TagAndFragContainer.player.setLocalization(location);
 			try {
+				// Aktualizacja (przeniesc do Handlera)
+				TagAndFragContainer.players = TagAndFragContainer.game.getByTeam(TagAndFragContainer.player.getTeam());
 				TagAndFragContainer.game.updatePlayer(TagAndFragContainer.player);
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			return null;

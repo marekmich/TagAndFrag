@@ -47,7 +47,6 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		String jsonGet = inputReader.readLine();
-		System.out.println(jsonGet);
 		JSONArray array = new JSONArray(jsonGet);
 		return fromJsonArrayToCollection(array, teamId);
 	}

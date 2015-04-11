@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.json.JSONException;
-
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,44 +48,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			LocationListener {
 
 	private static boolean firstLocationEstablishing = true;
-	
-	// DO POPRAWY //
-	private Handler updateMarkersHandler;
-	private Runnable updateMapTask = new Runnable() {
-		
-		@Override
-		public void run() {
-			Runnable getTeam = new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						DataManager.players = DataManager.game.getByTeam(DataManager.player.getTeam());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			};
-			Thread getTeamThread = new Thread(getTeam);
-			getTeamThread.start();
-			try {
-				getTeamThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (showPlayersCheckBox.isChecked()) {
-				removeAllMarkersFromMap();
-				addAllMarkersToMap();
-			}
-			updateMarkersHandler.postDelayed(updateMapTask, 3000);
-		}
-	};
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	private Handler updateTeamOnMapHandler;
 	
 	/* Map elements */
 	private GoogleMap map;
@@ -110,9 +70,6 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.map_fragment, container, false);
-		updateMarkersHandler = new Handler();
-		updateMarkersHandler.removeCallbacks(updateMapTask);
-		updateMarkersHandler.postDelayed(updateMapTask, 3000);
 		initializeShowPlayersCheckBox();
 		initializeShowLinesCheckBox();
 		buildGoogleApiClient();
@@ -120,6 +77,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		mapView.onCreate(savedInstanceState);
 		mapView.onResume();
 		setUpMap();
+		updateTeamOnMapHandler = new Handler();
+		updateTeamOnMapHandler.removeCallbacks(updateTeamOnMapTask());
+		updateTeamOnMapHandler.postDelayed(updateTeamOnMapTask(), TeamFragment.UPDATE_PERIOD);
 		return view;
 	}
 	
@@ -131,6 +91,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		.build();
 	}
 	
+	@SuppressWarnings("unused")
 	private void initalizeMockPlayers() {
 		mockPlayers = new ArrayList<Player>();
 		mockPlayers.add(new Player("Mock1", 100, 100, "53.010918#18.590522", -1));
@@ -180,7 +141,8 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 
 	private void addAllMarkersToMap() {
 		for (Player player : DataManager.players) {
-			if (player.getId() != DataManager.player.getId()) {
+			if (!player.getId().equals(DataManager.player.getId())) {
+				Log.i("MARKER", "Dodaje " + player.getId());
 				LatLng location = getPlayerLocation(player);
 				if (location != null) {
 					MarkerOptions options = new MarkerOptions().title(player.getName())
@@ -219,6 +181,28 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		}
 	}
 	
+	private void redrawMapObjects() {
+		if (showPlayersCheckBox.isChecked()) {
+			removeAllMarkersFromMap();
+			addAllMarkersToMap();
+			if (showLinesCheckBox.isChecked()) {
+				removeAllLinesFromMap();
+				addAllLinesToMap();
+			}
+		}
+	}
+	
+	private Runnable updateTeamOnMapTask() {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				redrawMapObjects();
+				updateTeamOnMapHandler.postDelayed(updateTeamOnMapTask(), TeamFragment.UPDATE_PERIOD);
+				Log.i("MAP_OBJ", "Updated markers");
+			}
+		};
+	}
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -283,7 +267,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(newLocation);
 			map.moveCamera(cameraUpdate);
 		}
-
+		new UpdatePlayerLocationTask(newLocation).execute();
 		Log.i("MAP", location.toString());
 	}
 

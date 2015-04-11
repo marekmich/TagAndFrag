@@ -1,9 +1,11 @@
 package com.pz.tagandfrag.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -34,6 +36,11 @@ import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.TagAndFragContainer;
 import com.pz.tagandfrag.restclient.Player;
 
+/**
+ * Fragment odpowiedzialny za wyœwietlenie i inicjalizacjê mapy oraz jej widoku.
+ * @author Mateusz Wrzos
+ *
+ */
 public class MapFragment extends Fragment 
 implements 	GoogleApiClient.ConnectionCallbacks,
 			GoogleApiClient.OnConnectionFailedListener,
@@ -231,6 +238,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			map.moveCamera(cameraUpdate);
 		}
 
+		new UpdatePlayerLocationTask(newLocation).execute();
 		Log.i("MAP", location.toString());
 
 		if (showLinesCheckBox.isChecked()) {
@@ -257,7 +265,6 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	@Override
 	public void onConnectionSuspended(int cause) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private LatLng getPlayerLocation(Player player) {
@@ -270,4 +277,26 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		return null;
 	}
 	
+	private class UpdatePlayerLocationTask extends AsyncTask<Void, Void, Void> {
+
+		private LatLng newLocation;
+		
+		public UpdatePlayerLocationTask(LatLng newLocation) {
+			super();
+			this.newLocation = newLocation;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			String location = newLocation.latitude + "#" + newLocation.longitude; 
+			TagAndFragContainer.player.setLocalization(location);
+			try {
+				TagAndFragContainer.game.updatePlayer(TagAndFragContainer.player);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+	}
 }

@@ -2,7 +2,6 @@ package com.pz.tagandfrag;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.json.JSONException;
 
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -56,15 +54,10 @@ public class LoginActivity extends Activity {
 		TagAndFragContainer.preferences = new PreferencesManager(getApplicationContext());
 		TagAndFragContainer.preferences.loadLoginDataFromPreferences();
 		
-		TagAndFragContainer.game = new Game();
+		TagAndFragContainer.game = new Game(10);
 		TagAndFragContainer.player = new Player(TagAndFragContainer.preferences.getNick(), TagAndFragContainer.preferences.getId());
 		TagAndFragContainer.teamList = new ArrayList<Team>();
 		TagAndFragContainer.players = new ArrayList<Player>();
-		
-		//Pobranie listy dru¿yn
-		//BuG?
-		DownloadTeamListTask task = new DownloadTeamListTask();
-		task.execute();
 	}
 	
 	/////////////////////////////////
@@ -205,21 +198,6 @@ public class LoginActivity extends Activity {
 		//Sytuacjê pozosta³e (nigdy nie powinno dojœæ do tego momentu)
 		return false;
 	}
-	/**
-	 * Pobiera z serwera listê
-	 */
-	private void downloadTeamListFromServer() {
-		ArrayList<Team> array = new ArrayList<Team>();
-		try {
-			array = new ArrayList<Team>(TagAndFragContainer.game.list());
-		} catch (IOException e) {
-			Log.d("IO", e.toString());
-		} catch (JSONException e) {
-			Log.d("JSON", e.toString());
-		}
-		Collections.sort(array);
-		TagAndFragContainer.teamList = array;
-	}
 	/////////////////////////////////
 	/* Prywatne klasy */
 	/**
@@ -258,18 +236,6 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			isSuccessful = sendNickToServer();
-			return null;
-		}
-	}
-	/**
-	 * Klasa wykonuje zadanie pobrania listy dru¿yn z serwera, 
-	 * nastêpnie dodaje elementy tej list do pola wyboru 
-	 * oraz ods³ania elementy zwi¹zane z wyborem dru¿yny
-	 * */
-	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			downloadTeamListFromServer();
 			return null;
 		}
 	}

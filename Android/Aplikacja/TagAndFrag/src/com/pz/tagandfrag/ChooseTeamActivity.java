@@ -2,6 +2,7 @@ package com.pz.tagandfrag;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -36,6 +38,11 @@ public class ChooseTeamActivity extends Activity {
 		
 		//Przygotowanie klas pomocniczych
 		TagAndFragContainer.preferences.loadTeamDataFromPreferences();
+		
+		//Pobranie listy dru¿yn
+		//BuG?
+		DownloadTeamListTask task = new DownloadTeamListTask();
+		task.execute();
 	}
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
@@ -43,7 +50,7 @@ public class ChooseTeamActivity extends Activity {
 	 * Zmienia wygl¹d na podstawie pobranych ustawieñ z pamiêci
 	 * */
 	public void initializeViewComponents() {
-		addRadioButtons();
+		
 	}
 	/**
 	 * Tworzy listê dostêpnych dru¿yn na bazie
@@ -110,6 +117,21 @@ public class ChooseTeamActivity extends Activity {
 		}
 		return weaponCode;
 	}
+	/**
+	 * Pobiera z serwera listê
+	 */
+	private void downloadTeamListFromServer() {
+		ArrayList<Team> array = new ArrayList<Team>();
+		try {
+			array = new ArrayList<Team>(TagAndFragContainer.game.list());
+		} catch (IOException e) {
+			Log.d("IO", e.toString());
+		} catch (JSONException e) {
+			Log.d("JSON", e.toString());
+		}
+		Collections.sort(array);
+		TagAndFragContainer.teamList = array;
+	}
 	/////////////////////////////////
 	/* Prywatne klasy */
 	/**
@@ -134,6 +156,32 @@ public class ChooseTeamActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
 			sendTeamToServerAndGetWeaponCode();
+			return null;
+		}
+	}
+	/**
+	 * Klasa wykonuje zadanie pobrania listy dru¿yn z serwera, 
+	 * nastêpnie dodaje elementy tej list do pola wyboru 
+	 * oraz ods³ania elementy zwi¹zane z wyborem dru¿yny
+	 * */
+	private class DownloadTeamListTask extends AsyncTask<Void, Void, Void> {
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			findViewById(R.id.progress_bar_team_download).setVisibility(ProgressBar.INVISIBLE);
+			findViewById(R.id.scroll_view).setVisibility(ProgressBar.VISIBLE);
+			addRadioButtons();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			findViewById(R.id.progress_bar_team_download).setVisibility(ProgressBar.VISIBLE);
+			findViewById(R.id.scroll_view).setVisibility(ProgressBar.INVISIBLE);
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			downloadTeamListFromServer();
 			return null;
 		}
 	}

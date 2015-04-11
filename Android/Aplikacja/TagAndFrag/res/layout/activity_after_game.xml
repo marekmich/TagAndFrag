@@ -17,41 +17,32 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/game_summary"
         android:gravity="center"
+        android:text="@string/game_summary"
         android:textSize="20sp"
         android:textStyle="bold" />
-    
-    <Button
-        android:id="@+id/close_app"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/game_summary"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:text="@string/close_app" />
-
-    <Button
-        android:id="@+id/reset_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/close_app"
-        android:layout_alignBottom="@+id/close_app"
-        android:layout_alignRight="@+id/game_summary"
-        android:text="@string/reset_game" />
 
     <TextView
         android:id="@+id/game_summary_full"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/close_app"
+        android:layout_above="@+id/reset_game"
         android:layout_alignLeft="@+id/game_summary"
         android:layout_alignRight="@+id/game_summary"
         android:layout_below="@+id/game_summary"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:scrollHorizontally="false"
         android:scrollbars="vertical"
         android:text="@string/game_summary" />
+
+    <Button
+        android:id="@+id/reset_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/reset_game" />
 
 </RelativeLayout>

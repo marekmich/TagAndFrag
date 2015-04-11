@@ -36,7 +36,6 @@
     <string name="title_game_activity">Rozgrywka</string>
     <string name="title_activity_after_game">Koniec gry</string>
     <string name="game_summary">Podsumowanie gry</string>
-    <string name="close_app">Wyłącz \naplikacje</string>
     <string name="reset_game">Zagraj \njeszcze raz</string>
 
 </resources>

@@ -9,6 +9,8 @@ import org.json.JSONException;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +52,44 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 
 	private static boolean firstLocationEstablishing = true;
 	
+	// DO POPRAWY //
+	private Handler updateMarkersHandler;
+	private Runnable updateMapTask = new Runnable() {
+		
+		@Override
+		public void run() {
+			Runnable getTeam = new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						DataManager.players = DataManager.game.getByTeam(DataManager.player.getTeam());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+			Thread getTeamThread = new Thread(getTeam);
+			getTeamThread.start();
+			try {
+				getTeamThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (showPlayersCheckBox.isChecked()) {
+				removeAllMarkersFromMap();
+				addAllMarkersToMap();
+			}
+			updateMarkersHandler.postDelayed(updateMapTask, 3000);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/* Map elements */
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
@@ -70,7 +110,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.map_fragment, container, false);
-		initalizeMockPlayers();
+		updateMarkersHandler = new Handler();
+		updateMarkersHandler.removeCallbacks(updateMapTask);
+		updateMarkersHandler.postDelayed(updateMapTask, 3000);
 		initializeShowPlayersCheckBox();
 		initializeShowLinesCheckBox();
 		buildGoogleApiClient();
@@ -138,13 +180,15 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 
 	private void addAllMarkersToMap() {
 		for (Player player : DataManager.players) {
-			LatLng location = getPlayerLocation(player);
-			if (location != null) {
-				MarkerOptions options = new MarkerOptions().title(player.getName())
-						.position(location)
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.player));
-				Marker marker = map.addMarker(options);
-				markers.add(marker);		
+			if (player.getId() != DataManager.player.getId()) {
+				LatLng location = getPlayerLocation(player);
+				if (location != null) {
+					MarkerOptions options = new MarkerOptions().title(player.getName())
+							.position(location)
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.player));
+					Marker marker = map.addMarker(options);
+					markers.add(marker);		
+				}
 			}
 		}
 	}
@@ -160,9 +204,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 										Double.valueOf(map.getMyLocation().getLongitude())
 										);
 		for (Player player : DataManager.players) {
-			LatLng mockLocation = getPlayerLocation(player);
-			if (mockLocation != null) {
-				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(mockLocation).width(5);
+			LatLng location = getPlayerLocation(player);
+			if (location != null) {
+				PolylineOptions lineOptions = new PolylineOptions().add(myLocation).add(location).width(5);
 				Polyline line = map.addPolyline(lineOptions);
 				lines.add(line);					
 			}
@@ -240,13 +284,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			map.moveCamera(cameraUpdate);
 		}
 
-		new UpdatePlayerLocationTask(newLocation).execute();
 		Log.i("MAP", location.toString());
-
-		if (showLinesCheckBox.isChecked()) {
-			removeAllLinesFromMap();
-			addAllLinesToMap();
-		}
 	}
 
 	@Override
@@ -266,7 +304,6 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 
 	@Override
 	public void onConnectionSuspended(int cause) {
-		// TODO Auto-generated method stub
 	}
 	
 	private LatLng getPlayerLocation(Player player) {
@@ -293,12 +330,8 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			String location = newLocation.latitude + "#" + newLocation.longitude; 
 			DataManager.player.setLocalization(location);
 			try {
-				// Aktualizacja (przeniesc do Handlera)
-				DataManager.players = DataManager.game.getByTeam(DataManager.player.getTeam());
 				DataManager.game.updatePlayer(DataManager.player);
 			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			return null;

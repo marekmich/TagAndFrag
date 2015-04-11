@@ -1,12 +1,15 @@
 package com.pz.tagandfrag.activity;
 
-import com.pz.tagandfrag.R;
-import com.pz.tagandfrag.managers.DataManager;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.managers.DataManager;
 
 public class AfterGameActivity extends Activity {
 
@@ -15,9 +18,13 @@ public class AfterGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_after_game);
 		resetGame();
+		loadSummaryFromServer();
 	}
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
+	/**
+	 * Czyszczenie parametrów gry po zakoñczeniu rozgrywki
+	 * */
 	private void resetGame() {
 		//Reset kodu broni
 		DataManager.player.setHealthPoints(100);
@@ -27,7 +34,19 @@ public class AfterGameActivity extends Activity {
 		DataManager.preferences.setTeam(0);
 		DataManager.preferences.saveAllDataToPreferences();
 	}
-	
+	/**
+	 * Pobiera podsumowanie gry z serwera
+	 * */
+	private void loadSummaryFromServer() {
+		WebView gameSummary = (WebView) findViewById(R.id.game_summary_full);
+		gameSummary.setWebViewClient(new WebViewClient() {
+		    @Override
+		    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+		            Log.i("WEB_VIEW_TEST", "error code:" + errorCode);
+		    }
+		 });
+		gameSummary.loadUrl(DataManager.serverAddress);
+	}
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
 	

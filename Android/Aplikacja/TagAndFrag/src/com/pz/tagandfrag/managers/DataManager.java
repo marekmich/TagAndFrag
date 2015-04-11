@@ -12,4 +12,5 @@ public class DataManager {
 	public static Collection<Team> teamList;
 	public static Collection<Player> players;
 	public static PreferencesManager preferences;
+	public static String serverAddress = "http://www.mat.umk.pl/~luigi";
 }

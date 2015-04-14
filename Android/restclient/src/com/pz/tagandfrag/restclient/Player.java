@@ -70,15 +70,15 @@ public class Player {
 		this.id = id;
 	}
 
-	void setHealthPoints(Integer healthPoints) {
+	public void setHealthPoints(Integer healthPoints) {
 		this.healthPoints = healthPoints;
 	}
 
-	void setAmmunition(Integer ammunition) {
+	public void setAmmunition(Integer ammunition) {
 		this.ammunition = ammunition;
 	}
 
-	void setLocalization(String localization) {
+	public void setLocalization(String localization) {
 		this.localization = localization;
 	}
 

@@ -66,9 +66,9 @@ public class MainActivity extends Activity {
 			try {
 			
 				game = new Game(10);
-				Test t = new Test(game);
+				//Test t = new Test(game);
 			      
-			     t.script1();
+			     //t.script1();
 				
 				//Player player2= game.getByName("zdenek"); player2.setHealthPoints(100);
 				//Player player3= game.getByName("mateo"); player3.setHealthPoints(100);
@@ -102,10 +102,14 @@ public class MainActivity extends Activity {
 			//Log.i("check3", id3.toString());
 			
 			//ArrayList<Player> pl = new ArrayList<Player>(game.getAll());
-			game.getAll();
-			
+			//game.getAll();
+			Player l = game.getByName("luigi");
+			l.setHealthPoints(11);
+			game.updatePlayer(l);
 				//Log.i("getttttt",pl.toString());
-			
+			//for(Player p:pl){
+				//System.out.println(p.toString());
+			//}
 			
 		//*ArrayList<Team> list = new ArrayList<Team>(game.list());
 		//	game.list();

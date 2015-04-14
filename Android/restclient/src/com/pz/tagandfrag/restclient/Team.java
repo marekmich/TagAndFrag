@@ -14,19 +14,19 @@ public class Team implements Comparable<Team> {
 		this.size=size;
 	}
 
-	Integer getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	Integer getSize() {
+	public Integer getSize() {
 		return size;
 	}
 
-	void setSize(Integer size) {
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 

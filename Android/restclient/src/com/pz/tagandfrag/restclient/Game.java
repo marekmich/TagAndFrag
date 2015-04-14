@@ -45,6 +45,11 @@ public class Game {
 		restClient.PUT(object);
 	}
 	
+	public void end(Player object) throws IOException
+	{
+		restClient.PUT_E(object);
+	}
+	
 	public void shotPlayer(Player object, String attacker) throws IOException
 	{
 		//dodaje do bazy informacje o trafieniu gracza object przez gracza o nazwie attacker

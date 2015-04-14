@@ -14,6 +14,7 @@ public interface RestClient<Type> {
 	public Integer 				POST(Type object) throws IOException;
 	public void 				PUT(Type object, String attacker) throws IOException;
 	public Integer 				PUT_T(Type object) throws IOException;
+	public void 				PUT_E(Type object) throws IOException;
 	public void 				PUT(Type object) throws IOException;
 	public void 				PUT_R(Type object, Integer ready) throws IOException;
 }

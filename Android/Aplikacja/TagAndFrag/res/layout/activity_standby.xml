@@ -3,51 +3,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.pz.tagandfrag.activity.StandbyActivity" >
-    
+
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_start_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp" 
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="@string/start_game" />
-    
+
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/progress_bar_standby"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
+        android:layout_alignBottom="@+id/button_start_game"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
-        android:layout_alignLeft="@+id/button1"
+        android:layout_above="@+id/button_start_game"
+        android:layout_alignLeft="@+id/button_start_game"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/button1"
-        android:layout_marginTop="16dp"
+        android:layout_alignRight="@+id/button_start_game"
         android:layout_marginBottom="16dp"
-        android:orientation="vertical" 
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:weightSum="1" >
 
-        <TableLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="fill_parent" 
+            android:layout_height="fill_parent"
             android:layout_weight="0.5" >
-        </TableLayout>
 
-        <TableLayout
+            <TableLayout
+                android:id="@+id/table_my_team"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+            </TableLayout>
+
+        </ScrollView>
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="fill_parent" 
+            android:layout_height="fill_parent"
             android:layout_weight="0.5" >
-        </TableLayout>
 
+            <TableLayout
+                android:id="@+id/table_enemy_team"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+            </TableLayout>
+
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>

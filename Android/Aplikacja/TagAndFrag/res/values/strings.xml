@@ -30,12 +30,12 @@
     <string name="your_id_negative_button">Odrzuć zmianę id</string>
     <string name="mark_players_on_map">Gracze</string>
     <string name="show_lines_to_players">Linie</string>
-    
     <string name="title_activity_login">Logowanie</string>
     <string name="title_activity_choose_team">Wybieranie drużyny</string>
     <string name="title_game_activity">Rozgrywka</string>
     <string name="title_activity_after_game">Koniec gry</string>
     <string name="game_summary">Podsumowanie gry</string>
     <string name="reset_game">Zagraj \njeszcze raz</string>
+    <string name="title_activity_standby">StandbyActivity</string>
 
 </resources>

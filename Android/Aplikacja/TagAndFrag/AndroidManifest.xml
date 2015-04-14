@@ -50,6 +50,10 @@
             android:name=".activity.AfterGameActivity"
             android:label="@string/title_activity_after_game" >
         </activity>
+        <activity
+            android:name="com.pz.tagandfrag.activity.StandbyActivity"
+            android:label="@string/title_activity_standby" >
+        </activity>
     </application>
 
 </manifest>

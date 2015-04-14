@@ -1,5 +1,7 @@
 package com.pz.tagandfrag.fragments;
 
+import java.io.IOException;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +15,6 @@ import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.managers.DataManager;
-import com.pz.tagandfrag.managers.UpdatePlayerTask;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 
 /**
@@ -73,9 +74,23 @@ public class TeamFragment extends Fragment {
 			while (receiver.hasNextLine()) {
 				Log.i("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
 				DataManager.player.reduceHealth(DataManager.DAMAGE);
-				new UpdatePlayerTask().execute();
+				new Thread(updatePlayerRunnable()).start();
 			}
 			return null;
+		}
+		
+		private Runnable updatePlayerRunnable() {
+			return new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						DataManager.game.updatePlayer(DataManager.player);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}					
+				}
+			};
 		}
 	}
 }

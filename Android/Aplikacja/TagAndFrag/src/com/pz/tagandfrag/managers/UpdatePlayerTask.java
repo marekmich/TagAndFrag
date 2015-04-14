@@ -5,6 +5,11 @@ import java.io.IOException;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * Zadanie asynchroniczne aktualizuj¹ce gracza na serwerze.
+ * @author Mateusz
+ *
+ */
 public class UpdatePlayerTask extends AsyncTask<Void, Void, Void> {
 
 	@Override

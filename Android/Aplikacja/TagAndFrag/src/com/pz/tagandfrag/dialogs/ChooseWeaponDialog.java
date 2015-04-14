@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.ChooseTeamActivity;
-import com.pz.tagandfrag.activity.LoginActivity;
 import com.pz.tagandfrag.managers.DataManager;
 //TODO OKOMENTOWAÆ
 public class ChooseWeaponDialog extends DialogFragment {

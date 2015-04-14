@@ -1,6 +1,5 @@
 package com.pz.tagandfrag.activity;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import android.app.Activity;
@@ -128,12 +127,14 @@ public class StandbyActivity extends Activity {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
+			//Zakomentowane, by nie blokowa³o teamów w pliku rozgrywka
 			connectWithWeaponTask();
-			try {
+			//TODO ODKOMENTOWAÆ przy wydaniu
+			/*try {
 				DataManager.game.ready(DataManager.player, DataManager.player.getTeam());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			updateTeamHandler.removeCallbacks(updateTeamRunnable());
 			return null;
 		}

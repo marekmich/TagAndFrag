@@ -137,9 +137,8 @@ public class ChooseTeamActivity extends Activity {
 	/////////////////////////////////
 	/* Prywatne klasy */
 	/**
-	 * Klasa wykonuje zadanie rozpoczêcia nowej gry, 
-	 * najpierw pobiera nowy kod strza³u, utawia na broni nowy kod strza³u
-	 * a nastêpnie pobiera listê wszystkich graczy z dru¿yny danego gracza
+	 * Klasa wykonuje zadanie wys³ania do serwera informacji o wybranej dru¿ynie
+	 * nastêpnie pobrania kodu broni
 	 * */
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
 		@Override
@@ -156,8 +155,7 @@ public class ChooseTeamActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
-			sendTeamToServerAndGetWeaponCode();
+			DataManager.weaponCode = sendTeamToServerAndGetWeaponCode();
 			return null;
 		}
 	}

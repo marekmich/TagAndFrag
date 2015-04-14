@@ -2,8 +2,10 @@ package com.pz.tagandfrag.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
@@ -22,6 +24,7 @@ public class StandbyActivity extends Activity {
 		startActivity(intent);
 	}
 	
+
 	private Runnable connectWithWeaponRunnable() {
 		return new Runnable() {
 			
@@ -36,4 +39,25 @@ public class StandbyActivity extends Activity {
 	private void connectWithWeaponTask() {
 		new Thread(connectWithWeaponRunnable()).start();
 	}
+	/*
+	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected void onPostExecute(Void result) {
+			Intent intent = new Intent(ChooseTeamActivity.this, StandbyActivity.class);
+			startActivity(intent);
+			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.INVISIBLE);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.VISIBLE);
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
+			sendTeamToServerAndGetWeaponCode();
+			return null;
+		}
+	}*/
 }

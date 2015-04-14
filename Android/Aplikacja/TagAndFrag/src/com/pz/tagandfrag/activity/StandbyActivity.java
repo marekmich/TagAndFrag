@@ -36,12 +36,11 @@ public class StandbyActivity extends Activity {
 		updateTeamHandler.removeCallbacks(updateTeamRunnable());
 		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 	}
-	
-	public void onStartGameButtonClicked(View view) {
-		StartGameProgressBarTask task = new StartGameProgressBarTask();
-		task.execute();
-	}
-	
+	/////////////////////////////////
+	/* Ustawienia aplikacji */
+
+	/////////////////////////////////
+	/* Zmiany w wygl¹dzie */
 	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, int color) {
 		int i = 0;
 		teamLayout.removeAllViews();
@@ -70,10 +69,19 @@ public class StandbyActivity extends Activity {
 		}
 		Log.i("TEAM", DataManager.players.toString());
 	}
-	
+	/////////////////////////////////
+	/* Listenery */
+	/**
+	 * 
+	 * */
+	public void onStartGameButtonClicked(View view) {
+		StartGameProgressBarTask task = new StartGameProgressBarTask();
+		task.execute();
+	}
+	/////////////////////////////////
+	/* £¹cznoœæ - REST Client */
 	private Runnable updateTeamRunnable() {
 		return new Runnable() {
-			
 			@Override
 			public void run() {
 				new UpdateTeamTask().execute();
@@ -82,7 +90,11 @@ public class StandbyActivity extends Activity {
 			}
 		};
 	}
-	
+	/////////////////////////////////
+	/* £¹cznoœæ - Bluetooth */
+	private void connectWithWeaponTask() {
+		new Thread(connectWithWeaponRunnable()).start();
+	}
 	private Runnable connectWithWeaponRunnable() {
 		return new Runnable() {
 			
@@ -93,11 +105,8 @@ public class StandbyActivity extends Activity {
 			}
 		};
 	}
-	
-	private void connectWithWeaponTask() {
-		new Thread(connectWithWeaponRunnable()).start();
-	}
-	
+	/////////////////////////////////
+	/* Prywatne klasy */
 	/**
 	 * 
 	 * */

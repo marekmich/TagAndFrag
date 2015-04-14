@@ -15,7 +15,8 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/start_game" />
+        android:text="@string/start_game" 
+        android:onClick="onStartGameButtonClicked" />
 
     <ProgressBar
         android:id="@+id/progress_bar_standby"

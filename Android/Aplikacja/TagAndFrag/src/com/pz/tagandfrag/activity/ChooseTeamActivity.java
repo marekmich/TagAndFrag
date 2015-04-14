@@ -144,7 +144,7 @@ public class ChooseTeamActivity extends Activity {
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected void onPostExecute(Void result) {
-			Intent intent = new Intent(ChooseTeamActivity.this, GameActivity.class);
+			Intent intent = new Intent(ChooseTeamActivity.this, StandbyActivity.class);
 			startActivity(intent);
 			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.INVISIBLE);
 		}

@@ -102,7 +102,7 @@ public class ChooseTeamActivity extends Activity {
 		DataManager.preferences.setTeam(teamNumber);
 		DataManager.preferences.saveTeamDataFromPreferences();
 		//Rozpoczêcie nowej gry
-		StartGameProgressBarTask task = new StartGameProgressBarTask();
+		SendTeamProgressBarTask task = new SendTeamProgressBarTask();
 		task.execute();
 	}
 	/////////////////////////////////
@@ -140,7 +140,7 @@ public class ChooseTeamActivity extends Activity {
 	 * Klasa wykonuje zadanie wys³ania do serwera informacji o wybranej dru¿ynie
 	 * nastêpnie pobrania kodu broni
 	 * */
-	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
+	private class SendTeamProgressBarTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected void onPostExecute(Void result) {
 			Intent intent = new Intent(ChooseTeamActivity.this, StandbyActivity.class);

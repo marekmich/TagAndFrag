@@ -1,5 +1,6 @@
 package com.pz.tagandfrag.fragments;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -64,11 +65,26 @@ public class TeamFragment extends Fragment {
 		private InputStream inputStream;
 		private Scanner inputScanner;
 	
-		
+		public BluetoothReaderTask() {
+			super();
+			initializeStreamAndScanner();
+		}
+
 		@Override
 		protected Void doInBackground(Void... params) {
+			while (inputScanner.hasNextLine()) {
+
+			}
 			return null;
 		}
 		
+		private void initializeStreamAndScanner() {
+			try {
+				inputStream = DataManager.bluetoothService.getBluetoothSocket().getInputStream();
+			} catch (IOException e) {
+				Log.e("INPUT STREAM", e.toString());
+			}
+			inputScanner = new Scanner(inputStream);
+		}
 	}
 }

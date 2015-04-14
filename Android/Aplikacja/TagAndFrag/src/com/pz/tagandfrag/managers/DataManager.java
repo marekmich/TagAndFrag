@@ -1,6 +1,11 @@
 package com.pz.tagandfrag.managers;
 
+import java.io.IOException;
 import java.util.Collection;
+
+import org.json.JSONException;
+
+import android.util.Log;
 
 import com.pz.tagandfrag.bluetoothservice.BluetoothService;
 import com.pz.tagandfrag.restclient.Game;
@@ -16,4 +21,31 @@ public class DataManager {
 	public static PreferencesManager preferences;
 	public static String serverAddress = "http://www.mat.umk.pl/~luigi";
 	public static BluetoothService bluetoothService;
+	
+	static void getPlayers() {
+		int team = player.getTeam();
+		int oppositeTeam = team;
+		if(team % 2 == 0) {
+			oppositeTeam -= 1;
+		}
+		else {
+			oppositeTeam += 1;
+		}
+		
+		try {
+			players = game.getByTeam(team);
+		} catch (IOException e) {
+			Log.e("Team.IOex", e.toString());
+		} catch (JSONException e) {
+			Log.e("Team.JSON", e.toString());
+		}
+		
+		try {
+			oppositePlayers = game.getByTeam(oppositeTeam);
+		} catch (IOException e) {
+			Log.e("Team.IOex", e.toString());
+		} catch (JSONException e) {
+			Log.e("Team.JSON", e.toString());
+		}
+	}
 }

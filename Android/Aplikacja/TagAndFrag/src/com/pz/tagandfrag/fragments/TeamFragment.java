@@ -1,10 +1,5 @@
 package com.pz.tagandfrag.fragments;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -16,6 +11,7 @@ import android.view.ViewGroup;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.UpdateTeamTask;
 
 /**
  * Klasa reprezentuj¹ca fragment z dru¿yn¹, hostowany przez GameActivity. 
@@ -52,27 +48,11 @@ public class TeamFragment extends Fragment {
 			
 			@Override
 			public void run() {
-				UpdateTeamTask updateTeamTask = new UpdateTeamTask();
-				updateTeamTask.execute();
+				new UpdateTeamTask().execute();
 				updateTeamList();
 				updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 			}
 		};
 	}
 
-	private class UpdateTeamTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			try {
-				DataManager.players = DataManager.game.getByTeam(DataManager.player.getTeam());
-			} catch (IOException e) {
-				Log.e("Team.IOex", e.toString());
-			} catch (JSONException e) {
-				Log.e("Team.JSON", e.toString());
-			}
-			return null;
-		}
-		
-	}
 }

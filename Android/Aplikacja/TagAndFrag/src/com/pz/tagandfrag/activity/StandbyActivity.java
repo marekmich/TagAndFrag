@@ -16,12 +16,11 @@ public class StandbyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_standby);
-		connectWithWeaponTask();
 	}
 	
 	public void onStartGameButtonClicked(View view) {
-		Intent intent = new Intent(StandbyActivity.this, GameActivity.class);
-		startActivity(intent);
+		StartGameProgressBarTask task = new StartGameProgressBarTask();
+		task.execute();
 	}
 	
 
@@ -39,25 +38,30 @@ public class StandbyActivity extends Activity {
 	private void connectWithWeaponTask() {
 		new Thread(connectWithWeaponRunnable()).start();
 	}
-	/*
+	
+	/**
+	 * 
+	 * */
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
+		//TODO dokumentacja
 		@Override
 		protected void onPostExecute(Void result) {
-			Intent intent = new Intent(ChooseTeamActivity.this, StandbyActivity.class);
+			Intent intent = new Intent(StandbyActivity.this, GameActivity.class);
 			startActivity(intent);
-			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.INVISIBLE);
+			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.INVISIBLE);
 		}
 
 		@Override
 		protected void onPreExecute() {
-			findViewById(R.id.progress_bar_team).setVisibility(ProgressBar.VISIBLE);
+			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
+			findViewById(R.id.button_start_game).setVisibility(ProgressBar.INVISIBLE);
 		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
-			sendTeamToServerAndGetWeaponCode();
+			connectWithWeaponTask();
 			return null;
 		}
-	}*/
+	}
 }

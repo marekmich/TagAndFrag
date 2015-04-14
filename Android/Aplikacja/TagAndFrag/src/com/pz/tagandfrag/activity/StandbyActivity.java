@@ -1,5 +1,7 @@
 package com.pz.tagandfrag.activity;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -61,6 +63,11 @@ public class StandbyActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
 			connectWithWeaponTask();
+			try {
+				DataManager.game.ready(DataManager.player, DataManager.player.getTeam());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return null;
 		}
 	}

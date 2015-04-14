@@ -22,6 +22,7 @@ public class DataManager {
 	public static String serverAddress = "http://www.mat.umk.pl/~luigi";
 	public static BluetoothService bluetoothService;
 	public static int weaponCode = 0;
+	public static int DAMAGE = 10;
 	
 	static void getPlayers() {
 		int team = player.getTeam();

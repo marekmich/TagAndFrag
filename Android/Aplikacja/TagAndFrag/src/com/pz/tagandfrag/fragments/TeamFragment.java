@@ -1,10 +1,5 @@
 package com.pz.tagandfrag.fragments;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +13,7 @@ import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.UpdatePlayerTask;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 
 /**
@@ -64,31 +60,22 @@ public class TeamFragment extends Fragment {
 	}
 
 	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
-
-		private InputStream inputStream;
-		private Scanner inputScanner;
-
+		
+		private BluetoothDataReceiver receiver;
+		
 		public BluetoothReaderTask() {
 			super();
-			initializeStreamAndScanner(DataManager.bluetoothService.getBluetoothSocket());
+			receiver = new BluetoothDataReceiver(DataManager.bluetoothService.getBluetoothSocket());
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			while (true) {
-				String message = inputScanner.nextLine();
-				Log.i("SHT", message);
+			while (receiver.hasNextLine()) {
+				Log.i("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
+				DataManager.player.reduceHealth(DataManager.DAMAGE);
+				new UpdatePlayerTask().execute();
 			}
+			return null;
 		}
-		
-		private void initializeStreamAndScanner(BluetoothSocket bluetoothSocket) {
-			try {
-				inputStream = bluetoothSocket.getInputStream();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			inputScanner = new Scanner(inputStream);
-		}
-		
 	}
 }

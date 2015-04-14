@@ -12,6 +12,7 @@ public class DataManager {
 	public static Player player;
 	public static Collection<Team> teamList;
 	public static Collection<Player> players;
+	public static Collection<Player> oppositePlayers;
 	public static PreferencesManager preferences;
 	public static String serverAddress = "http://www.mat.umk.pl/~luigi";
 	public static BluetoothService bluetoothService;

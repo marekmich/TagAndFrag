@@ -1,5 +1,9 @@
 package com.pz.tagandfrag.fragments;
 
+import java.io.InputStream;
+import java.util.Scanner;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -55,4 +59,16 @@ public class TeamFragment extends Fragment {
 		};
 	}
 
+	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
+
+		private InputStream inputStream;
+		private Scanner inputScanner;
+	
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			return null;
+		}
+		
+	}
 }

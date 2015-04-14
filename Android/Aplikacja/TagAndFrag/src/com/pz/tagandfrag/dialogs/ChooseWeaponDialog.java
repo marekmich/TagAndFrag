@@ -23,7 +23,7 @@ public class ChooseWeaponDialog extends DialogFragment {
 	
 	public ChooseWeaponDialog() {
 		super();
-		devices = LoginActivity.bluetoothService.getBluetoothAdapter().getBondedDevices();
+		devices = DataManager.bluetoothService.getBluetoothAdapter().getBondedDevices();
 	}
 	
 	public Dialog onCreateDialog(Bundle savedInstancState) {

@@ -33,7 +33,6 @@ public class LoginActivity extends Activity {
 
 	/* Bluetooth */
 	private static final int REQUEST_ENABLE_BT = 0;
-	public static BluetoothService bluetoothService;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class LoginActivity extends Activity {
 	private void prepareActivity() {
 		
 		//Przygotowanie bluetootha
-		bluetoothService = new BluetoothService();
+		DataManager.bluetoothService = new BluetoothService();
 		requestEnableBluetooth();
 		
 		//Przygotowanie klas pomocniczych
@@ -144,7 +143,7 @@ public class LoginActivity extends Activity {
 	 * Wymusza w³¹czenia bluetootha
 	 * */
 	private void requestEnableBluetooth() {
-		if (!bluetoothService.getBluetoothAdapter().isEnabled()) {
+		if (!DataManager.bluetoothService.getBluetoothAdapter().isEnabled()) {
 			Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
 		}

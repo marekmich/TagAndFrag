@@ -1,10 +1,7 @@
 package com.pz.tagandfrag.fragments;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 
-import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,31 +61,36 @@ public class TeamFragment extends Fragment {
 	}
 
 	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
-
-		private InputStream inputStream;
-		private Scanner inputScanner;
-
+		
+		private BluetoothDataReceiver receiver;
+		
 		public BluetoothReaderTask() {
 			super();
-			initializeStreamAndScanner(DataManager.bluetoothService.getBluetoothSocket());
+			receiver = new BluetoothDataReceiver(DataManager.bluetoothService.getBluetoothSocket());
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			while (true) {
-				String message = inputScanner.nextLine();
-				Log.i("SHT", message);
+			while (receiver.hasNextLine()) {
+				Log.i("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
+				DataManager.player.reduceHealth(DataManager.DAMAGE);
+				new Thread(updatePlayerRunnable()).start();
 			}
+			return null;
 		}
 		
-		private void initializeStreamAndScanner(BluetoothSocket bluetoothSocket) {
-			try {
-				inputStream = bluetoothSocket.getInputStream();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			inputScanner = new Scanner(inputStream);
+		private Runnable updatePlayerRunnable() {
+			return new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						DataManager.game.updatePlayer(DataManager.player);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}					
+				}
+			};
 		}
-		
 	}
 }

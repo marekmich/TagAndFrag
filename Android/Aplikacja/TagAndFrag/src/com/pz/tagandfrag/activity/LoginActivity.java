@@ -60,6 +60,7 @@ public class LoginActivity extends Activity {
 		DataManager.player = new Player(DataManager.preferences.getNick(), DataManager.preferences.getId());
 		DataManager.teamList = new ArrayList<Team>();
 		DataManager.players = new ArrayList<Player>();
+		DataManager.oppositePlayers = new ArrayList<Player>();
 	}
 	
 	/////////////////////////////////

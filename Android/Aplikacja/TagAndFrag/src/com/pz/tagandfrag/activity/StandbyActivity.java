@@ -75,8 +75,9 @@ public class StandbyActivity extends Activity {
 	 * 
 	 * */
 	public void onStartGameButtonClicked(View view) {
-		StartGameProgressBarTask task = new StartGameProgressBarTask();
-		task.execute();
+		connectWithWeaponTask();
+		Intent intent = new Intent(StandbyActivity.this, GameActivity.class);
+		startActivity(intent);
 	}
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */

@@ -1,7 +1,9 @@
 package com.pz.tagandfrag.fragments;
 
 import java.io.IOException;
+import java.util.Collection;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,12 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
+import com.pz.tagandfrag.restclient.Player;
 
 /**
  * Klasa reprezentuj¹ca fragment z dru¿yn¹, hostowany przez GameActivity. 
@@ -42,10 +48,26 @@ public class TeamFragment extends Fragment {
 		return view;
 	}
 
-
+	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, int color) {
+		int i = 0;
+		teamLayout.removeAllViews();
+		for(Player player : playerList) {
+			TableRow row = new TableRow(this.getActivity());
+			row.setBackgroundColor(color);
+			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+			row.setLayoutParams(lp);
+			TextView name = new TextView(this.getActivity());
+			name.setText(player.getName());
+			row.addView(name);
+			teamLayout.addView(row, i);
+	        i++;
+		}
+	}
 	private void updateTeamList() {
-		// Tutaj mo¿na akutalizowaæ GUI
-		Log.i("TEAM", DataManager.players.toString());
+		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
+		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
+		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
+		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
 	}
 	
 	private Runnable updateTeamRunnable() {

@@ -67,7 +67,6 @@ public class StandbyActivity extends Activity {
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.INVISIBLE);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.VISIBLE);
 		}
-		Log.i("TEAM", DataManager.players.toString());
 	}
 	/////////////////////////////////
 	/* Listenery */

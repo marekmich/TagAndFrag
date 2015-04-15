@@ -26,7 +26,6 @@
 
             <TableLayout
                 android:id="@+id/table_my_team_team_fragment"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
             </TableLayout>
@@ -39,7 +38,6 @@
 
             <TableLayout
                 android:id="@+id/table_opposite_team_team_fragment"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
             </TableLayout>

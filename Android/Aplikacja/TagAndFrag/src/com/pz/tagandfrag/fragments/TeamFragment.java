@@ -56,8 +56,9 @@ public class TeamFragment extends Fragment {
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this.getActivity());
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+			row.setBackgroundColor(color);
 			row.setLayoutParams(lp);
-			if(i == 0) {
+			/*if(i == 0) {
 				TextView name_tittle = new TextView(this.getActivity());
 				name_tittle.setText("Nick");
 				row.addView(name_tittle);
@@ -69,8 +70,7 @@ public class TeamFragment extends Fragment {
 				}
 				teamLayout.addView(row, i);
 				i = 1;
-			}
-			row.setBackgroundColor(color);
+			}*/
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
 			row.addView(name);
@@ -88,9 +88,9 @@ public class TeamFragment extends Fragment {
 	private void updateTeamList() {
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
-		myTeam.setVisibility(LinearLayout.VISIBLE);
+		//myTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
-		oppositeTeam.setVisibility(LinearLayout.VISIBLE);
+		//oppositeTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
 		
 	}

@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -25,7 +24,7 @@ public class StandbyActivity extends Activity {
 
 	// Okres aktualizacji w milisekundach
 	public static final int UPDATE_PERIOD = 3000;
-	public static final int MINIMUM_NUMBER_OF_PLAYER = 1;
+	public static final int MINIMUM_NUMBER_OF_PLAYERS = 1;
 	private Handler updateTeamHandler;
 	
 	@Override
@@ -35,6 +34,7 @@ public class StandbyActivity extends Activity {
 		updateTeamHandler = new Handler();
 		updateTeamHandler.removeCallbacks(updateTeamRunnable());
 		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+		connectWithWeaponTask();
 	}
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
@@ -62,8 +62,8 @@ public class StandbyActivity extends Activity {
 		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
 		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
 		
-		if(DataManager.players.size() >= MINIMUM_NUMBER_OF_PLAYER 
-				&& DataManager.oppositePlayers.size() >= MINIMUM_NUMBER_OF_PLAYER) {
+		if(DataManager.players.size() >= MINIMUM_NUMBER_OF_PLAYERS 
+				&& DataManager.oppositePlayers.size() >= MINIMUM_NUMBER_OF_PLAYERS) {
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.INVISIBLE);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.VISIBLE);
 		}
@@ -142,7 +142,6 @@ public class StandbyActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
 			//Zakomentowane, by nie blokowa³o teamów w pliku rozgrywka
-			connectWithWeaponTask();
 			startGame();
 			return null;
 		}

@@ -53,12 +53,34 @@ public class TeamFragment extends Fragment {
 		teamLayout.removeAllViews();
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this.getActivity());
+			
+			if(i == 0) {
+				TextView name_tittle = new TextView(this.getActivity());
+				name_tittle.setText("Nick");
+				row.addView(name_tittle);
+				if(DataManager.player.getTeam() == player.getTeam())
+				{
+					TextView hp_tittle = new TextView(this.getActivity());
+					hp_tittle.setText("HP");
+					row.addView(hp_tittle);
+				}
+				teamLayout.addView(row, i);
+				i = 1;
+			}
+			
 			row.setBackgroundColor(color);
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
 			row.setLayoutParams(lp);
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
 			row.addView(name);
+
+			if(DataManager.player.getTeam() == player.getTeam())
+			{
+				TextView hp = new TextView(this.getActivity());
+				hp.setText(String.valueOf(player.getHealthPoints()));
+				row.addView(hp);
+			}
 			teamLayout.addView(row, i);
 	        i++;
 		}

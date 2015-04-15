@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.bluetoothservice.BluetoothService;
 import com.pz.tagandfrag.dialogs.ChooseWeaponDialog;
+import com.pz.tagandfrag.dialogs.ShowNewIdDialog;
 import com.pz.tagandfrag.managers.PreferencesManager;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.restclient.Game;
@@ -135,7 +136,6 @@ public class LoginActivity extends Activity {
 			//Kiedy nick jest niew³aœciwy
 			Toast.makeText(this, R.string.nick_length_wrong, Toast.LENGTH_LONG).show();
 		}
-		setPasswordOnPasswordEditText();
 	}
 	
 	/////////////////////////////////
@@ -155,6 +155,13 @@ public class LoginActivity extends Activity {
 	 * */
 	private void chooseWeapon(Activity activity) {
 		new ChooseWeaponDialog().show(getFragmentManager(), "DEV");
+	}
+	
+	/**
+	 * Pokazanie okienka z nowym ID
+	 */
+	private void showDialogWithNewId() {
+		new ShowNewIdDialog().show(getFragmentManager(), "ID");
 	}
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
@@ -220,9 +227,15 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(Void result) {
 			if(isSuccessful) {
 				//Kiedy nick jest w³aœciwy dane s¹ zapisywane do preferencji, progress bar jest chowany i przechodzi siê do kolejnego etapu
+				EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
 				DataManager.preferences.saveLoginDataToPreferences();
 				DataManager.preferences.loadMACDataFromPreferences();
-				chooseWeapon(activity);
+				if (TextUtils.isEmpty(passwordEditText.getText())) {
+					chooseWeapon(activity);
+					showDialogWithNewId();
+				} else {
+					chooseWeapon(activity);
+				}
 			}
 			else {
 				//Kiedy nick jest niew³aœciwy (tzn. kiedy serever.gracz.id != android.gracz.id, czyli nick jest zajêty)

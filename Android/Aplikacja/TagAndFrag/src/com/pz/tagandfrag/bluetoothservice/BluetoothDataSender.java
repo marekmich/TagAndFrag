@@ -11,7 +11,6 @@ import android.bluetooth.BluetoothSocket;
  * @author Lukasz
  *
  */
-@SuppressWarnings("unused")
 public class BluetoothDataSender 
 {
 	private final BluetoothSocket bluetoothSocket;

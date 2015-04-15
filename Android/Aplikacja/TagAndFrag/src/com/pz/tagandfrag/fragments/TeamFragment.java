@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class TeamFragment extends Fragment {
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
 		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
 		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
+		getView().findViewById(R.id.team_layout).setVisibility(LinearLayout.VISIBLE);;
 	}
 	
 	private Runnable updateTeamRunnable() {

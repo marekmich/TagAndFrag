@@ -86,11 +86,13 @@ public class TeamFragment extends Fragment {
 		}
 	}
 	private void updateTeamList() {
-		getView().findViewById(R.id.team_layout).setVisibility(LinearLayout.VISIBLE);
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
+		myTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
+		oppositeTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
+		
 	}
 	
 	private Runnable updateTeamRunnable() {

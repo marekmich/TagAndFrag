@@ -16,6 +16,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 import com.pz.tagandfrag.restclient.Player;
@@ -89,6 +90,15 @@ public class StandbyActivity extends Activity {
 			}
 		};
 	}
+	private void startGame() {
+		updateTeamHandler.removeCallbacks(updateTeamRunnable());
+		//TODO ODKOMENTOWAÆ przy wydaniu
+		/*try {
+			DataManager.game.ready(DataManager.player, DataManager.player.getTeam());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+	}
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
 	private void connectWithWeaponTask() {
@@ -101,8 +111,13 @@ public class StandbyActivity extends Activity {
 			public void run() {
 				String MAC = DataManager.preferences.getMAC();
 				DataManager.bluetoothService.connectWithDeviceByMacAddress(MAC);
+				sendNewCodeToWeapon();
 			}
 		};
+	}
+	private void sendNewCodeToWeapon() {
+		BluetoothDataSender dataSender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
+		dataSender.changeWeaponCode(DataManager.weaponCode);
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */
@@ -121,7 +136,7 @@ public class StandbyActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
-			findViewById(R.id.button_start_game).setVisibility(ProgressBar.INVISIBLE);
+			findViewById(R.id.button_start_game).setVisibility(ProgressBar.GONE);
 		}
 
 		@Override
@@ -129,13 +144,7 @@ public class StandbyActivity extends Activity {
 			//Dopisaæ obs³ugê przypisania weaponcode - obs³uga bluetootha
 			//Zakomentowane, by nie blokowa³o teamów w pliku rozgrywka
 			connectWithWeaponTask();
-			//TODO ODKOMENTOWAÆ przy wydaniu
-			/*try {
-				DataManager.game.ready(DataManager.player, DataManager.player.getTeam());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
-			updateTeamHandler.removeCallbacks(updateTeamRunnable());
+			startGame();
 			return null;
 		}
 	}

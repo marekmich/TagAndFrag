@@ -52,9 +52,11 @@ public class TeamFragment extends Fragment {
 	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, int color) {
 		int i = 0;
 		teamLayout.removeAllViews();
+		
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this.getActivity());
-			
+			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+			row.setLayoutParams(lp);
 			if(i == 0) {
 				TextView name_tittle = new TextView(this.getActivity());
 				name_tittle.setText("Nick");
@@ -68,10 +70,7 @@ public class TeamFragment extends Fragment {
 				teamLayout.addView(row, i);
 				i = 1;
 			}
-			
 			row.setBackgroundColor(color);
-			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-			row.setLayoutParams(lp);
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
 			row.addView(name);

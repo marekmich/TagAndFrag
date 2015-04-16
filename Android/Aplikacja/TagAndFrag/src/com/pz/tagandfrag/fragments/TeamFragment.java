@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,15 +62,18 @@ public class TeamFragment extends Fragment {
 		row_tittle.setLayoutParams(lp_tittle);
 		TextView name_tittle = new TextView(this.getActivity());
 		name_tittle.setText("Nick");
+		name_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 		row_tittle.addView(name_tittle);
 		if(color == Color.GREEN)
 		{
 			TextView break_tittle = new TextView(this.getActivity());
 			break_tittle.setText("    ");
+			break_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 			row_tittle.addView(break_tittle);
 			
 			TextView hp_tittle = new TextView(this.getActivity());
 			hp_tittle.setText("HP");
+			hp_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 			row_tittle.addView(hp_tittle);
 		}
 		teamLayout.addView(row_tittle, 0);
@@ -87,16 +91,19 @@ public class TeamFragment extends Fragment {
 			row.setLayoutParams(lp);
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
+			name.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 			row.addView(name);
 
 			if(DataManager.player.getTeam() == player.getTeam())
 			{
 				TextView zbreak = new TextView(this.getActivity());
 				zbreak.setText("    ");
+				zbreak.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 				row.addView(zbreak);
 				
 				TextView hp = new TextView(this.getActivity());
 				hp.setText(String.valueOf(player.getHealthPoints()));
+				hp.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 				row.addView(hp);
 			}
 			teamLayout.addView(row, i);

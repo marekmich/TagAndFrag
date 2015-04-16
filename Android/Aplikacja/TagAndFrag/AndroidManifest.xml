@@ -40,18 +40,22 @@
         </activity>
         <activity
             android:name=".activity.ChooseTeamActivity"
-            android:label="@string/title_activity_choose_team" >
+            android:label="@string/title_activity_choose_team"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.GameActivity"
-            android:label="@string/title_game_activity" >
+            android:label="@string/title_game_activity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.AfterGameActivity"
-            android:label="@string/title_activity_after_game" >
+            android:label="@string/title_activity_after_game"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.pz.tagandfrag.activity.StandbyActivity" >
+            android:name="com.pz.tagandfrag.activity.StandbyActivity"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

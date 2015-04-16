@@ -1,6 +1,6 @@
 package com.pz.tagandfrag.restclient;
 
-public class Player {
+public class Player implements Comparable<Player> {
 
 	private String name, localization;
 	private Integer id, healthPoints, ammunition, team;
@@ -92,6 +92,12 @@ public class Player {
 
 	public void setTeam(Integer team) {
 		this.team = team;
+	}
+	@Override
+	public int compareTo(Player another) {
+		if(this.healthPoints > another.getHealthPoints()) return -1;
+		else if(this.healthPoints == another.getHealthPoints()) return 0;
+		return 1;
 	}
 }
 

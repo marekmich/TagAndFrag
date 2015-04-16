@@ -1,7 +1,8 @@
 package com.pz.tagandfrag.fragments;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,9 +52,24 @@ public class TeamFragment extends Fragment {
 		return view;
 	}
 
-	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, int color) {
-		int i = 0;
+	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, int color) {
+		int i = 1;
 		teamLayout.removeAllViews();
+		
+		TableRow row_tittle = new TableRow(this.getActivity());
+		TableRow.LayoutParams lp_tittle = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+		row_tittle.setLayoutParams(lp_tittle);
+		TextView name_tittle = new TextView(this.getActivity());
+		name_tittle.setText("Nick");
+		row_tittle.addView(name_tittle);
+		if(color == Color.GREEN)
+		{
+			TextView hp_tittle = new TextView(this.getActivity());
+			hp_tittle.setText("HP");
+			row_tittle.addView(hp_tittle);
+		}
+		teamLayout.addView(row_tittle, 0);
+		Collections.sort(playerList);
 		
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this.getActivity());
@@ -66,19 +81,6 @@ public class TeamFragment extends Fragment {
 				row.setBackgroundColor(Color.GRAY);
 			}
 			row.setLayoutParams(lp);
-			if(i == 0) {
-				TextView name_tittle = new TextView(this.getActivity());
-				name_tittle.setText("Nick");
-				row.addView(name_tittle);
-				if(DataManager.player.getTeam() == player.getTeam())
-				{
-					TextView hp_tittle = new TextView(this.getActivity());
-					hp_tittle.setText("HP");
-					row.addView(hp_tittle);
-				}
-				teamLayout.addView(row, i);
-				i = 1;
-			}
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
 			row.addView(name);
@@ -97,9 +99,9 @@ public class TeamFragment extends Fragment {
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
 		//myTeam.setVisibility(LinearLayout.VISIBLE);
-		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
+		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, Color.GREEN);
 		//oppositeTeam.setVisibility(LinearLayout.VISIBLE);
-		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
+		updateTableLayout(oppositeTeam, (ArrayList<Player>) DataManager.oppositePlayers, Color.RED);
 		
 	}
 	

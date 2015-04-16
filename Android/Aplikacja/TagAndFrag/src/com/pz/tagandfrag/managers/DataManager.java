@@ -1,6 +1,7 @@
 package com.pz.tagandfrag.managers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.json.JSONException;
@@ -35,7 +36,7 @@ public class DataManager {
 		}
 		
 		try {
-			players = game.getByTeam(team);
+			players = new ArrayList<Player>(game.getByTeam(team));
 		} catch (IOException e) {
 			Log.e("Team.IOex", e.toString());
 		} catch (JSONException e) {
@@ -43,7 +44,7 @@ public class DataManager {
 		}
 		
 		try {
-			oppositePlayers = game.getByTeam(oppositeTeam);
+			oppositePlayers = new ArrayList<Player>(game.getByTeam(oppositeTeam));
 		} catch (IOException e) {
 			Log.e("Team.IOex", e.toString());
 		} catch (JSONException e) {

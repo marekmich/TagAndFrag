@@ -231,7 +231,6 @@ public class LoginActivity extends Activity {
 				DataManager.preferences.saveLoginDataToPreferences();
 				DataManager.preferences.loadMACDataFromPreferences();
 				if (TextUtils.isEmpty(passwordEditText.getText())) {
-					chooseWeapon(activity);
 					showDialogWithNewId();
 				} else {
 					chooseWeapon(activity);

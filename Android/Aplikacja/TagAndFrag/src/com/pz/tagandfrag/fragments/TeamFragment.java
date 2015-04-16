@@ -21,6 +21,7 @@ import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.DebugManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 import com.pz.tagandfrag.restclient.Player;
 
@@ -42,10 +43,12 @@ public class TeamFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.team_fragment, container, false);
-		updateTeamHandler = new Handler();
-		updateTeamHandler.removeCallbacks(updateTeamRunnable());
-		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
-		new BluetoothReaderTask().execute();
+		if(!DebugManager.withoutBluetooth) {
+			updateTeamHandler = new Handler();
+			updateTeamHandler.removeCallbacks(updateTeamRunnable());
+			updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+			new BluetoothReaderTask().execute();
+		}
 		return view;
 	}
 
@@ -56,9 +59,14 @@ public class TeamFragment extends Fragment {
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this.getActivity());
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-			row.setBackgroundColor(color);
+			if(player.getHealthPoints() != 0) {
+				row.setBackgroundColor(color);
+			}
+			else {
+				row.setBackgroundColor(Color.GRAY);
+			}
 			row.setLayoutParams(lp);
-			/*if(i == 0) {
+			if(i == 0) {
 				TextView name_tittle = new TextView(this.getActivity());
 				name_tittle.setText("Nick");
 				row.addView(name_tittle);
@@ -70,7 +78,7 @@ public class TeamFragment extends Fragment {
 				}
 				teamLayout.addView(row, i);
 				i = 1;
-			}*/
+			}
 			TextView name = new TextView(this.getActivity());
 			name.setText(player.getName());
 			row.addView(name);

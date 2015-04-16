@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.DebugManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 import com.pz.tagandfrag.restclient.Player;
 
@@ -101,7 +102,9 @@ public class StandbyActivity extends Activity {
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
 	private void connectWithWeaponTask() {
-		new Thread(connectWithWeaponRunnable()).start();
+		if(!DebugManager.withoutBluetooth) {
+			new Thread(connectWithWeaponRunnable()).start();
+		}
 	}
 	private Runnable connectWithWeaponRunnable() {
 		return new Runnable() {

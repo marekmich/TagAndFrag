@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -171,6 +172,7 @@ public class ChooseTeamActivity extends Activity {
 			findViewById(R.id.progress_bar_team_download).setVisibility(ProgressBar.INVISIBLE);
 			findViewById(R.id.scroll_view).setVisibility(ProgressBar.VISIBLE);
 			addRadioButtons();
+			findViewById(R.id.button_team).setVisibility(Button.VISIBLE);
 		}
 
 		@Override

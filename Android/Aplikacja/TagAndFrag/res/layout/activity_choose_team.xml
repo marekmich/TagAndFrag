@@ -26,8 +26,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:text="@string/team_button" 
-        android:onClick="onChooseTeamButtonClicked" />
+        android:onClick="onChooseTeamButtonClicked"
+        android:text="@string/team_button"
+        android:visibility="invisible" />
 
     <ScrollView
         android:id="@+id/scroll_view"

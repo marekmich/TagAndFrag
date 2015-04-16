@@ -106,6 +106,9 @@ public class ChooseTeamActivity extends Activity {
 		SendTeamProgressBarTask task = new SendTeamProgressBarTask();
 		task.execute();
 	}
+	@Override
+	public void onBackPressed() {
+	}
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
 	/**

@@ -137,7 +137,9 @@ public class LoginActivity extends Activity {
 			Toast.makeText(this, R.string.nick_length_wrong, Toast.LENGTH_LONG).show();
 		}
 	}
-	
+	@Override
+	public void onBackPressed() {
+	}
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
 	/**

@@ -78,6 +78,9 @@ public class StandbyActivity extends Activity {
 		StartGameProgressBarTask task = new StartGameProgressBarTask();
 		task.execute();
 	}
+	@Override
+	public void onBackPressed() {
+	}
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
 	private Runnable updateTeamRunnable() {

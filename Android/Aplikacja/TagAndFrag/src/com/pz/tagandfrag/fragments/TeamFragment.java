@@ -43,10 +43,10 @@ public class TeamFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.team_fragment, container, false);
+		updateTeamHandler = new Handler();
+		updateTeamHandler.removeCallbacks(updateTeamRunnable());
+		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 		if(!DebugManager.withoutBluetooth) {
-			updateTeamHandler = new Handler();
-			updateTeamHandler.removeCallbacks(updateTeamRunnable());
-			updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 			new BluetoothReaderTask().execute();
 		}
 		return view;

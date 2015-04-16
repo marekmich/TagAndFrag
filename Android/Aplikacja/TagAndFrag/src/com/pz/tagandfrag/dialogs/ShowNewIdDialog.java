@@ -1,12 +1,12 @@
 package com.pz.tagandfrag.dialogs;
 
-import com.pz.tagandfrag.managers.DataManager;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.pz.tagandfrag.managers.DataManager;
 
 public class ShowNewIdDialog extends DialogFragment {
 

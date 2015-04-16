@@ -37,5 +37,9 @@
     <string name="game_summary">Podsumowanie gry</string>
     <string name="reset_game">Zagraj \njeszcze raz</string>
     <string name="title_activity_standby">StandbyActivity</string>
-
+    <string name="show_new_id_dialog_title">Twój unikatowy numer ID</string>
+	<string name="show_new_id_dialog_info">Wyglada na to że jeszcze nigdy nie grałeś.\n
+	    									Twój nowy, unikatowy numer ID to: <b>%1%s</b>\n\n
+	    									Zapamiętaj go!</string>
+    
 </resources>

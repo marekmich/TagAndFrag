@@ -13,13 +13,13 @@ public class ShowNewIdDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		String tittle = getString(R.string.show_new_id_dialog_title);
-		String info = getString(R.string.show_new_id_dialog_info);
+		String title = getString(R.string.show_new_id_dialog_title);
+		String info = String.format(getString(R.string.show_new_id_dialog_info),
+									DataManager.preferences.getId());
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder	.setTitle("Twój unikatowy numer ID")
-				.setMessage("Wygl¹da na to ¿e jeszcze nigdy nie gra³eœ.\n\n"
-							+ "Twój nowy, unikatowy numer ID to: " + DataManager.preferences.getId() + "\n")
+		builder	.setTitle(title)
+				.setMessage(info)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					
 					@Override

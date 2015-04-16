@@ -6,12 +6,16 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
 
 public class ShowNewIdDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		String tittle = getString(R.string.show_new_id_dialog_title);
+		String info = getString(R.string.show_new_id_dialog_info);
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder	.setTitle("Twój unikatowy numer ID")
 				.setMessage("Wygl¹da na to ¿e jeszcze nigdy nie gra³eœ.\n\n"

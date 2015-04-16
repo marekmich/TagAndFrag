@@ -62,4 +62,7 @@ public class AfterGameActivity extends Activity {
 		Intent intent = new Intent(AfterGameActivity.this, ChooseTeamActivity.class);
 		startActivity(intent);
 	}
+	@Override
+	public void onBackPressed() {
+	}
 }

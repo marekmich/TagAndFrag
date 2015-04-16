@@ -23,5 +23,7 @@ public class GameActivity extends FragmentActivity {
 		viewPager.setOffscreenPageLimit(PageAdapter.NUMBER_OF_PAGES - 1);
 		viewPager.setAdapter(pageAdapter);
 	}
-	
+	@Override
+	public void onBackPressed() {
+	}
 }

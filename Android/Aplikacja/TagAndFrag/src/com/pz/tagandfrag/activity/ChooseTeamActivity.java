@@ -23,15 +23,21 @@ import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.restclient.Team;
 
-
+/**
+ * Aktywnoœæ odpowiedzialna za obs³ugê i wyœwietlenie ekranu wyboru dru¿yñ
+ * @author £ukasz ¯urawski
+ */
 public class ChooseTeamActivity extends Activity {
 	
+	/**
+	 * Pobiera z pamiêci ostatnio wybran¹ dru¿ynê (jeœli istnieje) wpp. przypisuje zero,
+	 * a nastêpnie uruchamia zadanie odpowiedzialne za pobranie listy dostêpnych dru¿yn.
+	 * */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_team);
 		prepareActivity();
-		initializeViewComponents();
 	}
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
@@ -50,12 +56,6 @@ public class ChooseTeamActivity extends Activity {
 	}
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
-	/**
-	 * Zmienia wygl¹d na podstawie pobranych ustawieñ z pamiêci
-	 * */
-	public void initializeViewComponents() {
-		
-	}
 	/**
 	 * Tworzy listê dostêpnych dru¿yn na bazie
 	 * */
@@ -128,7 +128,7 @@ public class ChooseTeamActivity extends Activity {
 		return weaponCode;
 	}
 	/**
-	 * Pobiera z serwera listê
+	 * Pobiera z serwera listê dru¿yn
 	 */
 	private void downloadTeamListFromServer() {
 		ArrayList<Team> array = new ArrayList<Team>();

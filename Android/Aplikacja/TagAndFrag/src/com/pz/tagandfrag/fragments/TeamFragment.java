@@ -28,7 +28,7 @@ import com.pz.tagandfrag.restclient.Player;
 
 /**
  * Klasa reprezentuj¹ca fragment z dru¿yn¹, hostowany przez GameActivity. 
- * @author Mateusz Wrzos
+ * @author Mateusz Wrzos, £ukasz ¯urawski
  * @see GameActivity
  *
  */
@@ -44,25 +44,54 @@ public class TeamFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.team_fragment, container, false);
-		updateTeamHandler = new Handler();
-		updateTeamHandler.removeCallbacks(updateTeamRunnable());
-		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+		createUpdateTeamHandler();
 		if(!DebugManager.withoutBluetooth) {
 			new BluetoothReaderTask().execute();
 		}
 		return view;
 	}
-
+	/////////////////////////////////
+	/* Ustawienia aplikacji */
+	/**
+	 * Tworzy i ustawia handler na w¹tek, zajmuj¹cy siê updatowaniem listy graczy w dru¿ynach
+	 * */
+	private void createUpdateTeamHandler() {
+		updateTeamHandler = new Handler();
+		updateTeamHandler.removeCallbacks(updateTeamRunnable());
+		updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+	}
+	/////////////////////////////////
+	/* Zmiany w wygl¹dzie */
+	/**
+	 * Dodaje kolumny z tekstem o okreœlonym rozmiarze do podanego wiersza
+	 * @param row wiersz do, którego kolumna ma byæ podana
+	 * @param text tekst, który ma byæ w tworzonej kolumnie
+	 * */
 	private void addColumnToRow(TableRow row, String text) {
 		TextView column = new TextView(this.getActivity());
+		//Ustawienei tekstu w kolumnie i jego rozmiaru
 		column.setText(text);
 		column.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
 		row.addView(column);
 	}
-	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, int color) {
+	/**
+	 * Tworzy tabeele na podstawie listy graczy z danej dru¿yny
+	 * @param teamLayout {@link TableLayout} na którym ma byæ wyœwietlona tabela
+	 * @param playerList lista graczy z dru¿yny
+	 * @param myTeam informacja czy dana tabela dotyczy dru¿yny gracza, czy dru¿yny przeciwnej
+	 * */
+	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, boolean myTeam) {
 		int i = 1;
 		teamLayout.removeAllViews();
-		
+		int color = 0;
+		//Ustawienie w jakim kolorze maj¹ byæ wyœwietlane wiersze
+		if(myTeam == true) {
+			color = Color.GREEN;
+		}
+		else {
+			color = Color.RED;
+		}
+		//Przygotowanie wiersza tytu³owego
 		TableRow row_tittle = new TableRow(this.getActivity());
 		TableRow.LayoutParams lp_tittle = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
 		row_tittle.setLayoutParams(lp_tittle);
@@ -77,9 +106,11 @@ public class TeamFragment extends Fragment {
 			addColumnToRow(row_tittle, "HP");
 		}
 		teamLayout.addView(row_tittle, 0);
+		//Posortowanie listy graczy w dru¿ynie
 		Collections.sort(playerList);
-		
+		//Dodawanie kolejnych wierszy z danymi graczy
 		for(Player player : playerList) {
+			//Przygotowanie wiersza
 			TableRow row = new TableRow(this.getActivity());
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
 			if(player.getHealthPoints() != 0) {
@@ -93,7 +124,7 @@ public class TeamFragment extends Fragment {
 			//Dodanie kolumny z nickiem gracza
 			addColumnToRow(row, player.getName());
 
-			if(DataManager.player.getTeam() == player.getTeam())
+			if(color == Color.GREEN)
 			{
 				//Dodanie kolumny z przerw¹
 				addColumnToRow(row, "    ");
@@ -104,16 +135,23 @@ public class TeamFragment extends Fragment {
 	        i++;
 		}
 	}
+	/**
+	 * Aktualizuje tabele z listami graczy z obu dru¿yn
+	 * */
 	private void updateTeamList() {
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
-		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, Color.GREEN);
-		updateTableLayout(oppositeTeam, (ArrayList<Player>) DataManager.oppositePlayers, Color.RED);
+		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, true);
+		updateTableLayout(oppositeTeam, (ArrayList<Player>) DataManager.oppositePlayers, false);
 	}
 	
+	/////////////////////////////////
+	/* £¹cznoœæ - REST Client */
+	/**
+	 * Zadanie pobieraj¹ce listê graczy z w³asnej i przeciwnej dru¿yny
+	 */
 	private Runnable updateTeamRunnable() {
 		return new Runnable() {
-			
 			@Override
 			public void run() {
 				new UpdateTeamTask().execute();
@@ -122,7 +160,8 @@ public class TeamFragment extends Fragment {
 			}
 		};
 	}
-
+	/////////////////////////////////
+	/* Prywatne klasy */
 	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
 		
 		private BluetoothDataReceiver receiver;

@@ -9,8 +9,19 @@ import android.os.Bundle;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
 
+/**
+ * Okienko informuj¹ce nowego uzytkonika o nadaniu nowego numeru ID.
+ * @author Mateusz Wrzos
+ *
+ */
 public class ShowNewIdDialog extends DialogFragment {
 
+	/**
+	 * Tworzy dialog z nowym ID pobranym z DataManagera.
+	 * Po zaakceptowaniu, pokazuje okienko z wyborem broni (modu³u bluetooth).
+	 * @see DataManager
+	 * @see ChooseWeaponDialog
+	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		String title = getString(R.string.show_new_id_dialog_title);

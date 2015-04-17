@@ -35,6 +35,12 @@ public class LoginActivity extends Activity {
 	/* Bluetooth */
 	private static final int REQUEST_ENABLE_BT = 0;
 	
+	/**
+	 * Przygotowujê statyczne pola, które bêd¹ wykorzystywane w ca³ej aplikacji.
+	 * Pobiera z pamiêci ustawienia aplikacji
+	 * a nastêpnie modyfikujê pola z nickiem i has³em na podstawie 
+	 * ustawieñ pobranych z pamiêci. 
+	 * */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

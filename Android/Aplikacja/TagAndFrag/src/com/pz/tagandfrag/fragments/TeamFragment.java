@@ -53,6 +53,12 @@ public class TeamFragment extends Fragment {
 		return view;
 	}
 
+	private void addColumnToRow(TableRow row, String text) {
+		TextView column = new TextView(this.getActivity());
+		column.setText(text);
+		column.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
+		row.addView(column);
+	}
 	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, int color) {
 		int i = 1;
 		teamLayout.removeAllViews();
@@ -60,21 +66,15 @@ public class TeamFragment extends Fragment {
 		TableRow row_tittle = new TableRow(this.getActivity());
 		TableRow.LayoutParams lp_tittle = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
 		row_tittle.setLayoutParams(lp_tittle);
-		TextView name_tittle = new TextView(this.getActivity());
-		name_tittle.setText("Nick");
-		name_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-		row_tittle.addView(name_tittle);
+		
+		//Dodanie kolumny tytu³owej (nick)
+		addColumnToRow(row_tittle, "Nick");
 		if(color == Color.GREEN)
 		{
-			TextView break_tittle = new TextView(this.getActivity());
-			break_tittle.setText("    ");
-			break_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-			row_tittle.addView(break_tittle);
-			
-			TextView hp_tittle = new TextView(this.getActivity());
-			hp_tittle.setText("HP");
-			hp_tittle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-			row_tittle.addView(hp_tittle);
+			//Dodanie kolumny tytu³owej (przerwa)
+			addColumnToRow(row_tittle, "    ");
+			//Dodanie kolumny tytu³owej (HP)
+			addColumnToRow(row_tittle, "HP");
 		}
 		teamLayout.addView(row_tittle, 0);
 		Collections.sort(playerList);
@@ -89,22 +89,16 @@ public class TeamFragment extends Fragment {
 				row.setBackgroundColor(Color.GRAY);
 			}
 			row.setLayoutParams(lp);
-			TextView name = new TextView(this.getActivity());
-			name.setText(player.getName());
-			name.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-			row.addView(name);
+			
+			//Dodanie kolumny z nickiem gracza
+			addColumnToRow(row, player.getName());
 
 			if(DataManager.player.getTeam() == player.getTeam())
 			{
-				TextView zbreak = new TextView(this.getActivity());
-				zbreak.setText("    ");
-				zbreak.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-				row.addView(zbreak);
-				
-				TextView hp = new TextView(this.getActivity());
-				hp.setText(String.valueOf(player.getHealthPoints()));
-				hp.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
-				row.addView(hp);
+				//Dodanie kolumny z przerw¹
+				addColumnToRow(row, "    ");
+				//Dodanie kolumny z iloœci¹ HP
+				addColumnToRow(row, String.valueOf(player.getHealthPoints()));
 			}
 			teamLayout.addView(row, i);
 	        i++;
@@ -113,11 +107,8 @@ public class TeamFragment extends Fragment {
 	private void updateTeamList() {
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
-		//myTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, Color.GREEN);
-		//oppositeTeam.setVisibility(LinearLayout.VISIBLE);
 		updateTableLayout(oppositeTeam, (ArrayList<Player>) DataManager.oppositePlayers, Color.RED);
-		
 	}
 	
 	private Runnable updateTeamRunnable() {

@@ -40,6 +40,9 @@ public class TeamFragment extends Fragment {
 	public static final int UPDATE_PERIOD = 3000;
 	private Handler updateTeamHandler;
 	
+	/**
+	 * Tworzy fragment oraz Handler aktualizujacy druzyne.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -162,15 +165,28 @@ public class TeamFragment extends Fragment {
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */
+	
+	/**
+	 * Asynchroniczne zadanie odbieraj¹ce dane z modu³u bluetooth.
+	 * @author Mateusz Wrzos
+	 *
+	 */
 	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
 		
 		private BluetoothDataReceiver receiver;
 		
+		/**
+		 * Tworzy zadanie oraz inicjalicuje odbiornik danych bluetooth.
+		 * @see BluetoothDataReceiver 
+		 */
 		public BluetoothReaderTask() {
 			super();
 			receiver = new BluetoothDataReceiver(DataManager.bluetoothService.getBluetoothSocket());
 		}
 
+		/**
+		 * W tle odbiera strza³y oraz aktualizuje gracza (redukuje jego punkty ¿ycia).
+		 */
 		@Override
 		protected Void doInBackground(Void... params) {
 			while (receiver.hasNextLine()) {
@@ -181,6 +197,9 @@ public class TeamFragment extends Fragment {
 			return null;
 		}
 		
+		/**
+		 * @return Runnable aktualizuj¹ce gracza.
+		 */
 		private Runnable updatePlayerRunnable() {
 			return new Runnable() {
 				

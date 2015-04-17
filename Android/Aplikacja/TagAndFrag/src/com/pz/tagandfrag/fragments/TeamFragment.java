@@ -97,13 +97,13 @@ public class TeamFragment extends Fragment {
 		row_tittle.setLayoutParams(lp_tittle);
 		
 		//Dodanie kolumny tytu³owej (nick)
-		addColumnToRow(row_tittle, "Nick");
+		addColumnToRow(row_tittle, getString(R.string.nick));
 		if(color == Color.GREEN)
 		{
 			//Dodanie kolumny tytu³owej (przerwa)
 			addColumnToRow(row_tittle, "    ");
 			//Dodanie kolumny tytu³owej (HP)
-			addColumnToRow(row_tittle, "HP");
+			addColumnToRow(row_tittle, getString(R.string.hp));
 		}
 		teamLayout.addView(row_tittle, 0);
 		//Posortowanie listy graczy w dru¿ynie

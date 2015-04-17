@@ -10,6 +10,8 @@
     <string name="preference_file">com.example.tagandfrag.preference_file</string>
     <string name="nick_text">Podaj nick</string>
     <string name="nick_button">Zaloguj</string>
+    <string name="nick">Nick</string>
+    <string name="hp">HP</string>
     <string name="nick_length_wrong">Niewłaściwa długość nick</string>
     <string name="password_length_wrong">Niewłaściwa długość hasła</string>
     <string name="nick_correct">Sukces</string>

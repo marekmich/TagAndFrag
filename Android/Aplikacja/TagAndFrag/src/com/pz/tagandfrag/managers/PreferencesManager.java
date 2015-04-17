@@ -5,22 +5,27 @@ import com.pz.tagandfrag.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * Manager zajmuj¹cy siê pobieraniem i zapisywaniem informacji w pamiêci telefonu.
+ * @author £ukasz ¯urawski
+ * */
 public class PreferencesManager 
 {
-	
 	
 	int id;
 	String nick;
 	String MAC;
 	int team;
-	
 	Context context;
 	
-	
+	/**
+	 * Ustawia domyœlne wartoœci na polach.
+	 * */
 	public PreferencesManager(Context applicationContext) {
 		this.context = applicationContext;
 		id = 0;
 		nick = "";
+		MAC = "";
 	}
 	
 	/**

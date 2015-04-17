@@ -1,8 +1,17 @@
 package com.pz.tagandfrag.managers;
 
+/**
+ * Manager pozwalaj¹cy wy³¹czyæ dzia³anie niektórych elementów aplikacji w celu
+ * u³atwienia testowania.
+ * @author £ukasz ¯urawski
+ * */
 public class DebugManager {
-	//Wy³¹czanie ³¹cznoœci z bluetoothem
+	/**
+	 * Statyczne pole pozwalaj¹ce wy³¹czyæ ³¹cznoœci z bluetoothem
+	 * */
 	static public boolean withoutBluetooth = true;
-	//Wy³¹czanie wysy³ania komendy ready na serwer
+	/**
+	 * Statyczne pole pozwalaj¹ce wy³¹czyæ  wysy³ania komendy ready na serwer
+	 * */
 	static public boolean withoutReady = true;
 }

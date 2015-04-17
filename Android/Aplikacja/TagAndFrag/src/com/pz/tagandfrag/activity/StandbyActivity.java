@@ -23,13 +23,28 @@ import com.pz.tagandfrag.managers.DebugManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
 import com.pz.tagandfrag.restclient.Player;
 
+/**
+ * Aktywnoœæ odpowiedzialna za wyœwietlenie ekranu z list¹ graczy w dru¿ynach oraz
+ * obs³ugê rozpoczêcia gry
+ * @author £ukasz ¯urawski
+ */
 public class StandbyActivity extends Activity {
 
-	// Okres aktualizacji w milisekundach
+	/**
+	 * Statyczne pole z interwa³em aktualizacji w milisekundach.
+	 */
 	public static final int UPDATE_PERIOD = 3000;
+	/**
+	 * Statyczne pole z minimaln¹ iloœci¹ graczy w ka¿dej dru¿ynie do
+	 * rozpoczêcia rozgrywki.
+	 * */
 	public static final int MINIMUM_NUMBER_OF_PLAYERS = 1;
 	private Handler updateTeamHandler;
 	
+	/**
+	 * Tworzy Handler aktualizujacy druzyne oraz uruchamia zadanie
+	 * ³¹cz¹ce siê z broni¹ i zmieniaj¹ce kod tej broni.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

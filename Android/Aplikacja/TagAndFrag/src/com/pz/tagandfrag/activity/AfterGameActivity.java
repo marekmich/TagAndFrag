@@ -12,6 +12,11 @@ import android.widget.Toast;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
 
+
+/**
+ * Aktywnoœæ odpowiedzialna za wyœwietlanie i obs³ugê ekranu zakoñczenia gry.
+ * @author £ukasz ¯urawski
+ */
 public class AfterGameActivity extends Activity {
 
 	@Override

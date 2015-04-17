@@ -48,6 +48,10 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			LocationListener {
 
 	private static boolean firstLocationEstablishing = true;
+	/**
+	 * Interwa³ aktualizacji w milisekundach.
+	 */
+	public static int UPDATE_INTERVAL = 3000;
 	private Handler updateTeamOnMapHandler;
 	
 	/* Map elements */
@@ -66,6 +70,10 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	/* Mock's */
 	private Collection<Player> mockPlayers;
 	
+	/**
+	 * Tworzy widok fragmentu. Inicjalizuje elementy widoku, buduje klienta Google API.
+	 * Ustawia pole mapView, inicjalizuje mapê, tworzy nowy Handler aktualizuj¹cy pozycjê graczy (cyklicznie).
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -83,6 +91,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		return view;
 	}
 	
+	/**
+	 * Buduje klienta Google API.
+	 */
 	private void buildGoogleApiClient() {
 		googleApiClient = new GoogleApiClient.Builder(getActivity())
 		.addApi(LocationServices.API)
@@ -102,6 +113,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		mockPlayers.add(new Player("Mock6", 100, 100, "53.010528#18.595149", -1));
 	}
 	
+	/**
+	 * Inicjalizuje CheckBox pokazuj¹cy graczy na mapie.
+	 */
 	private void initializeShowPlayersCheckBox() {
 		showPlayersCheckBox = (CheckBox) view.findViewById(R.id.showPlayersCheckBox);
 		showPlayersCheckBox.setOnClickListener(new OnClickListener() {
@@ -122,6 +136,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		});
 	}
 	
+	/**
+	 * Inicjalizuje CheckBox pokazuj¹cy linie na mapie (³¹cz¹ce gracza z jego druzyna).
+	 */
 	private void initializeShowLinesCheckBox() {
 		showLinesCheckBox = (CheckBox) view.findViewById(R.id.showLinesCheckBox);
 		showLinesCheckBox.setEnabled(false);
@@ -139,6 +156,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		});
 	}
 
+	/**
+	 * Dodaje wszystkie Markery z na podstawie pozycji graczy z mojej druzyny.
+	 */
 	private void addAllMarkersToMap() {
 		for (Player player : DataManager.players) {
 			if (!player.getId().equals(DataManager.player.getId())) {
@@ -155,6 +175,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		}
 	}
 	
+	/**
+	 * Usuwa wszystkie markery z mapy.
+	 */
 	private void removeAllMarkersFromMap() {
 		for (Marker marker : markers) {
 			marker.remove();
@@ -162,6 +185,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		markers.clear();
 	}
 	
+	/**
+	 * Dodaje wszystkie linie ³¹cz¹ce gracza z jego dru¿yn¹. 
+	 */
 	private void addAllLinesToMap() {
 		LatLng myLocation = new LatLng(	Double.valueOf(map.getMyLocation().getLatitude()), 
 										Double.valueOf(map.getMyLocation().getLongitude())
@@ -176,6 +202,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		}
 	}
 	
+	/**
+	 * Usuwa wszystkie linie z mapy.
+	 */
 	private void removeAllLinesFromMap() {
 		for (Polyline line : lines) { 
 			line.remove();
@@ -183,6 +212,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		lines.clear();
 	}
 	
+	/**
+	 * Przerysowywuje obiekty na mapie.
+	 */
 	private void redrawMapObjects() {
 		removeAllLinesFromMap();
 		removeAllMarkersFromMap();
@@ -194,6 +226,10 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		}
 	}
 	
+	/**
+	 * Zadanie aktualizujace pozycje druzyny na mapie.
+	 * @return obiekt Runnable, argument cyklicznego Handlera 
+	 */
 	private Runnable updateTeamOnMapTask() {
 		return new Runnable() {
 			
@@ -241,6 +277,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		super.onStop();
 	}
 
+	/**
+	 * Inicjalizuje mapê, liste markerów i linii, wy³¹cza gesty na mapie.
+	 */
 	private void setUpMap() {
 		// Radzyn
 //		double lat = 53.385034;
@@ -257,7 +296,12 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	}
 
 	
-	
+	/**
+	 * Gdy lokalizacja sie zmieni po raz pierwszy to przybliza kamerê i j¹ centruje na lokalizacji.
+	 * Centruje kamere za kazdym innym razem.
+	 * Wykonuje zadanie aktualizujace pozycje gracza na serwerze.
+	 * @see UpdatePlayerLocationTask
+	 */
 	@Override
 	public void onLocationChanged(Location location) {
 		LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -273,16 +317,22 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		Log.i("MAP", location.toString());
 	}
 
+	/**
+	 * Gdy polaczenie zawiedzie, wypisuje Toast
+	 */
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
 		Toast.makeText(getActivity(), "GoogleApiClient connection has failed", Toast.LENGTH_SHORT).show();		
 	}
 
+	/**
+	 * Gdy sie polaczy, ustawia wysoki priorytet, interwa³ aktualizacji lokalizacji oraz klienta Google API.
+	 */
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(3000);
+        locationRequest.setInterval(UPDATE_INTERVAL);
         LocationServices.FusedLocationApi.requestLocationUpdates(
         		googleApiClient, locationRequest, this);
 		Log.i("MAP", "Connected");
@@ -292,6 +342,11 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	public void onConnectionSuspended(int cause) {
 	}
 	
+	/**
+	 * Pobiera lokalizacjê gracza.
+	 * @param player
+	 * @return Gdy gracz posiada lokalizacje w bazie, zwraca LatLng gotowy do wstawienia na mape. W p.p. null.
+	 */
 	private LatLng getPlayerLocation(Player player) {
 		String location = player.getLocalization();
 		if (location.contains("#")) {
@@ -302,6 +357,11 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		return null;
 	}
 	
+	/**
+	 * Zadanie aktualizujace pozycjê gracza na serwerze.
+	 * @author Mateusz Wrzos
+	 *
+	 */
 	private class UpdatePlayerLocationTask extends AsyncTask<Void, Void, Void> {
 
 		private LatLng newLocation;
@@ -311,6 +371,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			this.newLocation = newLocation;
 		}
 
+		/**
+		 * W tle aktualizuje pozycje gracza.
+		 */
 		@Override
 		protected Void doInBackground(Void... params) {
 			String location = newLocation.latitude + "#" + newLocation.longitude; 

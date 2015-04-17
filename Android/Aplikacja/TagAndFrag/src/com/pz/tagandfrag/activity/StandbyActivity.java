@@ -16,7 +16,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
-import com.pz.tagandfrag.activity.LoginActivity.NickCheckProgressBarTask;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.managers.DebugManager;

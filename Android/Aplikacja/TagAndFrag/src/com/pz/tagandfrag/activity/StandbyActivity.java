@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
@@ -98,9 +99,12 @@ public class StandbyActivity extends Activity {
 		StartGameProgressBarTask task = new StartGameProgressBarTask();
 		task.execute();
 	}
+	
 	@Override
 	public void onBackPressed() {
+		Toast.makeText(this, getString(R.string.back_pressed_info), Toast.LENGTH_LONG).show();
 	}
+	
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
 	/**

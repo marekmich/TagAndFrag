@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
@@ -106,9 +107,12 @@ public class ChooseTeamActivity extends Activity {
 		SendTeamProgressBarTask task = new SendTeamProgressBarTask();
 		task.execute();
 	}
+	
 	@Override
 	public void onBackPressed() {
+		Toast.makeText(this, getString(R.string.back_pressed_info), Toast.LENGTH_LONG).show();
 	}
+	
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
 	/**

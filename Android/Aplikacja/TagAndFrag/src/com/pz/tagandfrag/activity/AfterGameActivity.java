@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.managers.DataManager;
@@ -62,7 +63,9 @@ public class AfterGameActivity extends Activity {
 		Intent intent = new Intent(AfterGameActivity.this, ChooseTeamActivity.class);
 		startActivity(intent);
 	}
+	
 	@Override
 	public void onBackPressed() {
+		Toast.makeText(this, getString(R.string.back_pressed_info), Toast.LENGTH_LONG).show();
 	}
 }

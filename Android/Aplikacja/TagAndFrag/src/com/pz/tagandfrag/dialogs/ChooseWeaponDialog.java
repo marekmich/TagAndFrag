@@ -14,31 +14,60 @@ import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.ChooseTeamActivity;
+import com.pz.tagandfrag.bluetoothservice.BluetoothService;
 import com.pz.tagandfrag.managers.DataManager;
-//TODO OKOMENTOWAÆ
+
+/**
+ * Okienko pozwalaj¹ce wybraæ broñ (modu³ bluetooth).
+ * @author Mateusz Wrzos
+ * @see BluetoothService
+ * 
+ */
 public class ChooseWeaponDialog extends DialogFragment {
 
+	/**
+	 * Zbiór sprawowanych urz¹dzeñ.
+	 */
 	private Set<BluetoothDevice> devices;
 	
+	/**
+	 * Konstruktor pobieraj¹cy zbiór sparowanych urz¹dzeñ z domyœlnego adaptera.
+	 * @see BluetoothService
+	 * @see DataManager
+	 */
 	public ChooseWeaponDialog() {
 		super();
 		devices = DataManager.bluetoothService.getBluetoothAdapter().getBondedDevices();
 	}
 	
+	/**
+	 * Buduje dialog. Ustawia na nim listê sparowanych urz¹dzeñ.
+	 * 
+	 */
 	public Dialog onCreateDialog(Bundle savedInstancState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder	.setTitle("Wybierz broñ")
 				.setNegativeButton("Anuluj", null)
-				.setItems(toListString(convertDevicesSetToArrayList(devices)), deviceClickedListener());
+				.setItems(toArray(convertDevicesSetToArrayList(devices)), deviceClickedListener());
 		return builder.create();
 	}
 	
-	private String[] toListString(ArrayList<String> list) {
+	/**
+	 * Konwertuje listê do tablicy
+	 * @param lista 
+	 * @return tablica stworzona z tej listy
+	 */
+	private String[] toArray(ArrayList<String> list) {
 		String[] listString = new String[list.size()];
 		listString = list.toArray(listString);
 		return listString;
 	}
 
+	/**
+	 * Konwertuje zbiór do ArrayList<>
+	 * @param zbiór urzadzen 
+	 * @return lista urzadzen
+	 */
 	private ArrayList<String> convertDevicesSetToArrayList(Set<BluetoothDevice> devices) {
 		ArrayList<String> devicesList = new ArrayList<String>();
 		for (BluetoothDevice device : devices) {
@@ -48,6 +77,11 @@ public class ChooseWeaponDialog extends DialogFragment {
 		return devicesList;
 	}
 	
+	/**
+	 * Znajduje adres MAC na podstawie nazwy urz¹dzenia.
+	 * @param nazwa urzadzenia
+	 * @return adres MAC, gdy nie znajdzie takiego urzadzenia to null
+	 */
 	private String findMacByName(String deviceName) {
 		for (BluetoothDevice device : devices) {
 			if (device.getName().equals(deviceName)) {
@@ -57,6 +91,13 @@ public class ChooseWeaponDialog extends DialogFragment {
 		return null;
 	}
 	
+	/**
+	 * Listener obs³ugujacy klikniecia na okienko. Ustawia MAC do preferencji. 
+	 * Uruchamia Intent do nastepnej aktywnosci
+	 * @return nowy OnClickListener na dialogu.
+	 * @see DataManager
+	 * @see ChooseTeamActivity
+	 */
 	private DialogInterface.OnClickListener deviceClickedListener() {
 		return new DialogInterface.OnClickListener() {
 			

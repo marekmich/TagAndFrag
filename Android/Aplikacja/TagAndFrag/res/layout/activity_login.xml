@@ -41,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/edit_text_login"
+        android:layout_alignRight="@+id/edit_text_password"
         android:layout_below="@+id/edit_text_password"
         android:layout_marginTop="16dp"
         android:onClick="onNickConfirmButtonClicked"
@@ -69,5 +70,17 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp"
         android:progress="@integer/first" />
+
+    <CheckBox
+        android:id="@+id/already_have_account_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/button_login"
+        android:layout_alignLeft="@+id/button_login"
+        android:layout_alignRight="@+id/progress_bar_nick"
+        android:layout_alignEnd="@+id/progress_bar_nick"
+        android:layout_below="@+id/button_login"
+        android:text="@string/already_have_account" 
+        android:onClick="onAlreadyHaveAccountClicked" />
 
 </RelativeLayout>

@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -63,7 +65,7 @@ public class LoginActivity extends Activity {
 		DataManager.preferences = new PreferencesManager(getApplicationContext());
 		DataManager.preferences.loadLoginDataFromPreferences();
 		
-		DataManager.game = new Game(10);
+		DataManager.game = new Game(DataManager.DAMAGE);
 		DataManager.player = new Player(DataManager.preferences.getNick(), DataManager.preferences.getId());
 		DataManager.teamList = new ArrayList<Team>();
 		DataManager.players = new ArrayList<Player>();
@@ -84,10 +86,13 @@ public class LoginActivity extends Activity {
 	 * */
 	private void setNewNickOnNickEditText() {
 		EditText nickEditText = (EditText) findViewById(R.id.edit_text_login);
+		CheckBox alreadyHaveAccount = (CheckBox) findViewById(R.id.already_have_account_checkbox);
+		
 		//Sprawdza czy nick pobrany z preferencji jest ró¿ny od hinta
 		if(!DataManager.preferences.getNick().equals(getResources().getString(R.string.preferences_name_default)))
 		{
 			nickEditText.setText(DataManager.preferences.getNick());
+			alreadyHaveAccount.setChecked(true);
 		}
 	}
 	/** 
@@ -98,6 +103,8 @@ public class LoginActivity extends Activity {
 		if(DataManager.preferences.getId() != 0)
 		{
 			passwordEditText.setText(String.valueOf(DataManager.preferences.getId()));
+		} else {
+			passwordEditText.setVisibility(EditText.INVISIBLE);
 		}
 	}
 	
@@ -110,7 +117,8 @@ public class LoginActivity extends Activity {
 	public void onNickConfirmButtonClicked(View view) {
 		EditText nickEditText = (EditText) findViewById(R.id.edit_text_login);
 		EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
-		
+		Button loginButton = (Button) findViewById(R.id.button_login);
+		loginButton.setEnabled(false);
 		//Sprawdzenie czy nick jest odpowiednio d³ugi oraz czy has³o ma w³aœciw¹ d³ugoœæ
 		if(nickEditText.getText().toString().length() >= 4 && 
 				((DataManager.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 7) 
@@ -136,16 +144,31 @@ public class LoginActivity extends Activity {
 		{
 			//Kiedy has³o jest niew³aœciwe
 			Toast.makeText(this, R.string.password_length_wrong, Toast.LENGTH_LONG).show();
+			if (!loginButton.isEnabled()) {
+				loginButton.setEnabled(true);
+			}
 		}
 		else
 		{
 			//Kiedy nick jest niew³aœciwy
 			Toast.makeText(this, R.string.nick_length_wrong, Toast.LENGTH_LONG).show();
+			if (!loginButton.isEnabled()) {
+				loginButton.setEnabled(true);
+			}
 		}
 	}
-	@Override
-	public void onBackPressed() {
+
+	public void onAlreadyHaveAccountClicked(View view) {
+		CheckBox alreadyHaveAccount = (CheckBox) findViewById(R.id.already_have_account_checkbox);
+		EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
+
+		if (alreadyHaveAccount.isChecked()) {
+			passwordEditText.setVisibility(EditText.VISIBLE);
+		} else {
+			passwordEditText.setVisibility(EditText.INVISIBLE);
+		}
 	}
+		
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
 	/**

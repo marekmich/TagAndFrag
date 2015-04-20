@@ -124,12 +124,12 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 				Log.i("Click", "Click");
 				if (showPlayersCheckBox.isChecked()) {
 					addAllMarkersToMap();
-					showLinesCheckBox.setEnabled(true);
+//					showLinesCheckBox.setEnabled(true);
 				} else {
 					removeAllMarkersFromMap();
-					removeAllLinesFromMap();
-					showLinesCheckBox.setChecked(false);
-					showLinesCheckBox.setEnabled(false);
+//					removeAllLinesFromMap();
+//					showLinesCheckBox.setChecked(false);
+//					showLinesCheckBox.setEnabled(false);
 				}
 			}
 			

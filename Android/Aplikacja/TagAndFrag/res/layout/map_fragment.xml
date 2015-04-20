@@ -21,6 +21,7 @@
         android:onClick="onShowPlayersClick"
         android:text="@string/mark_players_on_map" />
 
+<!-- 
     <CheckBox
         android:id="@+id/showLinesCheckBox"
         android:layout_width="wrap_content"
@@ -31,5 +32,5 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/showPlayersCheckBox"
         android:text="@string/show_lines_to_players" />
-
+ -->
 </RelativeLayout>

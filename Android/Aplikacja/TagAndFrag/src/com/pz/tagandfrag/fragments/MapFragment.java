@@ -79,7 +79,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.map_fragment, container, false);
 		initializeShowPlayersCheckBox();
-		initializeShowLinesCheckBox();
+		//initializeShowLinesCheckBox();
 		buildGoogleApiClient();
 		mapView = (MapView) view.findViewById(R.id.mapView);
 		mapView.onCreate(savedInstanceState);
@@ -136,25 +136,27 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 		});
 	}
 	
-	/**
-	 * Inicjalizuje CheckBox pokazuj¹cy linie na mapie (³¹cz¹ce gracza z jego druzyna).
-	 */
-	private void initializeShowLinesCheckBox() {
-		showLinesCheckBox = (CheckBox) view.findViewById(R.id.showLinesCheckBox);
-		showLinesCheckBox.setEnabled(false);
-		showLinesCheckBox.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i("CLICK", "Checkbox");
-				if (showLinesCheckBox.isChecked()) {
-					addAllLinesToMap();
-				} else {
-					removeAllLinesFromMap();
-				}
 
-			}
-		});
-	}
+//	/**
+//	 * Inicjalizuje CheckBox pokazuj¹cy linie na mapie (³¹cz¹ce gracza z jego druzyna).
+//	 */
+//	private void initializeShowLinesCheckBox() {
+//		showLinesCheckBox = (CheckBox) view.findViewById(R.id.showLinesCheckBox);
+//		showLinesCheckBox.setEnabled(false);
+//		showLinesCheckBox.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Log.i("CLICK", "Checkbox");
+//				if (showLinesCheckBox.isChecked()) {
+//					addAllLinesToMap();
+//				} else {
+//					removeAllLinesFromMap();
+//				}
+//
+//			}
+//		});
+//	}
+
 
 	/**
 	 * Dodaje wszystkie Markery z na podstawie pozycji graczy z mojej druzyny.

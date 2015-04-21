@@ -128,7 +128,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	StringBuilder response = new StringBuilder();
 	String line;
 
-	while((line=reader.readLine())!=null) response.append(line+"\n");
+	while((line=reader.readLine())!=null) response.append(line);
 
 	reader.close();			
 	writer.close();
@@ -177,7 +177,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	StringBuilder response = new StringBuilder();
 	String line;
 
-	while((line=reader.readLine())!=null) response.append(line+"\n");
+	while((line=reader.readLine())!=null) response.append(line);
 
 	reader.close();			
 	writer.close();

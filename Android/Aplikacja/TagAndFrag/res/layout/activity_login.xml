@@ -10,6 +10,7 @@
     <RelativeLayout
         android:id="@+id/layoutTop"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="6" >
 
         <ImageView
@@ -26,6 +27,7 @@
     <RelativeLayout
         android:id="@+id/layoutBottom"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="-40dp"
         android:layout_weight="4"
@@ -36,10 +38,10 @@
             android:id="@+id/edit_text_login"
             style="@style/Textbox"
             android:ems="10"
-            android:hint="@string/nick_text"
-            android:password="false" >
+            android:hint="@string/nick_text" >
 
-            <requestFocus />
+            <requestFocus android:layout_width="match_parent" />
+
         </EditText>
 
         <Button
@@ -72,6 +74,15 @@
             android:hint="@string/password_text"
             android:inputType="numberPassword" />
 
-    </RelativeLayout>
+		<ProgressBar
+		    android:id="@+id/progress_bar_nick"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBottom="@+id/already_have_account_checkbox"
+		    android:layout_alignRight="@+id/edit_text_login"
+		    android:layout_alignTop="@+id/already_have_account_checkbox"
+		    android:visibility="invisible" />
+
+	</RelativeLayout>
 
 </LinearLayout>

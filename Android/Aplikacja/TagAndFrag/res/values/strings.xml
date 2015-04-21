@@ -43,4 +43,5 @@
 	<string name="show_new_id_dialog_info">Wyglada na to że jeszcze nigdy nie grałeś.\nTwój nowy, unikatowy numer ID to: %1$s\n\nZapamiętaj go!</string>
 	<string name="back_pressed_info">Nie możesz się cofnąć!</string>
 	<string name="already_have_account">Mam już konto</string>
+	<string name="no_paired_devices_message">Nie masz sprawowanych urządzeń! Wejdź w ustawienia i połącz się z bronią.</string>
 </resources>

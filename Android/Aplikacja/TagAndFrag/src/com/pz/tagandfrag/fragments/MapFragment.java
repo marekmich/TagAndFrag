@@ -218,13 +218,9 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	 * Przerysowywuje obiekty na mapie.
 	 */
 	private void redrawMapObjects() {
-		removeAllLinesFromMap();
 		removeAllMarkersFromMap();
 		if (showPlayersCheckBox.isChecked()) {
 			addAllMarkersToMap();
-			if (showLinesCheckBox.isChecked()) {
-				addAllLinesToMap();
-			}
 		}
 	}
 	

@@ -47,8 +47,14 @@ public class ChooseWeaponDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstancState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder	.setTitle("Wybierz broñ")
-				.setNegativeButton("Anuluj", null)
-				.setItems(toArray(convertDevicesSetToArrayList(devices)), deviceClickedListener());
+				.setNegativeButton("Anuluj", null);
+
+		ArrayList<String> devicesNames = convertDevicesSetToArrayList(devices);
+		if (devicesNames.isEmpty()) {
+			builder.setMessage(getString(R.string.no_paired_devices_message));
+		} else {
+			builder.setItems(toArray(devicesNames), deviceClickedListener());
+		}
 		return builder.create();
 	}
 	

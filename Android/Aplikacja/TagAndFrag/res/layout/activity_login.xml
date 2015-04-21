@@ -26,29 +26,21 @@
     <RelativeLayout
         android:id="@+id/layoutBottom"
         android:layout_width="fill_parent"
-        android:layout_weight="4" >
+        android:layout_gravity="bottom"
+        android:layout_marginTop="-40dp"
+        android:layout_weight="4"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp" >
 
         <EditText
             android:id="@+id/edit_text_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        	android:layout_marginTop="-40dp"
+            style="@style/Textbox"
             android:ems="10"
-            android:hint="@string/nick_text" >
+            android:hint="@string/nick_text"
+            android:password="false" >
 
             <requestFocus />
         </EditText>
-
-        <EditText
-            android:id="@+id/edit_text_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edit_text_login"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/password_text"
-            android:inputType="numberPassword" />
 
         <Button
             android:id="@+id/button_login"
@@ -70,6 +62,16 @@
             android:layout_below="@+id/button_login"
             android:onClick="onAlreadyHaveAccountClicked"
             android:text="@string/already_have_account" />
+
+        <EditText
+            android:id="@+id/edit_text_password"
+            style="@style/Textbox"
+            android:layout_below="@+id/edit_text_login"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="@string/password_text"
+            android:inputType="numberPassword" />
+
     </RelativeLayout>
 
 </LinearLayout>

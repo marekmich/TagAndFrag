@@ -111,6 +111,7 @@ public class StandbyActivity extends Activity {
 	 * poprzez uruchomienia zadania w tle z klasy {@link StartGameProgressBarTask}
 	 */
 	public void onStartGameButtonClicked(View view) {
+		updateTeamHandler.removeCallbacks(updateTeamRunnable());
 		StartGameProgressBarTask task = new StartGameProgressBarTask();
 		task.execute();
 	}
@@ -139,7 +140,6 @@ public class StandbyActivity extends Activity {
 	 * Wy³¹cza handlera pobieraj¹cego graczy z dru¿yn, a nastêpnie wysy³a informacjê o tym, ¿e dru¿yny s¹ gotowe
 	 */
 	private void startGame() {
-		updateTeamHandler.removeCallbacks(updateTeamRunnable());
 		if(!DebugManager.withoutReady) {
 			try {
 				DataManager.game.ready(DataManager.player, DataManager.player.getTeam());
@@ -197,6 +197,8 @@ public class StandbyActivity extends Activity {
 		protected void onPreExecute() {
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.GONE);
+			findViewById(R.id.table_my_team_standby_activity).setVisibility(TableLayout.INVISIBLE);
+			findViewById(R.id.table_opposite_team_standby_activity).setVisibility(TableLayout.INVISIBLE);
 		}
 
 		@Override

@@ -42,6 +42,16 @@
                 android:layout_height="match_parent" >
             </TableLayout>
         </ScrollView>
+
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_team_fragment"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_weight="0.5" />
     
 </RelativeLayout>

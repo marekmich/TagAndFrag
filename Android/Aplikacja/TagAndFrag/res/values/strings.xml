@@ -48,4 +48,6 @@
 	<string name="connections_error_info">Wykryliśmy, że nie masz włączonych następujących funkcji:\n%1$s\nBez nich aplikacja może nie działać stabilnie, bądź nie działać w ogóle!</string>
 	<string name="connections_error_back_pressed">Zastosuj się proszę do tych zaleceń</string>
 	<string name="go_to_settings">Idź do ustawień</string>
+	<string name="pair_devices_button">Paruj z nowym urządzeniem.</string>
+	<string name="choose_weapon_title">Wybierz broń.</string>
 </resources>

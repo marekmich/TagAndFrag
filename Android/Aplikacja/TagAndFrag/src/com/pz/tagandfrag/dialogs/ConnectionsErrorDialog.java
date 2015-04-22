@@ -48,8 +48,10 @@ public class ConnectionsErrorDialog extends DialogFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				if (!LoginActivity.WIFI_ENABLED) {
 					startActivity(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS));
+					dialog.dismiss();
 				} else {
 					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+					dialog.dismiss();
 				}
 			}
 		};

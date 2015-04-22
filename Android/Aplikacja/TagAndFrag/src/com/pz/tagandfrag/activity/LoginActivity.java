@@ -56,7 +56,11 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		checkConnections();
+		if (WIFI_ENABLED && GPS_ENABLED) {
+			new ChooseWeaponDialog().show(getFragmentManager(), "DEV");
+		} else {
+			checkConnections();
+		}
 	}
 
 

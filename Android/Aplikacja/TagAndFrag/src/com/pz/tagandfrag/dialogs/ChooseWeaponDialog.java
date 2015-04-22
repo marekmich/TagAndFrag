@@ -46,8 +46,8 @@ public class ChooseWeaponDialog extends DialogFragment {
 	 */
 	public Dialog onCreateDialog(Bundle savedInstancState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder	.setTitle("Wybierz broñ")
-				.setNegativeButton("Anuluj", null);
+		builder	.setTitle(getString(R.string.choose_weapon_title))
+				.setPositiveButton(getString(R.string.pair_devices_button), onPairButtoniClicked());
 
 		ArrayList<String> devicesNames = convertDevicesSetToArrayList(devices);
 		if (devicesNames.isEmpty()) {
@@ -124,6 +124,21 @@ public class ChooseWeaponDialog extends DialogFragment {
 				{
 					e.printStackTrace();
 				}
+			}
+		};
+	}
+	
+	/**
+	 * Listener obs³uguj¹cy klikniêcia na button otwieraj¹cy ustawienia Bluetooth.
+	 * @return
+	 */
+	private DialogInterface.OnClickListener onPairButtoniClicked() {
+		return new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				startActivity(new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS));
+				dialog.dismiss();
 			}
 		};
 	}

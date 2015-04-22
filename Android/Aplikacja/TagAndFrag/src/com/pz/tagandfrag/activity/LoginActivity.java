@@ -198,7 +198,7 @@ public class LoginActivity extends Activity {
 	private void checkConnections() {
 		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+		
 		if (wifiManager.isWifiEnabled()) {
 			WIFI_ENABLED = true;
 		}

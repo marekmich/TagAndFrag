@@ -46,5 +46,6 @@
 	<string name="no_paired_devices_message">Nie masz sprawowanych urządzeń! Wejdź w ustawienia i połącz się z bronią.</string>
 	<string name="connections_error_title">Błąd połączęń</string>
 	<string name="connections_error_info">Wykryliśmy, że nie masz włączonych następujących funkcji:\n%1$s\nBez nich aplikacja może nie działać stabilnie, bądź nie działać w ogóle!</string>
+	<string name="connections_error_back_pressed">Zastosuj się proszę do tych zaleceń</string>
 	<string name="go_to_settings">Idź do ustawień</string>
 </resources>

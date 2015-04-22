@@ -37,7 +37,54 @@ public class Player implements Comparable<Player> {
 		
 	}
 	
+	public String getName() {
+		return name;
+	}
 
+	public Integer getHealthPoints() {
+		return healthPoints;
+	}
+
+	public Integer getAmmunition() {
+		return ammunition;
+	}
+
+	public String getLocalization() {
+		return localization;
+	}
+
+	public Integer getTeam() {
+		return team;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+	
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public  void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setHealthPoints(Integer healthPoints) {
+		this.healthPoints = healthPoints;
+	}
+
+	public void setAmmunition(Integer ammunition) {
+		this.ammunition = ammunition;
+	}
+
+	public void setLocalization(String localization) {
+		this.localization = localization;
+	}
+
+	public void setTeam(Integer team) {
+		this.team = team;
+	}
 
 	@Override
 	public String toString() {
@@ -46,53 +93,6 @@ public class Player implements Comparable<Player> {
 				+ localization + ",team " + team + ", id " + id + "]";
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLocalization() {
-		return localization;
-	}
-
-	public void setLocalization(String localization) {
-		this.localization = localization;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getHealthPoints() {
-		return healthPoints;
-	}
-
-	public void setHealthPoints(Integer healthPoints) {
-		this.healthPoints = healthPoints;
-	}
-
-	public Integer getAmmunition() {
-		return ammunition;
-	}
-
-	public void setAmmunition(Integer ammunition) {
-		this.ammunition = ammunition;
-	}
-
-	public Integer getTeam() {
-		return team;
-	}
-
-	public void setTeam(Integer team) {
-		this.team = team;
-	}
 	@Override
 	public int compareTo(Player another) {
 		if(this.healthPoints > another.getHealthPoints()) return -1;
@@ -100,4 +100,3 @@ public class Player implements Comparable<Player> {
 		return 1;
 	}
 }
-

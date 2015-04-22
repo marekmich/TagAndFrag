@@ -15,11 +15,10 @@ public class Game {
 	private Integer subHp;
 	
 	public Game() {
-		super();
 		this.restClient = new TagAndFragRestClient();
 		this.players = new ArrayList<Player>();
 		players.clear();
-		this.subHp=0;
+		this.subHp=10;
 	}
 
 	public Game(Integer value) {
@@ -30,29 +29,29 @@ public class Game {
 		this.subHp = value;   //wartosc o jaka zmniejszane beda pkt zycia
 	}
 	
-	public Integer addPlayer(Player object) throws IOException, JSONException{
+	public void addPlayer(Player object) throws IOException, JSONException{
 		
-		//dodawanie gracza do bazy, zwraca nadane mu id lub 0 jesli nie udalo dodac sie gracza (gracz istnial z innym id)
-		Integer post;
-		if((post = restClient.POST(object))==0) return 0;
-
-		restClient.PUT(object);
-		players.add(object);
-		return post;
+		//dodawanie gracza do bazy
+		restClient.POST(object);
 	}
 	
 	public void updatePlayer(Player object) throws IOException
 	{
 		//wyslanie do serwera aktualnych parametrow gracza w celu zapisania ich w bazie
-		restClient.PUT(object);
+		restClient.PUT(object,"UPDATE");
+	}
+	
+	public void end(Player object) throws IOException
+	{
+		restClient.PUT(object,"END");
 	}
 	
 	public void shotPlayer(Player object, String attacker) throws IOException
 	{
 		//dodaje do bazy informacje o trafieniu gracza object przez gracza o nazwie attacker
 		if(object.getHealthPoints()>0){
-		object.reduceHealth(this.subHp); //jesli gracz mnial dodatnie pkt zycia to zostaja zmniejszone o subHp
-		restClient.PUT(object, attacker); //wyslanie danych do serwera
+		object.reduceHealth(this.subHp); //jesli gracz mial dodatnie pkt zycia to zostaja zmniejszone o subHp
+		restClient.PUT(object, "SHOT", attacker); //wyslanie danych do serwera
 		}
 		
 	}
@@ -66,54 +65,52 @@ public class Game {
 	public void update() throws IOException, JSONException
 	{
 		//uaktualnienie parametrow graczy z listy danymi z serwera
-		players = restClient.GET(0);
+		players = restClient.GET("ALL_PLAYERS");
 	}
 	
 	public Player getByName(String name) throws IOException, JSONException
 	{
 		//zwraca obiekt typu Player gracza, ktorego nazwa podana jest jako parametr
-		update();
-		return restClient.GET(name);
+		return restClient.GET(name).iterator().next();
 	}
 
 	public Collection<Team> list() throws IOException, JSONException
 	{
 		//Zwraca kolekcjê obiektów typu Team
-		return restClient.GET_T();
+		return restClient.GET();
 	}
 	
 	public Integer check(Player object) throws IOException, JSONException
 	{
 		
-		//Player object = new Player(name, 100, 100, "0#0", 0); //utworzenie obiektu gracza o podanej nazwie name
-		//object.setId(id); //przypisanie podanego id w obiekcie
-		return restClient.POST(object); //metoda dodaje gracza do bazy (o ile nie istnial gracz o podanej nazwie) i zwraca
+		return Integer.valueOf(restClient.POST(object)); //metoda dodaje gracza do bazy (o ile nie istnial gracz o podanej nazwie) i zwraca
 										//jego id lub 0 jesli gracz istnial ale mial inne id
 	}
 	
 	public void ready(Player object, Integer ready) throws IOException
 	{
-		restClient.PUT_R(object, ready);
+		restClient.PUT(object, "READY", ready.toString());
 	}
 
 	public Integer team(Player object) throws IOException
 	{
-		return restClient.PUT_T(object);
+		return Integer.valueOf(restClient.PUT(object,"TEAM"));
 	}
 	
 	public Collection<Player> getAll() throws IOException, JSONException
 	{
 		//aktualizuje i zwraca liste graczy
-		update();
-		return players;
+		return restClient.GET("ALL_PLAYERS");
 	}
 	
+
+
 	public Collection<Player> getByTeam(Integer teamId) throws IOException, JSONException
 	{
 		//zwraca liste graczy z danej druzyny
-		return restClient.GET(teamId);
+		return restClient.GET("ALL_PLAYERS", teamId);
 	}
-
+	
 	Integer getSubHp() {
 		//pobranie wartosci o jaka sa zmneijszane pkt zycia podczas trafienia przez innego gracza
 		return subHp;
@@ -124,5 +121,6 @@ public class Game {
 		this.subHp = valueHp;
 	}
 	
+
 	
 }

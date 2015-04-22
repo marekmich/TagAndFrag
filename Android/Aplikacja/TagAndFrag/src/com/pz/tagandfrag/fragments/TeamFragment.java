@@ -14,7 +14,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;

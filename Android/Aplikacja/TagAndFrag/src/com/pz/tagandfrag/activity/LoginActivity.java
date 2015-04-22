@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
+import android.content.Context;
+import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,9 +22,10 @@ import android.widget.Toast;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.bluetoothservice.BluetoothService;
 import com.pz.tagandfrag.dialogs.ChooseWeaponDialog;
+import com.pz.tagandfrag.dialogs.ConnectionsErrorDialog;
 import com.pz.tagandfrag.dialogs.ShowNewIdDialog;
-import com.pz.tagandfrag.managers.PreferencesManager;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.PreferencesManager;
 import com.pz.tagandfrag.restclient.Game;
 import com.pz.tagandfrag.restclient.Player;
 import com.pz.tagandfrag.restclient.Team;
@@ -34,8 +36,8 @@ import com.pz.tagandfrag.restclient.Team;
  */
 public class LoginActivity extends Activity {
 
-	/* Bluetooth */
-	private static final int REQUEST_ENABLE_BT = 0;
+	public static boolean GPS_ENABLED = false;
+	public static boolean WIFI_ENABLED = false;
 	
 	/**
 	 * Przygotowujê statyczne pola, które bêd¹ wykorzystywane w ca³ej aplikacji.
@@ -50,6 +52,14 @@ public class LoginActivity extends Activity {
 		prepareActivity();
 		initializeViewComponents();
 	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		checkConnections();
+	}
+
+
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
 	/**
@@ -59,7 +69,10 @@ public class LoginActivity extends Activity {
 		
 		//Przygotowanie bluetootha
 		DataManager.bluetoothService = new BluetoothService();
-		requestEnableBluetooth();
+		forceEnableBluetooth();
+		
+		//Sprawdzam polaczenia
+		checkConnections();
 		
 		//Przygotowanie klas pomocniczych
 		DataManager.preferences = new PreferencesManager(getApplicationContext());
@@ -172,14 +185,33 @@ public class LoginActivity extends Activity {
 	/////////////////////////////////
 	/* £¹cznoœæ - Bluetooth */
 	/**
-	 * Wymusza w³¹czenia bluetootha
+	 * Wymusza w³¹czenia bluetooth.
 	 * */
-	private void requestEnableBluetooth() {
-		if (!DataManager.bluetoothService.getBluetoothAdapter().isEnabled()) {
-			Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
+	private void forceEnableBluetooth() {
+		DataManager.bluetoothService.getBluetoothAdapter().enable();
+	}
+	
+	/**
+	 * Sprawdza konieczne polaczenia. Jezeli ktoregos nie ma, wyswietla dialog z przekierowaniem do ustawien.
+	 * @see ConnectionsErrorDialog
+	 */
+	private void checkConnections() {
+		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+		if (wifiManager.isWifiEnabled()) {
+			WIFI_ENABLED = true;
+		}
+		
+		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			GPS_ENABLED = true;
+		}
+		
+		if (!GPS_ENABLED || !WIFI_ENABLED) {
+			new ConnectionsErrorDialog().show(getFragmentManager(), "C_ERR");
 		}
 	}
+	
 	/**
 	 * Wybieranie broni - urz¹dzenia z listy
 	 * @param activity 

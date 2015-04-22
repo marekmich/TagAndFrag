@@ -7,8 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/**
+ * PageAdapter zawieraj¹cy strony do MapFragment i TeamFragment.
+ * Strony te s¹ zawierane we ViewPager aktywnoœci rozgrywki.
+ * @author Mateusz Wrzos
+ * @see MapFragment
+ * @see TeamFragment
+ *
+ */
 public class PageAdapter extends FragmentPagerAdapter {
 
+	/**
+	 * Statyczne pole zawieraj¹ce iloœæ stron.
+	 */
 	public final static int NUMBER_OF_PAGES = 2;
 	private MapFragment mapFragment;
 	private TeamFragment teamFragment;
@@ -19,6 +30,9 @@ public class PageAdapter extends FragmentPagerAdapter {
 		teamFragment = new TeamFragment();
 	}
 
+	/**
+	 * Zwraca odpowiadaj¹cy fragment.
+	 */
 	@Override
 	public Fragment getItem(int arg0) {
 		switch (arg0) {
@@ -32,6 +46,9 @@ public class PageAdapter extends FragmentPagerAdapter {
 		return null;
 	}
 
+	/**
+	 * Zwraca liczbê stron.
+	 */
 	@Override
 	public int getCount() {
 		return NUMBER_OF_PAGES;

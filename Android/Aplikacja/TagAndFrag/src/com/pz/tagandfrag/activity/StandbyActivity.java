@@ -100,6 +100,7 @@ public class StandbyActivity extends Activity {
 		int i = 1;
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this);
+			row.setBackgroundResource(R.layout.cell_shape);
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
 			row.setLayoutParams(lp);
 			addColumnToRow(row, String.valueOf(i) + ". ");

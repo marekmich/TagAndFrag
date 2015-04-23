@@ -1,17 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    android:weightSum="10"
     tools:context="com.pz.tagandfrag.activity.LoginActivity" >
 
     <RelativeLayout
         android:id="@+id/layoutTop"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6" >
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+     >
 
         <ImageView
             android:id="@+id/image_view"
@@ -27,10 +26,8 @@
     <RelativeLayout
         android:id="@+id/layoutBottom"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="-40dp"
-        android:layout_weight="4"
+        android:layout_height="fill_parent"
+		android:layout_alignParentBottom="true" android:gravity="center_vertical|center_horizontal|bottom"
         android:paddingLeft="40dp"
         android:paddingRight="40dp" >
 
@@ -46,12 +43,13 @@
 
         <Button
             android:id="@+id/button_login"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/edit_text_login"
             android:layout_alignRight="@+id/edit_text_password"
             android:layout_below="@+id/edit_text_password"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:onClick="onNickConfirmButtonClicked"
             android:text="@string/nick_button" />
 
@@ -61,6 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/button_login"
             android:layout_alignStart="@+id/button_login"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="25dp"
             android:layout_below="@+id/button_login"
             android:onClick="onAlreadyHaveAccountClicked"
             android:text="@string/already_have_account" />
@@ -69,8 +69,9 @@
             android:id="@+id/edit_text_password"
             style="@style/Textbox"
             android:layout_below="@+id/edit_text_login"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:ems="10"
+            android:fontFamily="sans-serif"
             android:hint="@string/password_text"
             android:inputType="numberPassword" />
 
@@ -85,4 +86,4 @@
 
 	</RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>

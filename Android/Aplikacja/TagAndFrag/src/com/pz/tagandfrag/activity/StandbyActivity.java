@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -71,19 +72,38 @@ public class StandbyActivity extends Activity {
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
 	/**
-	 * Wyœwietlanie na podanej tabeli podanej listy graczy we wskazanym kolorze
+	 * Dodaje kolumny z tekstem o okreœlonym rozmiarze do podanego wiersza
+	 * @param row wiersz do, którego kolumna ma byæ podana
+	 * @param text tekst, który ma byæ w tworzonej kolumnie
 	 * */
-	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, int color) {
-		int i = 0;
+	private void addColumnToRow(TableRow row, String text) {
+		TextView column = new TextView(this);
+		//Ustawienei tekstu w kolumnie i jego rozmiaru
+		column.setText(text);
+		column.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
+		row.addView(column);
+	}
+	/**
+	 * Tworzy tabele na podstawie listy graczy z danej dru¿yny
+	 * @param teamLayout {@link TableLayout} na którym ma byæ wyœwietlona tabela
+	 * @param playerList lista graczy z dru¿yny
+	 * @param myTeam informacja czy dana tabela dotyczy dru¿yny gracza, czy dru¿yny przeciwnej
+	 * */
+	private void updateTableLayout(TableLayout teamLayout, Collection<Player> playerList, boolean myTeam) {
+		
 		teamLayout.removeAllViews();
+		TableRow titleRow = new TableRow(this);
+		addColumnToRow(titleRow, "");
+		if(myTeam) addColumnToRow(titleRow, getString(R.string.my_team));
+		else addColumnToRow(titleRow, getString(R.string.opposite_team));
+		teamLayout.addView(titleRow, 0);
+		int i = 1;
 		for(Player player : playerList) {
 			TableRow row = new TableRow(this);
-			row.setBackgroundColor(color);
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
 			row.setLayoutParams(lp);
-			TextView name = new TextView(this);
-			name.setText(player.getName());
-			row.addView(name);
+			addColumnToRow(row, String.valueOf(i) + ". ");
+			addColumnToRow(row, player.getName());
 			teamLayout.addView(row, i);
 	        i++;
 		}
@@ -95,8 +115,8 @@ public class StandbyActivity extends Activity {
 	private void updateTeamList() {
 		TableLayout myTeam = (TableLayout) findViewById(R.id.table_my_team_standby_activity);
 		TableLayout oppositeTeam = (TableLayout) findViewById(R.id.table_opposite_team_standby_activity);
-		updateTableLayout(myTeam, DataManager.players, Color.GREEN);
-		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, Color.RED);
+		updateTableLayout(myTeam, DataManager.players, true);
+		updateTableLayout(oppositeTeam, DataManager.oppositePlayers, false);
 		
 		if(DataManager.players.size() >= MINIMUM_NUMBER_OF_PLAYERS 
 				&& DataManager.oppositePlayers.size() >= MINIMUM_NUMBER_OF_PLAYERS) {

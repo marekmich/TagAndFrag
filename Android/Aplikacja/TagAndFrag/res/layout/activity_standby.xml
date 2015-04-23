@@ -38,7 +38,7 @@
         android:layout_alignRight="@+id/button_start_game"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="1" >
 
         <ScrollView

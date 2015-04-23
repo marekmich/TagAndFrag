@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
@@ -47,7 +48,8 @@ public class ChooseWeaponDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstancState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder	.setTitle(getString(R.string.choose_weapon_title))
-				.setPositiveButton(getString(R.string.pair_devices_button), onPairButtoniClicked());
+				.setPositiveButton(getString(R.string.pair_devices_button), onPairButtoniClicked())
+				.setOnKeyListener(onBackPressed());
 
 		ArrayList<String> devicesNames = convertDevicesSetToArrayList(devices);
 		if (devicesNames.isEmpty()) {
@@ -139,6 +141,24 @@ public class ChooseWeaponDialog extends DialogFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				startActivity(new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS));
 				dialog.dismiss();
+			}
+		};
+	}
+	
+	/**
+	 * 
+	 * @return nowy listener obs³uguj¹cy klikniêcie "wstecz".
+	 */
+	private DialogInterface.OnKeyListener onBackPressed() {
+		return new DialogInterface.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					Toast.makeText(getActivity(), getString(R.string.choose_weapon_back_pressed), Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
 			}
 		};
 	}

@@ -67,7 +67,7 @@ public class ConnectionsErrorDialog extends DialogFragment {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_BACK) {
-					Toast.makeText(getActivity(), getString(R.string.connections_error_back_pressed), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), getString(R.string.connections_error_back_pressed), Toast.LENGTH_SHORT).show();
 					return true;
 				}
 				return false;

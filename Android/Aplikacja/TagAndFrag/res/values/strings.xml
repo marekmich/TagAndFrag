@@ -50,4 +50,5 @@
 	<string name="go_to_settings">Idź do ustawień</string>
 	<string name="pair_devices_button">Paruj z nowym urządzeniem.</string>
 	<string name="choose_weapon_title">Wybierz broń.</string>
+	<string name="choose_weapon_back_pressed">Musisz wybrać broń.</string>
 </resources>

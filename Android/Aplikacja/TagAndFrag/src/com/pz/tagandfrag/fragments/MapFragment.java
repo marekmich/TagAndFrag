@@ -65,7 +65,6 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	private View view;
 	private MapView mapView;
 	private CheckBox showPlayersCheckBox;
-	private CheckBox showLinesCheckBox;
 	
 	/* Mock's */
 	private Collection<Player> mockPlayers;

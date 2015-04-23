@@ -70,6 +70,7 @@ public class TeamFragment extends Fragment {
 	 * Dodaje kolumny z tekstem o okreœlonym rozmiarze do podanego wiersza
 	 * @param row wiersz do, którego kolumna ma byæ podana
 	 * @param text tekst, który ma byæ w tworzonej kolumnie
+	 * @param gravity wyrównanie w poziomie
 	 * */
 	private void addColumnToRow(TableRow row, String text) {
 		TextView column = new TextView(this.getActivity());
@@ -82,56 +83,58 @@ public class TeamFragment extends Fragment {
 	 * Tworzy tabeele na podstawie listy graczy z danej dru¿yny
 	 * @param teamLayout {@link TableLayout} na którym ma byæ wyœwietlona tabela
 	 * @param playerList lista graczy z dru¿yny
-	 * @param myTeam informacja czy dana tabela dotyczy dru¿yny gracza, czy dru¿yny przeciwnej
+	 * @param isMyTeam informacja czy dana tabela dotyczy dru¿yny gracza, czy dru¿yny przeciwnej
 	 * */
-	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, boolean myTeam) {
+	private void updateTableLayout(TableLayout teamLayout, ArrayList<Player> playerList, boolean isMyTeam) {
 		int i = 1;
 		teamLayout.removeAllViews();
-		int color = 0;
-		//Ustawienie w jakim kolorze maj¹ byæ wyœwietlane wiersze
-		if(myTeam == true) {
-			color = Color.GREEN;
+		
+		if (isMyTeam) {
+			teamLayout.setBackgroundResource(R.layout.my_team_table_shape);
+		} else {
+			teamLayout.setBackgroundResource(R.layout.opposite_team_table_shape);
 		}
-		else {
-			color = Color.RED;
-		}
+		
 		//Przygotowanie wiersza tytu³owego
 		TableRow row_tittle = new TableRow(this.getActivity());
-		TableRow.LayoutParams lp_tittle = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+		TableRow.LayoutParams lp_tittle = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 		row_tittle.setLayoutParams(lp_tittle);
 		
 		//Dodanie kolumny tytu³owej (nick)
 		addColumnToRow(row_tittle, getString(R.string.nick));
-		if(color == Color.GREEN)
+		if (isMyTeam)
 		{
 			//Dodanie kolumny tytu³owej (przerwa)
-			addColumnToRow(row_tittle, "    ");
+			addColumnToRow(row_tittle, "       ");
 			//Dodanie kolumny tytu³owej (HP)
 			addColumnToRow(row_tittle, getString(R.string.hp));
 		}
 		teamLayout.addView(row_tittle, 0);
+		
 		//Posortowanie listy graczy w dru¿ynie
 		Collections.sort(playerList);
 		//Dodawanie kolejnych wierszy z danymi graczy
 		for(Player player : playerList) {
 			//Przygotowanie wiersza
 			TableRow row = new TableRow(this.getActivity());
-			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-			if(player.getHealthPoints() != 0) {
-				row.setBackgroundColor(color);
-			}
-			else {
+			TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+		
+			if (player.getHealthPoints() == 0) {
 				row.setBackgroundColor(Color.GRAY);
 			}
+
 			row.setLayoutParams(lp);
 			
 			//Dodanie kolumny z nickiem gracza
 			addColumnToRow(row, player.getName());
 
-			if(color == Color.GREEN)
+			if (isMyTeam)
 			{
+				/*
+				 * M: to jest paskudne. Trzeba poprawic, przebudowac calosc przy uzyciu parametru Gravity
+				 */
 				//Dodanie kolumny z przerw¹
-				addColumnToRow(row, "    ");
+				addColumnToRow(row, "       ");
 				//Dodanie kolumny z iloœci¹ HP
 				addColumnToRow(row, String.valueOf(player.getHealthPoints()));
 			}

@@ -2,23 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/bg_step1"
     android:orientation="vertical"
     tools:context="com.pz.tagandfrag.activity.LoginActivity" >
 
     <RelativeLayout
         android:id="@+id/layoutTop"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"  
+    android:paddingLeft="55dp"
+    android:paddingRight="55dp"
      >
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="false"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="-10dp"
             android:clickable="false"
             android:src="@drawable/logo" />
     </RelativeLayout>
@@ -28,8 +30,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
 		android:layout_alignParentBottom="true" android:gravity="center_vertical|center_horizontal|bottom"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp" >
+       
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp" >
 
         <EditText
             android:id="@+id/edit_text_login"
@@ -55,13 +58,14 @@
 
         <CheckBox
             android:id="@+id/already_have_account_checkbox"
+            style="@style/RadioButtonLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/button_login"
             android:layout_alignStart="@+id/button_login"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="25dp"
             android:layout_below="@+id/button_login"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="5dp"
             android:onClick="onAlreadyHaveAccountClicked"
             android:text="@string/already_have_account" />
 

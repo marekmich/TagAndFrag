@@ -1,9 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_step2"
     tools:context="com.pz.tagandfrag.activity.ChooseTeamActivity" >
 
+<!-- 
     <ProgressBar
         android:id="@+id/progress_bar_stage"
         style="?android:attr/progressBarStyleHorizontal"
@@ -18,24 +21,26 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp"
         android:progress="@integer/second" />
+-->
 
     <Button
         android:id="@+id/button_team"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
         android:onClick="onChooseTeamButtonClicked"
         android:text="@string/team_button"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+       />
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_team"
-        android:layout_below="@+id/progress_bar_stage"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="32dp"

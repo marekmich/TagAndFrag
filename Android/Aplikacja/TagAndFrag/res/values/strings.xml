@@ -16,7 +16,7 @@
     <string name="password_length_wrong">Niewłaściwa długość hasła</string>
     <string name="nick_correct">Sukces</string>
     <string name="nick_incorrect">Ten nick nie jest Twój!</string>
-    <string name="password_text">Podaj hasło (id) lub zostaw puste</string>
+    <string name="password_text">Podaj hasło</string>
     <string name="app_name">Tag and Frag</string>
     <string name="action_settings">Settings</string>
     <string name="weapon_button">Zatwierdź wybór broni</string>

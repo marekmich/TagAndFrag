@@ -128,7 +128,7 @@ public class StandbyActivity extends Activity {
 	/////////////////////////////////
 	/* Listenery */
 	/**
-	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za rozpoczêcie nowej gry, wykonuje zadanie
+	 * Nas³uchuje  klikniêcia na przycisk odpowiedzialny za rozpoczêcie nowej gry, wykonuje zadanie
 	 * poprzez uruchomienia zadania w tle z klasy {@link StartGameProgressBarTask}
 	 */
 	public void onStartGameButtonClicked(View view) {

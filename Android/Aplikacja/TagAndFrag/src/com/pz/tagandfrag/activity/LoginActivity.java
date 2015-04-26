@@ -128,7 +128,7 @@ public class LoginActivity extends Activity {
 	/////////////////////////////////
 	/* Listenery */
 	/**
-	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za zalogowanie siê do serwera, wykonuje zadanie
+	 * Nas³uchuje  klikniêcia na przycisk odpowiedzialny za zalogowanie siê do serwera, wykonuje zadanie
 	 * poprzez uruchomienia zadania w tle z klasy {@link NickCheckProgressBarTask}
 	 */
 	public void onNickConfirmButtonClicked(View view) {

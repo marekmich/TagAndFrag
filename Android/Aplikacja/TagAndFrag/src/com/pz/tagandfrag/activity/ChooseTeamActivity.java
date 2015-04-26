@@ -91,7 +91,7 @@ public class ChooseTeamActivity extends Activity {
 	/////////////////////////////////
 	/* Listenery */
 	/**
-	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za wys³anie do serwera informacji o wybranej dru¿ynie
+	 * Nas³uchuje  klikniêcia na przycisk odpowiedzialny za wys³anie do serwera informacji o wybranej dru¿ynie
 	 * poprzez uruchomienia zadania z klasy {@link TeamConnectProgressBarTask}
 	 */
 	public void onChooseTeamButtonClicked(View view) {

@@ -12,12 +12,14 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
@@ -74,11 +76,12 @@ public class TeamFragment extends Fragment {
 	 * @param text tekst, który ma byæ w tworzonej kolumnie
 	 * @param gravity wyrównanie w poziomie
 	 * */
-	private void addColumnToRow(TableRow row, String text) {
+	private void addColumnToRow(TableRow row, String text, int gravity) {
 		TextView column = new TextView(this.getActivity());
 		//Ustawienei tekstu w kolumnie i jego rozmiaru
 		column.setText(text);
 		column.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size));
+		column.setGravity(gravity);
 		row.addView(column);
 	}
 	/**
@@ -103,13 +106,13 @@ public class TeamFragment extends Fragment {
 		row_tittle.setLayoutParams(lp_tittle);
 		
 		//Dodanie kolumny tytu³owej (nick)
-		addColumnToRow(row_tittle, getString(R.string.nick));
+		addColumnToRow(row_tittle, getString(R.string.nick), Gravity.LEFT);
 		if (isMyTeam)
 		{
 			//Dodanie kolumny tytu³owej (przerwa)
-			addColumnToRow(row_tittle, "       ");
+			//addColumnToRow(row_tittle, "       ");
 			//Dodanie kolumny tytu³owej (HP)
-			addColumnToRow(row_tittle, getString(R.string.hp));
+			addColumnToRow(row_tittle, getString(R.string.hp), Gravity.RIGHT);
 		}
 		teamLayout.addView(row_tittle, 0);
 		
@@ -128,21 +131,17 @@ public class TeamFragment extends Fragment {
 			row.setLayoutParams(lp);
 			
 			//Dodanie kolumny z nickiem gracza
-			addColumnToRow(row, player.getName());
+			addColumnToRow(row, player.getName(), Gravity.LEFT);
 
 			if (isMyTeam)
 			{
-				/*
-				 * M: to jest paskudne. Trzeba poprawic, przebudowac calosc przy uzyciu parametru Gravity
-				 */
-				//Dodanie kolumny z przerw¹
-				addColumnToRow(row, "       ");
 				//Dodanie kolumny z iloœci¹ HP
-				addColumnToRow(row, String.valueOf(player.getHealthPoints()));
+				addColumnToRow(row, String.valueOf(player.getHealthPoints()), Gravity.RIGHT);
 			}
 			teamLayout.addView(row, i);
 	        i++;
 		}
+		teamLayout.setColumnStretchable (1, true);
 	}
 	/**
 	 * Aktualizuje tabele z listami graczy z obu dru¿yn

@@ -217,6 +217,7 @@ public class StandbyActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
+			findViewById(R.id.button_start_game).setEnabled(false);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.GONE);
 			findViewById(R.id.table_my_team_standby_activity).setVisibility(TableLayout.INVISIBLE);
 			findViewById(R.id.table_opposite_team_standby_activity).setVisibility(TableLayout.INVISIBLE);

@@ -29,10 +29,10 @@
         android:id="@+id/layoutBottom"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-		android:layout_alignParentBottom="true" android:gravity="center_vertical|center_horizontal|bottom"
-       
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp" >
+		android:layout_alignParentBottom="true" 
+		android:gravity="center_vertical|center_horizontal|bottom"
+       	android:paddingLeft="40dp"
+       	android:paddingRight="40dp" >
 
         <EditText
             android:id="@+id/edit_text_login"

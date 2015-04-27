@@ -44,9 +44,9 @@ public class DataManager {
 	 * */
 	public static PreferencesManager preferences;
 	/**
-	 * Statyczne pole z adresem serwera wwww gry
+	 * Statyczne pole z adresem serwera wwww gry, wyœwietlaj¹cego podsumowanie
 	 * */
-	public static String serverAddress = "http://www.mat.umk.pl/~luigi";
+	public static String serverAddress = "http://158.75.2.62:8080/web/?team1=%d&team2=%d";
 	/**
 	 * Statyczne pole z zajmuj¹ce siê ³¹cznoœci¹ przez bluetootha
 	 * */

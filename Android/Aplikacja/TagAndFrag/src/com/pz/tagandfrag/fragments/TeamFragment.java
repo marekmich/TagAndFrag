@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.GameActivity;
+import com.pz.tagandfrag.activity.StandbyActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.managers.DebugManager;
@@ -156,7 +158,8 @@ public class TeamFragment extends Fragment {
 	/////////////////////////////////
 	/* £¹cznoœæ - REST Client */
 	/**
-	 * Zadanie pobieraj¹ce listê graczy z w³asnej i przeciwnej dru¿yny
+	 * Zadanie pobieraj¹ce listê graczy z w³asnej i przeciwnej dru¿yny, odœwie¿aj¹ce listê aktywnych graczy oraz
+	 * zliczaj¹ce iloœæ aktywnych graczy (sprawdzenie warunku koñca gry)
 	 */
 	private Runnable updateTeamRunnable() {
 		return new Runnable() {
@@ -164,7 +167,36 @@ public class TeamFragment extends Fragment {
 			public void run() {
 				new UpdateTeamTask().execute();
 				updateTeamList();
-				updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+				if(countActivePlayersFromBothTeams() > 1) {
+					updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+				}
+				else {
+					Intent intent = new Intent(getActivity(), StandbyActivity.class);
+					startActivity(intent);
+				}
+			}
+			/**
+			 * Zlicza iloœæ aktywnych graczy z obu dru¿yn
+			 * @return liczba aktwynych graczy (iloœæ hp > 0)
+			 * */
+			private int countActivePlayersFromBothTeams() {	
+				int numberOfActivePlayers = countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers) + 
+						countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers);
+				return numberOfActivePlayers;
+			}
+			/**
+			 * Zlicza iloœæ aktywnych graczy z podanej dru¿yny dru¿yn
+			 * @param playerList lista graczy z podanej dru¿yny
+			 * @return liczba aktwynych graczy (iloœæ hp > 0)
+			 * */
+			private int countActivePlayersFromTeam(ArrayList<Player> playerList) {
+				int numberOfActivePlayersInTeam = 0;
+				for(Player player : playerList) {
+					if(player.getHealthPoints() > 0) {
+						numberOfActivePlayersInTeam += 1;
+					}
+				}
+				return numberOfActivePlayersInTeam;
 			}
 		};
 	}

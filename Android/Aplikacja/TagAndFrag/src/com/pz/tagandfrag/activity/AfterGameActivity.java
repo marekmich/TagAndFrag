@@ -36,6 +36,7 @@ public class AfterGameActivity extends Activity {
 		DataManager.player.setHealthPoints(100);
 		DataManager.player.setTeam(0);
 		DataManager.players.clear();
+		DataManager.oppositePlayers.clear();
 		DataManager.teamList.clear();
 		DataManager.preferences.setTeam(0);
 		DataManager.preferences.saveAllDataToPreferences();
@@ -51,7 +52,17 @@ public class AfterGameActivity extends Activity {
 		            Log.i("WEB_VIEW_TEST", "error code:" + errorCode);
 		    }
 		 });
-		gameSummary.loadUrl(DataManager.serverAddress);
+		
+		int team = DataManager.player.getTeam();
+		int oppositeTeam = team;
+		if(team % 2 == 0) {
+			oppositeTeam -= 1;
+		}
+		else {
+			oppositeTeam += 1;
+		}
+		
+		gameSummary.loadUrl(String.format(DataManager.serverAddress, team, oppositeTeam));
 	}
 	/////////////////////////////////
 	/* Zmiany w wygl¹dzie */
@@ -61,7 +72,7 @@ public class AfterGameActivity extends Activity {
 	/////////////////////////////////
 	/* Listenery */
 	/**
-	 * Nas³uchuje ( ;) ) klikniêcia na przycisk odpowiedzialny za rozpoczêcie
+	 * Nas³uchuje klikniêcia na przycisk odpowiedzialny za rozpoczêcie
 	 * kolejnej rozgrywki
 	 */
 	public void onResetGameButtonClicked(View view) {

@@ -15,10 +15,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * Klasa implementuj¹ca klienta REST.
+ * @author Marek
+ *
+ */
 public class TagAndFragRestClient implements RestClient<Player> {
 
-	
+	/**
+	 * Pole statyczne zawieraj¹ce adres url serwera.
+	 */
 	public static String URL = "http://158.75.2.62:8080";
 	
 	@Override
@@ -78,7 +84,6 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
 	String jsonGet = reader.readLine();
-	System.out.println(jsonGet);
 	reader.close();		
 
 	JSONObject jsonObject  = new JSONObject(jsonGet);
@@ -190,7 +195,19 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	{
 		return PUT(object,arg,null);
 	}
-	
+
+	@Override
+	public void DELETE() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * metoda prywatna konwertuj¹ca tablicê obiektów JSON na kolekcjê obiektów Player.
+	 * @param array
+	 * @param teamId numer dru¿yny (liczba naturalna);
+	 * @return Kolekcja graczy nale¿acych do dru¿yny numer teamId, lub wszystkich gdy teamId==0.
+	 * @throws JSONException
+	 */
 	private Collection<Player> fromJsonArrayToCollection(JSONArray array, Integer teamId) throws JSONException {
 		Collection<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < array.length(); i++) {
@@ -215,11 +232,7 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		return players;
 	}
 
-	@Override
-	public void DELETE() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 
 

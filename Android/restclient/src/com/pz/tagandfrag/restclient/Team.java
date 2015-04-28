@@ -10,7 +10,13 @@ public class Team implements Comparable<Team> {
 	}
 
 	public Team(Integer id, Integer size) {
+		/**
+		 * identyfikator dru¿yny >0;
+		 */
 		this.id=id;
+		/**
+		 * rozmiar dru¿yny - liczba cz³onków dru¿yny
+		 */
 		this.size=size;
 	}
 

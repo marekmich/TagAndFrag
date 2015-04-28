@@ -1,6 +1,6 @@
 package com.pz.tagandfrag.restclient;
 
-public class Player {
+public class Player implements Comparable<Player> {
 
 	private String name, localization;
 	private Integer id, healthPoints, ammunition, team;
@@ -9,7 +9,11 @@ public class Player {
 	public Player() {
 		super();
 	}
-
+/**
+ * Konstruktor ustawia wartoœæ punktów ¿ycia i amunicjê na 100, pole team na 0 a lokalizacjê na "".
+ * @param name nazwa gracza
+ * @param id id gracza
+ */
 	public Player(String name, Integer id) {
 		super();
 		this.name = name;
@@ -20,6 +24,14 @@ public class Player {
 		this.id = id;
 	}
 
+	/**
+	 * Konstruktor przypisuje wartoœæ 0 do id gracza.
+	 * @param name nazwa gracza;
+	 * @param healthPoints punkty ¿ycia;
+	 * @param ammunition iloœæ amunicji;
+	 * @param localization pocz¹tkowa lokalizacja;
+	 * @param team numer dru¿yny;
+	 */
 	public Player(String name, Integer healthPoints, Integer ammunition, String localization, Integer team) {
 		super();
 		this.name = name;
@@ -29,7 +41,10 @@ public class Player {
 		this.team = team;
 		this.id = 0;
 	}
-
+/**
+ * Zmniejsza punkty zdrowia gracza o wartoœæ parametru value.
+ * @param value
+ */
 	public void reduceHealth(int value) {
 	
 		this.healthPoints = this.healthPoints - value;
@@ -91,5 +106,12 @@ public class Player {
 		return "Player [name=" + name + ", healthPoints=" + healthPoints
 				+ ", ammunition=" + ammunition + ", localization="
 				+ localization + ",team " + team + ", id " + id + "]";
+	}
+
+	@Override
+	public int compareTo(Player another) {
+		if(this.healthPoints > another.getHealthPoints()) return -1;
+		else if(this.healthPoints == another.getHealthPoints()) return 0;
+		return 1;
 	}
 }

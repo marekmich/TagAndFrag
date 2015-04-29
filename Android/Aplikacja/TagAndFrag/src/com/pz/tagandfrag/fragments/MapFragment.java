@@ -376,7 +376,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			String location = newLocation.latitude + "#" + newLocation.longitude; 
 			DataManager.player.setLocalization(location);
 			try {
-				DataManager.game.updatePlayer(DataManager.player);
+				DataManager.game.updatePlayerPosition(DataManager.player);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

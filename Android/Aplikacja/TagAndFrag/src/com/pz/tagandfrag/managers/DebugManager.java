@@ -9,7 +9,7 @@ public class DebugManager {
 	/**
 	 * Statyczne pole pozwalaj¹ce wy³¹czyæ ³¹cznoœci z bluetoothem
 	 * */
-	static public boolean withoutBluetooth = true;
+	static public boolean withoutBluetooth = false;
 	/**
 	 * Statyczne pole pozwalaj¹ce wy³¹czyæ  wysy³ania komendy ready na serwer
 	 * */

@@ -1,10 +1,13 @@
 package com.pz.tagandfrag.activity;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -23,8 +26,8 @@ public class AfterGameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_after_game);
-		resetGame();
 		loadSummaryFromServer();
+		resetGame();
 	}
 	/////////////////////////////////
 	/* Ustawienia aplikacji */
@@ -35,6 +38,11 @@ public class AfterGameActivity extends Activity {
 		//Reset kodu broni
 		DataManager.player.setHealthPoints(100);
 		DataManager.player.setTeam(0);
+		/*try {
+			DataManager.game.updatePlayer(DataManager.player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		DataManager.players.clear();
 		DataManager.oppositePlayers.clear();
 		DataManager.teamList.clear();
@@ -46,6 +54,7 @@ public class AfterGameActivity extends Activity {
 	 * */
 	private void loadSummaryFromServer() {
 		WebView gameSummary = (WebView) findViewById(R.id.game_summary_full);
+		gameSummary.getSettings().setTextSize(TextSize.SMALLEST);
 		gameSummary.setWebViewClient(new WebViewClient() {
 		    @Override
 		    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -61,7 +70,6 @@ public class AfterGameActivity extends Activity {
 		else {
 			oppositeTeam += 1;
 		}
-		
 		gameSummary.loadUrl(String.format(DataManager.serverAddress, team, oppositeTeam));
 	}
 	/////////////////////////////////

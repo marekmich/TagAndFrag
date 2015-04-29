@@ -40,9 +40,14 @@ public class Game {
 		//wyslanie do serwera aktualnych parametrow gracza w celu zapisania ich w bazie
 		restClient.PUT(object,"UPDATE");
 	}
-	
+	public void updatePlayerPosition(Player object) throws IOException
+	{
+		//wyslanie do serwera aktualnych parametrow gracza w celu zapisania ich w bazie
+		restClient.PUT(object,"UPDATE_MAP");
+	}
 	public void end(Player object) throws IOException
 	{
+		
 		restClient.PUT(object,"END");
 	}
 	

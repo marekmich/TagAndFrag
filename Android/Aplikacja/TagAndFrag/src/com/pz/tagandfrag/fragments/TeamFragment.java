@@ -23,9 +23,11 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.activity.AfterGameActivity;
 import com.pz.tagandfrag.activity.GameActivity;
 import com.pz.tagandfrag.activity.StandbyActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
+import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
 import com.pz.tagandfrag.managers.DebugManager;
 import com.pz.tagandfrag.managers.UpdateTeamTask;
@@ -148,6 +150,7 @@ public class TeamFragment extends Fragment {
 	 * */
 	private void updateTeamList() {
 		getView().findViewById(R.id.progress_bar_team_fragment).setVisibility(ProgressBar.INVISIBLE);
+		Log.e("POBRANO_GRACZY", "TAK");
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
 		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, true);
@@ -166,31 +169,21 @@ public class TeamFragment extends Fragment {
 			public void run() {
 				new UpdateTeamTask().execute();
 				updateTeamList();
-				if(countActivePlayersFromBothTeams() > 1) {
+				if(countActivePlayersFromOppositeTeam() > 0) {
 					updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 				}
 				else {
-					Intent intent = new Intent(getActivity(), StandbyActivity.class);
+					Intent intent = new Intent(getActivity(), AfterGameActivity.class);
 					startActivity(intent);
 				}
 			}
 			/**
-			 * Zlicza ilo쒏 aktywnych graczy z obu dru퓓n
-			 * @return liczba aktwynych graczy (ilo쒏 hp > 0)
+			 * Zlicza ilo쒏 aktywnych graczy z przeciwnej dru퓓ny 
+			 * @return liczba aktwynych graczy (ilo쒏 hp > 0) z przeciwnej dru퓓ny
 			 * */
-			private int countActivePlayersFromBothTeams() {	
-				int numberOfActivePlayers = countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers) + 
-						countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers);
-				return numberOfActivePlayers;
-			}
-			/**
-			 * Zlicza ilo쒏 aktywnych graczy z podanej dru퓓ny dru퓓n
-			 * @param playerList lista graczy z podanej dru퓓ny
-			 * @return liczba aktwynych graczy (ilo쒏 hp > 0)
-			 * */
-			private int countActivePlayersFromTeam(ArrayList<Player> playerList) {
+			private int countActivePlayersFromOppositeTeam() {
 				int numberOfActivePlayersInTeam = 0;
-				for(Player player : playerList) {
+				for(Player player : (ArrayList<Player>) DataManager.oppositePlayers) {
 					if(player.getHealthPoints() > 0) {
 						numberOfActivePlayersInTeam += 1;
 					}
@@ -210,6 +203,7 @@ public class TeamFragment extends Fragment {
 	private class BluetoothReaderTask extends AsyncTask<Void, Void, Void> {
 		
 		private BluetoothDataReceiver receiver;
+		private BluetoothDataSender sender;
 		
 		/**
 		 * Tworzy zadanie oraz inicjalicuje odbiornik danych bluetooth.
@@ -218,6 +212,7 @@ public class TeamFragment extends Fragment {
 		public BluetoothReaderTask() {
 			super();
 			receiver = new BluetoothDataReceiver(DataManager.bluetoothService.getBluetoothSocket());
+			sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
 		}
 
 		/**
@@ -226,8 +221,12 @@ public class TeamFragment extends Fragment {
 		@Override
 		protected Void doInBackground(Void... params) {
 			while (receiver.hasNextLine()) {
-				Log.i("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
+				Log.e("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
 				DataManager.player.reduceHealth(DataManager.DAMAGE);
+				Log.e("Player HP", String.valueOf(DataManager.player.getHealthPoints()));
+				if(DataManager.player.getHealthPoints() == 0) {
+					sender.blockWeaponAndTurnLedOff();
+				}
 				new Thread(updatePlayerRunnable()).start();
 			}
 			return null;

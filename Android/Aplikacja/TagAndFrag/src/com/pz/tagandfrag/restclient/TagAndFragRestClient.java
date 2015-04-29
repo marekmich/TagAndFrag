@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class TagAndFragRestClient implements RestClient<Player> {
 
@@ -141,47 +143,46 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	{
 		StringBuilder params = new StringBuilder();
 		
-								params.append("player_name=" + object.getName());
-								params.append("&id=" + object.getId().toString());
+		params.append("player_name=" + object.getName());
+		params.append("&id=" + object.getId().toString());
 
-	if(arg1.equals("UPDATE")) params.append("&hp=" + object.getHealthPoints().toString());
-	if(arg1.equals("UPDATE")) params.append("&ammo=" + object.getAmmunition().toString());
-	if(arg1.equals("UPDATE"))	params.append("&loc=" + object.getLocalization());
-
-	if(arg1.equals("TEAM") ||
-	   arg1.equals("END")) 	params.append("&team=" + object.getTeam().toString());
-	if(arg1.equals("READY")) 	params.append("&ready=" + arg2);
-	if(arg1.equals("SHOT")) 	params.append("&attacker_name=" + arg2);
-	if(arg1.equals("END")) 	params.append("&end=" + "end");	
+		if(arg1.equals("UPDATE")) params.append("&hp=" + object.getHealthPoints().toString());
+		if(arg1.equals("UPDATE")) params.append("&ammo=" + object.getAmmunition().toString());
+		if(arg1.equals("UPDATE_MAP"))	params.append("&loc=" + object.getLocalization());
 	
-	URL url = new URL(URL);
-	 
-	HttpURLConnection con=(HttpURLConnection) url.openConnection();
-
-	con.setDoOutput(true);
-	con.setRequestMethod("PUT");
-	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
-    con.setRequestProperty("charset", "utf-8");
-	OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-
-	writer.write(params.toString());
-	writer.flush();
-
-	BufferedReader reader;
-
-	int code = con.getResponseCode();
-	if(code >=400) reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-	else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-	StringBuilder response = new StringBuilder();
-	String line;
-
-	while((line=reader.readLine())!=null) response.append(line);
-
-	reader.close();			
-	writer.close();
-
-	return response.toString();
+		if(arg1.equals("TEAM") ||
+		   arg1.equals("END")) 	params.append("&team=" + object.getTeam().toString());
+		if(arg1.equals("READY")) 	params.append("&ready=" + arg2);
+		if(arg1.equals("SHOT")) 	params.append("&attacker_name=" + arg2);
+		if(arg1.equals("END")) 	params.append("&end=" + "end");	
+		URL url = new URL(URL);
+		 
+		HttpURLConnection con=(HttpURLConnection) url.openConnection();
+	
+		con.setDoOutput(true);
+		con.setRequestMethod("PUT");
+		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
+	    con.setRequestProperty("charset", "utf-8");
+		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+	
+		writer.write(params.toString());
+		writer.flush();
+	
+		BufferedReader reader;
+	
+		int code = con.getResponseCode();
+		if(code >=400) reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	
+		StringBuilder response = new StringBuilder();
+		String line;
+	
+		while((line=reader.readLine())!=null) response.append(line);
+	
+		reader.close();			
+		writer.close();
+	
+		return response.toString();
 	}
 	
 	@Override

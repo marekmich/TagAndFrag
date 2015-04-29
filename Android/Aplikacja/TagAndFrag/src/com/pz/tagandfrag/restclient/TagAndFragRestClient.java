@@ -15,87 +15,58 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-
+/**
+ * Klasa implementuj¹ca klienta REST.
+ * @author Marek
+ *
+ */
 public class TagAndFragRestClient implements RestClient<Player> {
 
-	
+	/**
+	 * Pole statyczne zawieraj¹ce adres url serwera.
+	 */
 	public static String URL = "http://158.75.2.62:8080";
 	
 	@Override
 	public Collection<Player> GET(String parameter, Integer teamId) throws IOException, JSONException
 	{
+		String aditionalURLParameter = "?parameter=" + parameter;
 		
-	 URL url = new URL(URL+"?parameter="+parameter);
-
-	 HttpURLConnection con=(HttpURLConnection) url.openConnection();
-
-	con.setRequestMethod("GET");
-	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
-	con.setRequestProperty("charset", "utf-8");
+		HttpURLConnection con = createConnection("GET", false, aditionalURLParameter);
+		BufferedReader reader = createBufferedReader(con);
+		
+		String jsonGet = reader.readLine();
 	
-	BufferedReader reader;
-
-	int code = con.getResponseCode();
-	if(code >=400) {
-					reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-					return null;
-					}
-	else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-	String jsonGet = reader.readLine();
-
-	reader.close();		
-	JSONArray array = new JSONArray(jsonGet);
-	return fromJsonArrayToCollection(array, teamId);
-
-	}
-	
-	@Override
-	public Collection<Player> GET(String parameter) throws IOException, JSONException
-	{
-		return GET(parameter,0);
+		reader.close();		
+		JSONArray array = new JSONArray(jsonGet);
+		con.disconnect();
+		return fromJsonArrayToCollection(array, teamId);
 	}
 	
 	@Override
 	public Collection<Team> GET() throws IOException, JSONException
 	{
 		
-	 URL url = new URL(URL+"?parameter=LIST");
+		String aditionalURLParameter = "?parameter=LIST";
+		
+		HttpURLConnection con = createConnection("GET", false, aditionalURLParameter);
+		BufferedReader reader = createBufferedReader(con);
 
-	 HttpURLConnection con=(HttpURLConnection) url.openConnection();
-
-	con.setRequestMethod("GET");
-	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
-	con.setRequestProperty("charset", "utf-8");
+		String jsonGet = reader.readLine();
+		reader.close();
+		JSONObject jsonObject  = new JSONObject(jsonGet);
 	
-	BufferedReader reader;
-
-	int code = con.getResponseCode();
-	if(code >=400) {
-					reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-					return null;
-					}
-	else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-	String jsonGet = reader.readLine();
-	reader.close();		
-
-	JSONObject jsonObject  = new JSONObject(jsonGet);
-	
-	Iterator<?> nameItr = jsonObject.keys();
-	Collection<Team> teams = new ArrayList<Team>();
+		Iterator<?> nameItr = jsonObject.keys();
+		Collection<Team> teams = new ArrayList<Team>();
 	
 	
-	while(nameItr.hasNext()) {
-	    String id =(String) nameItr.next();
-	    Integer size =(Integer) jsonObject.get(id);
-	    teams.add(new Team(Integer.valueOf(id), size));
+		while(nameItr.hasNext()) {
+			String id =(String) nameItr.next();
+			Integer size =(Integer) jsonObject.get(id);
+			teams.add(new Team(Integer.valueOf(id), size));
 	    }
-	
-	return teams;  
-
+		con.disconnect();
+		return teams;
 	}	
 	
 	@Override
@@ -106,37 +77,32 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		params.append("player_name=" + object.getName());
 		params.append("&id=" + object.getId().toString());
 
+	    HttpURLConnection con = createConnection("POST", true);
+	    OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
 
-	    URL url = new URL(URL);
-	 
-	HttpURLConnection con=(HttpURLConnection) url.openConnection();
+	    writer.write(params.toString());
+	    writer.flush();
 
-	con.setDoOutput(true);
-	con.setRequestMethod("POST");
-	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
-    con.setRequestProperty("charset", "utf-8");
-	OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+	    BufferedReader reader = createBufferedReader(con);
 
-	writer.write(params.toString());
-	writer.flush();
-
-	BufferedReader reader;
-
-	int code = con.getResponseCode();
-	if(code >=400) reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-	else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-	StringBuilder response = new StringBuilder();
-	String line;
-
-	while((line=reader.readLine())!=null) response.append(line);
-
-	reader.close();			
-	writer.close();
-
-	return response.toString();
+		StringBuilder response = new StringBuilder();
+		String line;
+	
+		while((line=reader.readLine())!=null) {
+			response.append(line);
+		}
+	
+		reader.close();			
+		writer.close();
+		con.disconnect();
+		return response.toString();
 	}
 	
+	@Override
+	public String PUT(Player object, String arg) throws IOException
+	{
+		return PUT(object, arg, "");
+	}
 	
 	@Override
 	public String PUT(Player object, String arg1, String arg2) throws IOException
@@ -146,81 +112,119 @@ public class TagAndFragRestClient implements RestClient<Player> {
 		params.append("player_name=" + object.getName());
 		params.append("&id=" + object.getId().toString());
 
-		if(arg1.equals("UPDATE")) params.append("&hp=" + object.getHealthPoints().toString());
-		if(arg1.equals("UPDATE")) params.append("&ammo=" + object.getAmmunition().toString());
-		if(arg1.equals("UPDATE_MAP"))	params.append("&loc=" + object.getLocalization());
-	
-		if(arg1.equals("TEAM") ||
-		   arg1.equals("END")) 	params.append("&team=" + object.getTeam().toString());
-		if(arg1.equals("READY")) 	params.append("&ready=" + arg2);
-		if(arg1.equals("SHOT")) 	params.append("&attacker_name=" + arg2);
-		if(arg1.equals("END")) 	params.append("&end=" + "end");	
-		URL url = new URL(URL);
-		 
-		HttpURLConnection con=(HttpURLConnection) url.openConnection();
-	
-		con.setDoOutput(true);
-		con.setRequestMethod("PUT");
-		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
-	    con.setRequestProperty("charset", "utf-8");
+		if(arg1.equals("UPDATE")) {
+			params.append("&hp=" + object.getHealthPoints().toString());
+			params.append("&ammo=" + object.getAmmunition().toString());
+		}
+		else if(arg1.equals("UPDATE_MAP"))	{
+			params.append("&loc=" + object.getLocalization());
+		}
+		else if(arg1.equals("TEAM") || arg1.equals("END")) {
+			params.append("&team=" + object.getTeam().toString());
+		}
+		else if(arg1.equals("READY")) {
+			params.append("&ready=" + arg2);
+		}
+		else if(arg1.equals("SHOT")) {
+			params.append("&attacker_name=" + arg2);
+			params.append("&hp=" + object.getHealthPoints());
+		}
+		else if(arg1.equals("END")) {
+			params.append("&end=" + "end");	
+		}
+		
+		HttpURLConnection con = createConnection("PUT" ,true);
 		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
 	
 		writer.write(params.toString());
 		writer.flush();
-	
-		BufferedReader reader;
-	
-		int code = con.getResponseCode();
-		if(code >=400) reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-		else 		   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	
+		
+		BufferedReader reader = createBufferedReader(con);
+		
 		StringBuilder response = new StringBuilder();
 		String line;
 	
-		while((line=reader.readLine())!=null) response.append(line);
-	
+		while((line=reader.readLine())!=null) {
+			response.append(line);
+		}
+
 		reader.close();			
 		writer.close();
-	
+		con.disconnect();
 		return response.toString();
 	}
 	
-	@Override
-	public String PUT(Player object, String arg) throws IOException
-	{
-		return PUT(object,arg,null);
+	/**
+	 * Tworzy i ustawia parametry po³¹czenia
+	 * @param requestCommandType typ komendy wysy³any do serwera HTTP
+	 * @param allowingOutputFlag flaga wskazuj¹ca, czy po³¹czenie dopuszcza wyjœcie
+	 * @throws IOException 
+	 * */
+	private HttpURLConnection createConnection(String requestCommandType, boolean allowingOutputFlag) throws IOException {
+		return createConnection(requestCommandType, allowingOutputFlag, "");
 	}
-	
+	/**
+	 * Tworzy i ustawia parametry po³¹czenia
+	 * @param requestCommandType typ komendy wysy³any do serwera HTTP
+	 * @param allowingOutputFlag flaga wskazuj¹ca, czy po³¹czenie dopuszcza wyjœcie
+	 * @param additionalParameter dodatkowe parametry do adresu www
+	 * @throws IOException 
+	 * */
+	private HttpURLConnection createConnection(String requestCommandType, boolean allowingOutputFlag, String additionalParameter) throws IOException {
+		URL url = new URL(URL + additionalParameter);
+		
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		
+		connection.setDoOutput(allowingOutputFlag);
+		connection.setRequestMethod(requestCommandType);
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
+		connection.setRequestProperty("charset", "utf-8");
+		
+		return connection;
+	}
+	/**
+	 * Tworzy {@link BufferedReader} z którego bêdzie zbierany wynik
+	 * @param connection po³¹czenie z serwerem HTTP
+	 * @throws IOException 
+	 * */
+	private BufferedReader createBufferedReader(HttpURLConnection connection) throws IOException {
+		int code = connection.getResponseCode();
+		if(code >=400) {
+			return new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+		}
+		else {
+			return new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		}
+	}
+
+	/**
+	 * metoda prywatna konwertuj¹ca tablicê obiektów JSON na kolekcjê obiektów Player.
+	 * @param array
+	 * @param teamId numer dru¿yny (liczba naturalna);
+	 * @return Kolekcja graczy nale¿acych do dru¿yny numer teamId, lub wszystkich gdy teamId==0.
+	 * @throws JSONException
+	 */
 	private Collection<Player> fromJsonArrayToCollection(JSONArray array, Integer teamId) throws JSONException {
 		Collection<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < array.length(); i++) {
+			
 			JSONObject jsonObject  = array.getJSONObject(i);
 			Integer team 	= Integer.valueOf(jsonObject.optString("team"));
-			
 			if((team==teamId) || (teamId==0))
 			{
-			String name 			= jsonObject.optString("name");
-			Integer healthPoints 	= Integer.valueOf(jsonObject.optString("health"));
-			Integer ammunition 		= Integer.valueOf(jsonObject.optString("ammunition"));
-			String localization 	= jsonObject.optString("localization");
-			Integer id 	= Integer.valueOf(jsonObject.optString("id"));
-			
-			Player player = new Player(name, healthPoints, ammunition, localization, team);
-			player.setId(id);
-			
-			players.add(player);
+				String name 			= jsonObject.optString("name");
+				Integer healthPoints 	= Integer.valueOf(jsonObject.optString("health"));
+				Integer ammunition 		= Integer.valueOf(jsonObject.optString("ammunition"));
+				String localization 	= jsonObject.optString("localization");
+				Integer id 	= Integer.valueOf(jsonObject.optString("id"));
+				//TODO Sprawdziæ czy nie k³adzie siê tutaj - mo¿e siê bardzo piêknie wy³o¿yæ
+				Integer cwc = Integer.valueOf(jsonObject.optString("cwc"));
+				Player player = new Player(name, healthPoints, ammunition, localization, team);
+				player.setId(id);
+				player.setCWC(cwc);
+				players.add(player);
 			}
-			
 		}
 		return players;
 	}
-
-	@Override
-	public void DELETE() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 }

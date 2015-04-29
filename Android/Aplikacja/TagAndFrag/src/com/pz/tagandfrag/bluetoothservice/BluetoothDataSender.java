@@ -2,7 +2,6 @@ package com.pz.tagandfrag.bluetoothservice;
 
 import java.io.IOException;
 import java.io.BufferedOutputStream;
-import java.util.Scanner;
 
 import android.bluetooth.BluetoothSocket;
 /**

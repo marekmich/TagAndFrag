@@ -36,13 +36,13 @@ public class AfterGameActivity extends Activity {
 	 * */
 	private void resetGame() {
 		//Reset kodu broni
-		DataManager.player.setHealthPoints(100);
-		DataManager.player.setTeam(0);
-		/*try {
-			DataManager.game.updatePlayer(DataManager.player);
+		try {
+			DataManager.game.end(DataManager.player);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
+		DataManager.player.setHealthPoints(100);
+		DataManager.player.setTeam(0);
 		DataManager.players.clear();
 		DataManager.oppositePlayers.clear();
 		DataManager.teamList.clear();
@@ -72,10 +72,6 @@ public class AfterGameActivity extends Activity {
 		}
 		gameSummary.loadUrl(String.format(DataManager.serverAddress, team, oppositeTeam));
 	}
-	/////////////////////////////////
-	/* Zmiany w wygl¹dzie */
-	
-	//Dodaæ wyœwietlanie podsumowania gry
 	
 	/////////////////////////////////
 	/* Listenery */

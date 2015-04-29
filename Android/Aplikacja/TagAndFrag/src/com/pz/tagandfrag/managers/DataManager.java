@@ -72,6 +72,9 @@ public class DataManager {
 		else {
 			oppositeTeam += 1;
 		}
+		
+		players.clear();
+		oppositePlayers.clear();
 		//Pobieranie listy graczy z dru¿yny gracza
 		try {
 			players = new ArrayList<Player>(game.getByTeam(team));

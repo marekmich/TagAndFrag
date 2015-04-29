@@ -19,13 +19,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.activity.AfterGameActivity;
 import com.pz.tagandfrag.activity.GameActivity;
-import com.pz.tagandfrag.activity.StandbyActivity;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataReceiver;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
@@ -169,21 +167,25 @@ public class TeamFragment extends Fragment {
 			public void run() {
 				new UpdateTeamTask().execute();
 				updateTeamList();
-				if(countActivePlayersFromOppositeTeam() > 0) {
-					updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
-				}
-				else {
+				//Warunek koñca gry
+				if(countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers) == 0 ||
+						countActivePlayersFromTeam((ArrayList<Player>) DataManager.players) == 0) {
 					Intent intent = new Intent(getActivity(), AfterGameActivity.class);
 					startActivity(intent);
 				}
+				else {
+					
+					updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
+				}
 			}
 			/**
-			 * Zlicza iloœæ aktywnych graczy z przeciwnej dru¿yny 
+			 * Zlicza iloœæ aktywnych graczy z podanej dru¿yny 
+			 * @param players lista graczy z podanej dru¿yny
 			 * @return liczba aktwynych graczy (iloœæ hp > 0) z przeciwnej dru¿yny
 			 * */
-			private int countActivePlayersFromOppositeTeam() {
+			private int countActivePlayersFromTeam(ArrayList<Player> players) {
 				int numberOfActivePlayersInTeam = 0;
-				for(Player player : (ArrayList<Player>) DataManager.oppositePlayers) {
+				for(Player player : players) {
 					if(player.getHealthPoints() > 0) {
 						numberOfActivePlayersInTeam += 1;
 					}
@@ -221,32 +223,19 @@ public class TeamFragment extends Fragment {
 		@Override
 		protected Void doInBackground(Void... params) {
 			while (receiver.hasNextLine()) {
-				Log.e("Shoot", "Shoot from " + receiver.readMessageWithPrefix("SHT", false));
-				DataManager.player.reduceHealth(DataManager.DAMAGE);
-				Log.e("Player HP", String.valueOf(DataManager.player.getHealthPoints()));
+				
+				try {
+					DataManager.game.shotPlayer(DataManager.player, 
+							Integer.valueOf(receiver.readMessageWithPrefix("SHT", false)));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				if(DataManager.player.getHealthPoints() == 0) {
 					sender.blockWeaponAndTurnLedOff();
 				}
-				new Thread(updatePlayerRunnable()).start();
+				
 			}
 			return null;
-		}
-		
-		/**
-		 * @return Runnable aktualizuj¹ce gracza.
-		 */
-		private Runnable updatePlayerRunnable() {
-			return new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						DataManager.game.updatePlayer(DataManager.player);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}					
-				}
-			};
 		}
 	}
 }

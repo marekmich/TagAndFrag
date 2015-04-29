@@ -10,7 +10,13 @@ public class Team implements Comparable<Team> {
 	}
 
 	public Team(Integer id, Integer size) {
+		/**
+		 * identyfikator dru¿yny >0;
+		 */
 		this.id=id;
+		/**
+		 * rozmiar dru¿yny - liczba cz³onków dru¿yny
+		 */
 		this.size=size;
 	}
 
@@ -29,7 +35,7 @@ public class Team implements Comparable<Team> {
 	public void setSize(Integer size) {
 		this.size = size;
 	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("%d. dru¿yna - %d", id, size);
@@ -41,5 +47,4 @@ public class Team implements Comparable<Team> {
 		else if(this.id == another.getId()) return 0;
 		return 1;
 	}
-
 }

@@ -19,7 +19,7 @@ public interface RestClient<Type> {
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	public Collection<Type> 	GET(String parameter, Integer teamId) throws IOException, JSONException;
+	public Collection<Type> 	GET(Integer teamId) throws IOException, JSONException;
 	
 	/**
 	 * Zwraca kolekcjê dru¿yn.

@@ -163,7 +163,7 @@ public class Game {
 	public Collection<Player> getByTeam(Integer teamId) throws IOException, JSONException
 	{
 		//zwraca liste graczy z danej druzyny
-		return restClient.GET("ALL_PLAYERS", teamId);
+		return restClient.GET(teamId);
 	}
 	
 	Integer getSubHp() {

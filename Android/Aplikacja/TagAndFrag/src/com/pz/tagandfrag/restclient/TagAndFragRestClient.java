@@ -28,9 +28,9 @@ public class TagAndFragRestClient implements RestClient<Player> {
 	public static String URL = "http://158.75.2.62:8080";
 	
 	@Override
-	public Collection<Player> GET(String parameter, Integer teamId) throws IOException, JSONException
+	public Collection<Player> GET(Integer teamId) throws IOException, JSONException
 	{
-		String aditionalURLParameter = "?parameter=" + parameter;
+		String aditionalURLParameter = "?parameter=ALL_PLAYERS";
 		
 		HttpURLConnection con = createConnection("GET", false, aditionalURLParameter);
 		BufferedReader reader = createBufferedReader(con);

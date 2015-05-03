@@ -51,7 +51,7 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	/**
 	 * Interwa³ aktualizacji w milisekundach.
 	 */
-	public static int UPDATE_INTERVAL = 3000;
+	public static int UPDATE_INTERVAL = 1000;
 	private Handler updateTeamOnMapHandler;
 	
 	/* Map elements */

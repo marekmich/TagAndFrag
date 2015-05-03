@@ -36,18 +36,24 @@ public class AfterGameActivity extends Activity {
 	 * */
 	private void resetGame() {
 		//Reset kodu broni
-		try {
-			DataManager.game.end(DataManager.player);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		DataManager.player.setHealthPoints(100);
-		DataManager.player.setTeam(0);
-		DataManager.players.clear();
-		DataManager.oppositePlayers.clear();
-		DataManager.teamList.clear();
-		DataManager.preferences.setTeam(0);
-		DataManager.preferences.saveAllDataToPreferences();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					DataManager.game.end(DataManager.player);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				DataManager.player.setHealthPoints(100);
+				DataManager.player.setTeam(0);
+				DataManager.players.clear();
+				DataManager.oppositePlayers.clear();
+				DataManager.teamList.clear();
+				DataManager.preferences.setTeam(0);
+				DataManager.preferences.saveAllDataToPreferences();
+			}
+		}).start();
 	}
 	/**
 	 * Pobiera podsumowanie gry z serwera

@@ -1,6 +1,7 @@
 package com.pz.tagandfrag.managers;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * Zadanie asynchroniczne aktualizuj¹ce listê graczy w dru¿ynie gracza i w dru¿ynie przeciwnej.

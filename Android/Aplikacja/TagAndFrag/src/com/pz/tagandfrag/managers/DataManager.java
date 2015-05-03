@@ -63,7 +63,7 @@ public class DataManager {
 	/**
 	 * Pobieranie listy graczy z dru¿yny gracza i listy graczy z dru¿yny przeciwnej
 	 * */
-	static void getPlayers() {
+	public static void getPlayers() {
 		int team = player.getTeam();
 		int oppositeTeam = team;
 		if(team % 2 == 0) {
@@ -73,8 +73,6 @@ public class DataManager {
 			oppositeTeam += 1;
 		}
 		
-		players.clear();
-		oppositePlayers.clear();
 		//Pobieranie listy graczy z dru¿yny gracza
 		try {
 			players = new ArrayList<Player>(game.getByTeam(team));

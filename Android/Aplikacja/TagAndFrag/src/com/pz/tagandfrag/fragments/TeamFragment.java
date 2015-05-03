@@ -7,10 +7,10 @@ import java.util.Collections;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -133,7 +133,7 @@ public class TeamFragment extends Fragment {
 			//Dodanie kolumny z nickiem gracza
 			addColumnToRow(row, player.getName(), Gravity.LEFT);
 
-			if (isMyTeam)
+			if(isMyTeam)
 			{
 				//Dodanie kolumny z iloœci¹ HP
 				addColumnToRow(row, String.valueOf(player.getHealthPoints()), Gravity.RIGHT);
@@ -141,14 +141,18 @@ public class TeamFragment extends Fragment {
 			teamLayout.addView(row, i);
 	        i++;
 		}
-		teamLayout.setColumnStretchable (1, true);
+		if(isMyTeam) {
+			teamLayout.setColumnStretchable (1, true);
+		}
+		else {
+			teamLayout.setColumnStretchable (0, true);
+		}
 	}
 	/**
 	 * Aktualizuje tabele z listami graczy z obu dru¿yn
 	 * */
 	private void updateTeamList() {
 		getView().findViewById(R.id.progress_bar_team_fragment).setVisibility(ProgressBar.INVISIBLE);
-		Log.e("POBRANO_GRACZY", "TAK");
 		TableLayout myTeam = (TableLayout) getView().findViewById(R.id.table_my_team_team_fragment);
 		TableLayout oppositeTeam = (TableLayout) getView().findViewById(R.id.table_opposite_team_team_fragment);
 		updateTableLayout(myTeam, (ArrayList<Player>) DataManager.players, true);
@@ -165,34 +169,38 @@ public class TeamFragment extends Fragment {
 		return new Runnable() {
 			@Override
 			public void run() {
-				new UpdateTeamTask().execute();
+				UpdateTeamTask test = new UpdateTeamTask();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+					test.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
+				else
+					test.execute((Void[])null);
+				
 				updateTeamList();
 				//Warunek koñca gry
 				if(countActivePlayersFromTeam((ArrayList<Player>) DataManager.oppositePlayers) == 0 ||
 						countActivePlayersFromTeam((ArrayList<Player>) DataManager.players) == 0) {
-					Intent intent = new Intent(getActivity(), AfterGameActivity.class);
-					startActivity(intent);
-				}
+ 					Intent intent = new Intent(getActivity(), AfterGameActivity.class);
+ 					startActivity(intent);
+ 				}
 				else {
-					
 					updateTeamHandler.postDelayed(updateTeamRunnable(), UPDATE_PERIOD);
 				}
 			}
-			/**
-			 * Zlicza iloœæ aktywnych graczy z podanej dru¿yny 
-			 * @param players lista graczy z podanej dru¿yny
-			 * @return liczba aktwynych graczy (iloœæ hp > 0) z przeciwnej dru¿yny
-			 * */
-			private int countActivePlayersFromTeam(ArrayList<Player> players) {
-				int numberOfActivePlayersInTeam = 0;
-				for(Player player : players) {
-					if(player.getHealthPoints() > 0) {
-						numberOfActivePlayersInTeam += 1;
-					}
-				}
-				return numberOfActivePlayersInTeam;
-			}
 		};
+	}
+	/**
+	 * Zlicza iloœæ aktywnych graczy z podanej dru¿yny 
+	 * @param players lista graczy z podanej dru¿yny
+	 * @return liczba aktwynych graczy (iloœæ hp > 0) z przeciwnej dru¿yny
+	 * */
+	private int countActivePlayersFromTeam(ArrayList<Player> players) {
+		int numberOfActivePlayersInTeam = 0;
+		for(Player player : players) {
+			if(player.getHealthPoints() > 0) {
+				numberOfActivePlayersInTeam += 1;
+			}
+		}
+		return numberOfActivePlayersInTeam;
 	}
 	/////////////////////////////////
 	/* Prywatne klasy */
@@ -225,8 +233,10 @@ public class TeamFragment extends Fragment {
 			while (receiver.hasNextLine()) {
 				
 				try {
-					DataManager.game.shotPlayer(DataManager.player, 
-							Integer.valueOf(receiver.readMessageWithPrefix("SHT", false)));
+					String message = receiver.readMessageWithPrefix("SHT", false);
+					if(message != null) {
+						DataManager.game.shootPlayer(DataManager.player, Integer.valueOf(message));
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

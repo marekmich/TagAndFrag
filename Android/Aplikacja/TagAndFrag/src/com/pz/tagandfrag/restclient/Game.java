@@ -65,7 +65,7 @@ public class Game {
 	public void updatePlayerPosition(Player object) throws IOException
 	{
 		//wyslanie do serwera aktualnych parametrow gracza w celu zapisania ich w bazie
-		restClient.PUT(object,"UPDATE_MAP");
+		restClient.PUT(object, "UPDATE_MAP");
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class Game {
 	 * @param attacker
 	 * @throws IOException
 	 */
-	public void shotPlayer(Player object, int attackerWeaponCode) throws IOException
+	public void shootPlayer(Player object, int attackerWeaponCode) throws IOException
 	{
 		String attacker = "";
 		for(Player player : (ArrayList<Player>) DataManager.oppositePlayers) {

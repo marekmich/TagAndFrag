@@ -310,8 +310,15 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(newLocation);
 			map.moveCamera(cameraUpdate);
 		}
-		new UpdatePlayerLocationTask(newLocation).execute();
-		Log.i("MAP", location.toString());
+		/*
+		DataManager.player.setLocalization(newLocation.latitude + "#" + newLocation.longitude);
+		try {
+			DataManager.game.updatePlayerPosition(DataManager.player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		//new UpdatePlayerLocationTask(newLocation).execute();
+		new Thread(updatePlayerLocationRunnable(newLocation)).start();
 	}
 
 	/**
@@ -359,29 +366,20 @@ implements 	GoogleApiClient.ConnectionCallbacks,
 	 * @author Mateusz Wrzos
 	 *
 	 */
-	private class UpdatePlayerLocationTask extends AsyncTask<Void, Void, Void> {
-
-		private LatLng newLocation;
-		
-		public UpdatePlayerLocationTask(LatLng newLocation) {
-			super();
-			this.newLocation = newLocation;
-		}
-
-		/**
-		 * W tle aktualizuje pozycje gracza.
-		 */
-		@Override
-		protected Void doInBackground(Void... params) {
-			String location = newLocation.latitude + "#" + newLocation.longitude; 
-			DataManager.player.setLocalization(location);
-			try {
-				DataManager.game.updatePlayerPosition(DataManager.player);
-			} catch (IOException e) {
-				e.printStackTrace();
+	private Runnable updatePlayerLocationRunnable(LatLng newLocation) {
+		final String location = newLocation.latitude + "#" + newLocation.longitude; 
+		return new Runnable() {
+			@Override
+			public void run() {
+				
+				DataManager.player.setLocalization(location);
+				try {
+					DataManager.game.updatePlayerPosition(DataManager.player);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			return null;
-		}
+		};
 		
 	}
 }

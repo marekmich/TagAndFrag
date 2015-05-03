@@ -44,6 +44,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
+        android:onClick="onResetGameButtonClicked"
         android:text="@string/reset_game" />
 
 </RelativeLayout>

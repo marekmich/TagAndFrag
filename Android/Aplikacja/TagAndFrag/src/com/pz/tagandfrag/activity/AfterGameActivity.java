@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.pz.tagandfrag.R;
+import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
 
 
@@ -37,9 +38,11 @@ public class AfterGameActivity extends Activity {
 	private void resetGame() {
 		//Reset kodu broni
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
+				BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
+				sender.changeWeaponCode(0);
+				sender.blockWeaponAndTurnLedOff();
 				try {
 					DataManager.game.end(DataManager.player);
 				} catch (IOException e) {

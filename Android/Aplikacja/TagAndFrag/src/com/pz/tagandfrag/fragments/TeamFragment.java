@@ -42,7 +42,7 @@ public class TeamFragment extends Fragment {
 	private View view;
 	
 	// Okres aktualizacji w milisekundach
-	public static final int UPDATE_PERIOD = 3000;
+	public static final int UPDATE_PERIOD = 500;
 	private Handler updateTeamHandler;
 	
 	/**

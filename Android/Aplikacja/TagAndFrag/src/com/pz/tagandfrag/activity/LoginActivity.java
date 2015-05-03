@@ -132,13 +132,19 @@ public class LoginActivity extends Activity {
 	 * poprzez uruchomienia zadania w tle z klasy {@link NickCheckProgressBarTask}
 	 */
 	public void onNickConfirmButtonClicked(View view) {
+		
 		EditText nickEditText = (EditText) findViewById(R.id.edit_text_login);
 		EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
+		
 		Button loginButton = (Button) findViewById(R.id.button_login);
 		loginButton.setEnabled(false);
+		
+		CheckBox checkBox = (CheckBox) findViewById(R.id.already_have_account_checkbox);
+		
 		//Sprawdzenie czy nick jest odpowiednio d³ugi oraz czy has³o ma w³aœciw¹ d³ugoœæ
 		if(nickEditText.getText().toString().length() >= 4 && 
 				((DataManager.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 7) 
+						|| (DataManager.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 0 && !(checkBox.isChecked())) 
 						|| DataManager.preferences.getId()==0 ))
 		{
 			String nick = nickEditText.getText().toString();
@@ -152,6 +158,11 @@ public class LoginActivity extends Activity {
 				password = Integer.valueOf(passwordEditText.getText().toString());
 				DataManager.player.setId(password);
 				DataManager.preferences.setId(password);
+			}
+			if(!(checkBox.isChecked()))
+			{
+				DataManager.player.setId(0);
+				DataManager.preferences.setId(0);
 			}
 			//Uruchomienie zadania w tle, które przesy³a dane do serwera (równie¿ weryfikuje odpowiedŸ serwera)
 			NickCheckProgressBarTask task = new NickCheckProgressBarTask(this);
@@ -242,20 +253,29 @@ public class LoginActivity extends Activity {
 		int newId = 0;
 		try {
 			newId = DataManager.game.check(DataManager.player);
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
+		} 
+		catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
 		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i podany nick znajdujê siê w bazie)
 		if(newId == id && id > 0)
 		{
-			
 			return true;
 		}
 		//NICK jest poprawny (sytuacja kiedy gracz nie gra³ wczeœniej i podany nick nie jest zajêty)
 		else if(newId > 0 && id == 0)
+		{
+			id = newId;
+			DataManager.player.setId(id);
+			DataManager.preferences.setId(id);
+			return true;
+		}
+		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i chce za³o¿yæ nowe konto)
+		else if(newId > 0 && id > 0)
 		{
 			id = newId;
 			DataManager.player.setId(id);

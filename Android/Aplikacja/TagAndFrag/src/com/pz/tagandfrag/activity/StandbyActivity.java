@@ -206,7 +206,6 @@ public class StandbyActivity extends Activity {
 	 * Klasa wykonuj¹ca zadanie rozpoczêcia gry, by potem przejœæ do {@link GameActivity}
 	 * */
 	private class StartGameProgressBarTask extends AsyncTask<Void, Void, Void> {
-		//TODO dokumentacja
 		@Override
 		protected void onPostExecute(Void result) {
 			Intent intent = new Intent(StandbyActivity.this, GameActivity.class);
@@ -216,6 +215,8 @@ public class StandbyActivity extends Activity {
 
 		@Override
 		protected void onPreExecute() {
+			BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
+			sender.unlockWeaponAndTurnLedOn();
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
 			findViewById(R.id.button_start_game).setEnabled(false);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.GONE);

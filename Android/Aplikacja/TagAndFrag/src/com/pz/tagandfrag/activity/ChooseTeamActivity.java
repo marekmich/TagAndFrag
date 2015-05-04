@@ -9,6 +9,9 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,10 +72,19 @@ public class ChooseTeamActivity extends Activity {
         //Jeœli apka siê po³o¿y³a lub gracz wyszed³ z gry
         //To na górze jest pokazywana ostatnio wybrana dru¿yna
         if(DataManager.preferences.getTeam() > 0) {
+        	int myTeam = DataManager.preferences.getTeam();
+        	int myVisibleTeam = (myTeam % 2 == 0) ? myTeam / 2 : (int) Math.ceil(((double) myTeam / 2));
+
         	RadioButton radioButtonTeam = new RadioButton(this);
-            radioButtonTeam.setId(DataManager.preferences.getTeam());
-            radioButtonTeam.setText(String.format("%d. dru¿yna (w trakcie gry)", 
-            		DataManager.preferences.getTeam()));
+        	radioButtonTeam.setId(DataManager.preferences.getTeam());
+        	radioButtonTeam.setTextSize(23f);
+        	radioButtonTeam.setTypeface(radioButtonTeam.getTypeface(), Typeface.BOLD);
+        	radioButtonTeam.setText(String.format("%d. dru¿yna (w trakcie gry)", myVisibleTeam));
+            if (myTeam % 2 == 0) {
+            	radioButtonTeam.setShadowLayer(30, 0, 0, Color.BLUE);
+            } else { 
+            	radioButtonTeam.setShadowLayer(30, 0, 0, Color.RED);
+            }
             radioButtonTeam.setChecked(true);
             radioGroupTeam.addView(radioButtonTeam);
         }
@@ -82,8 +94,18 @@ public class ChooseTeamActivity extends Activity {
         	if(DataManager.preferences.getTeam() != team.getId())
         	{
 	            RadioButton radioButtonTeam = new RadioButton(this);
-	            radioButtonTeam.setId(team.getId());
-	            radioButtonTeam.setText(team.toString());
+	            int visibleTeamId = (team.getId() % 2 == 0) ? team.getId() / 2 : (int) Math.ceil(((double) team.getId() / 2));
+            	radioButtonTeam.setId(team.getId());
+	            radioButtonTeam.setText(String.format("%d) Iloœæ graczy: %d", visibleTeamId, team.getSize()));
+	            radioButtonTeam.setTextSize(22f);
+	            radioButtonTeam.setTypeface(radioButtonTeam.getTypeface(), Typeface.BOLD);
+
+	            if (team.getId() % 2 == 0) {
+	            	radioButtonTeam.setShadowLayer(15, 0, 0, Color.BLUE);
+	            } else { 
+	            	radioButtonTeam.setShadowLayer(15, 0, 0, Color.RED);
+	            }
+	            
 	            radioGroupTeam.addView(radioButtonTeam);
         	}
         }

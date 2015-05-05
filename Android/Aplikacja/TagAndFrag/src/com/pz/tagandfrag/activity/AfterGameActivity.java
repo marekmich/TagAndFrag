@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,7 +67,7 @@ public class AfterGameActivity extends Activity {
 	 * */
 	private void loadSummaryFromServer() {
 		WebView gameSummary = (WebView) findViewById(R.id.game_summary_full);
-		gameSummary.getSettings().setTextSize(TextSize.SMALLEST);
+		gameSummary.setBackgroundColor(Color.TRANSPARENT);
 		gameSummary.setWebViewClient(new WebViewClient() {
 		    @Override
 		    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

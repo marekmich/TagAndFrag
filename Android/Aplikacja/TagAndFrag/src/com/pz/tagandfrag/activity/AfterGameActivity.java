@@ -68,6 +68,7 @@ public class AfterGameActivity extends Activity {
 	private void loadSummaryFromServer() {
 		WebView gameSummary = (WebView) findViewById(R.id.game_summary_full);
 		gameSummary.setBackgroundColor(Color.TRANSPARENT);
+		gameSummary.getSettings().setJavaScriptEnabled(true);
 		gameSummary.setWebViewClient(new WebViewClient() {
 		    @Override
 		    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

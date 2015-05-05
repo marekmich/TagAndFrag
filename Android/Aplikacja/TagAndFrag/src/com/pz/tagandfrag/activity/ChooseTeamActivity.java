@@ -100,9 +100,9 @@ public class ChooseTeamActivity extends Activity {
 	            radioButtonTeam.setTypeface(radioButtonTeam.getTypeface(), Typeface.BOLD);
 
 	            if (team.getId() % 2 == 0) {
-	            	radioButtonTeam.setShadowLayer(15, 0, 0, Color.BLUE);
-	            } else { 
 	            	radioButtonTeam.setShadowLayer(15, 0, 0, Color.RED);
+	            } else { 
+	            	radioButtonTeam.setShadowLayer(15, 0, 0, Color.BLUE);
 	            }
 	            
 	            radioGroupTeam.addView(radioButtonTeam);

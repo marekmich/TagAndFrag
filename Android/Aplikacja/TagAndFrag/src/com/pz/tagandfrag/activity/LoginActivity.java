@@ -142,10 +142,10 @@ public class LoginActivity extends Activity {
 		CheckBox checkBox = (CheckBox) findViewById(R.id.already_have_account_checkbox);
 		
 		//Sprawdzenie czy nick jest odpowiednio d³ugi oraz czy has³o ma w³aœciw¹ d³ugoœæ
-		if(nickEditText.getText().toString().length() >= 4 && 
-				((DataManager.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 7) 
-						|| (DataManager.preferences.getId() !=0 && passwordEditText.getText().toString().length() == 0 && !(checkBox.isChecked())) 
-						|| DataManager.preferences.getId()==0 ))
+		if(nickEditText.getText().toString().length() >= 4 && (
+			(DataManager.preferences.getId() != 0 && passwordEditText.getText().toString().length() == 7 && checkBox.isChecked()) 
+			|| (DataManager.preferences.getId() != 0 && !checkBox.isChecked()) 
+			|| (DataManager.preferences.getId() == 0 && !checkBox.isChecked())))
 		{
 			String nick = nickEditText.getText().toString();
 			int password = 0;
@@ -153,7 +153,7 @@ public class LoginActivity extends Activity {
 			DataManager.player.setName(nick);
 			DataManager.preferences.setNick(nick);
 			//Sprawdzenie czy pole z has³em jest niepuste
-			if(!TextUtils.isEmpty(passwordEditText.getText()))
+			if(!TextUtils.isEmpty(passwordEditText.getText()) && checkBox.isChecked())
 			{
 				password = Integer.valueOf(passwordEditText.getText().toString());
 				DataManager.player.setId(password);
@@ -161,8 +161,8 @@ public class LoginActivity extends Activity {
 			}
 			if(!(checkBox.isChecked()))
 			{
-				DataManager.player.setId(0);
-				DataManager.preferences.setId(0);
+				DataManager.player.setId(password);
+				DataManager.preferences.setId(password);
 			}
 			//Uruchomienie zadania w tle, które przesy³a dane do serwera (równie¿ weryfikuje odpowiedŸ serwera)
 			NickCheckProgressBarTask task = new NickCheckProgressBarTask(this);
@@ -260,7 +260,6 @@ public class LoginActivity extends Activity {
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i podany nick znajdujê siê w bazie)
 		if(newId == id && id > 0)
 		{
@@ -268,14 +267,6 @@ public class LoginActivity extends Activity {
 		}
 		//NICK jest poprawny (sytuacja kiedy gracz nie gra³ wczeœniej i podany nick nie jest zajêty)
 		else if(newId > 0 && id == 0)
-		{
-			id = newId;
-			DataManager.player.setId(id);
-			DataManager.preferences.setId(id);
-			return true;
-		}
-		//NICK jest poprawny (sytuacja kiedy gracz gra³ wczeœniej i chce za³o¿yæ nowe konto)
-		else if(newId > 0 && id > 0)
 		{
 			id = newId;
 			DataManager.player.setId(id);
@@ -314,10 +305,10 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(Void result) {
 			if(isSuccessful) {
 				//Kiedy nick jest w³aœciwy dane s¹ zapisywane do preferencji, progress bar jest chowany i przechodzi siê do kolejnego etapu
-				EditText passwordEditText = (EditText) findViewById(R.id.edit_text_password);
+				CheckBox checkBox = (CheckBox) findViewById(R.id.already_have_account_checkbox);
 				DataManager.preferences.saveLoginDataToPreferences();
 				DataManager.preferences.loadMACDataFromPreferences();
-				if (TextUtils.isEmpty(passwordEditText.getText())) {
+				if (!checkBox.isChecked()) {
 					showDialogWithNewId();
 				} else {
 					chooseWeapon(activity);

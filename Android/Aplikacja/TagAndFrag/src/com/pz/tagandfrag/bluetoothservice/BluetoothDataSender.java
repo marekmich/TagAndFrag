@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothSocket;
  */
 public class BluetoothDataSender 
 {
+	@SuppressWarnings("unused")
 	private final BluetoothSocket bluetoothSocket;
 	private BufferedOutputStream outputStream;
 	/**

@@ -9,7 +9,6 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;

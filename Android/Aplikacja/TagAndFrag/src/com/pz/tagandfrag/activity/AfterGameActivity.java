@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.pz.tagandfrag.R;
 import com.pz.tagandfrag.bluetoothservice.BluetoothDataSender;
 import com.pz.tagandfrag.managers.DataManager;
+import com.pz.tagandfrag.managers.DebugManager;
 
 
 /**
@@ -40,9 +41,11 @@ public class AfterGameActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
-				sender.changeWeaponCode(0);
-				sender.blockWeaponAndTurnLedOff();
+				if(!DebugManager.withoutBluetooth) {
+					BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
+					sender.changeWeaponCode(0);
+					sender.blockWeaponAndTurnLedOff();
+				}
 				try {
 					DataManager.game.end(DataManager.player);
 				} catch (IOException e) {

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -215,8 +214,10 @@ public class StandbyActivity extends Activity {
 
 		@Override
 		protected void onPreExecute() {
-			BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
-			sender.unlockWeaponAndTurnLedOn();
+			if(!DebugManager.withoutBluetooth) {
+				BluetoothDataSender sender = new BluetoothDataSender(DataManager.bluetoothService.getBluetoothSocket());
+				sender.unlockWeaponAndTurnLedOn();
+			}
 			findViewById(R.id.progress_bar_standby).setVisibility(ProgressBar.VISIBLE);
 			findViewById(R.id.button_start_game).setEnabled(false);
 			findViewById(R.id.button_start_game).setVisibility(ProgressBar.GONE);
